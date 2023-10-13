@@ -53,7 +53,7 @@ fun DeliverMeApp() {
         },
         content = { innerPadding ->
             MainScreenNavigationConfigurations(
-                modifier = Modifier.padding(innerPadding),
+                modifier = Modifier.padding(innerPadding).padding(start = 15.dp, end = 8.dp),
                 navController = navController,
                 onNavigation = { pageClicked = it }
             )
