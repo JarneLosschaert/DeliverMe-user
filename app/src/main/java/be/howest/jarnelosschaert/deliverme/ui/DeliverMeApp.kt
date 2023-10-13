@@ -18,6 +18,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import be.howest.jarnelosschaert.deliverme.ui.screens.DeliverScreen
 import be.howest.jarnelosschaert.deliverme.ui.screens.HomeScreen
 import be.howest.jarnelosschaert.deliverme.ui.screens.NotificationsScreen
 import be.howest.jarnelosschaert.deliverme.ui.screens.SettingScreen
@@ -29,7 +30,7 @@ sealed class BottomNavigationScreens(val route: String, val icon: ImageVector) {
 }
 
 sealed class OtherScreens(val route: String) {
-
+    object Deliver : OtherScreens("deliver")
 }
 
 //val uiState = UiState()
@@ -69,7 +70,9 @@ private fun MainScreenNavigationConfigurations(
 ) {
     NavHost(navController, startDestination = BottomNavigationScreens.Home.route) {
         composable(BottomNavigationScreens.Home.route) {
-            HomeScreen(modifier = modifier)
+            HomeScreen(modifier = modifier,
+                navigateDeliver = { navController.navigate(OtherScreens.Deliver.route) }
+            )
             onNavigation(BottomNavigationScreens.Home.route)
         }
         composable(BottomNavigationScreens.Notifications.route) {
@@ -79,6 +82,9 @@ private fun MainScreenNavigationConfigurations(
         composable(BottomNavigationScreens.Settings.route) {
             SettingScreen(modifier = modifier)
             onNavigation(BottomNavigationScreens.Settings.route)
+        }
+        composable(OtherScreens.Deliver.route) {
+            DeliverScreen(modifier = modifier)
         }
     }
 }

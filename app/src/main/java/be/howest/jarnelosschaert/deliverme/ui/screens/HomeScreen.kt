@@ -24,13 +24,14 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.*
 
 @Composable
 fun HomeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateDeliver: () -> Unit,
 ) {
     // text in the center
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
             Title()
-            HomeButtons()
+            HomeButtons(navigateDeliver = navigateDeliver)
             SubTitle(text = "Active Deliveries")
             Delivery()
             SubTitle(text = "History")
@@ -39,14 +40,16 @@ fun HomeScreen(
 }
 
 @Composable
-fun HomeButtons() {
+fun HomeButtons(
+    navigateDeliver: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         HomeButton(
-            onClick = {},
+            onClick = navigateDeliver,
             text = "Send a package",
             image = R.drawable.box
         )
@@ -100,7 +103,7 @@ fun Delivery() {
                 .border(1.dp, Color.Black)
                 .clip(MaterialTheme.shapes.medium)
                 .padding(8.dp)
-                .height(100.dp),
+                .height(95.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column {
@@ -130,10 +133,4 @@ fun SubTitle(text: String) {
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp
     )
-}
-
-@Composable
-@Preview
-fun HomeScreenPreview() {
-    HomeScreen()
 }

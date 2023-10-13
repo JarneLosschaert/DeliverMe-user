@@ -20,7 +20,6 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.Title
 fun NotificationsScreen(
     modifier: Modifier = Modifier
 ) {
-    // text in the center
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
             Title(text = "Notifications")
@@ -35,7 +34,7 @@ fun Notification() {
         modifier = Modifier.border(1.dp, Color.Black).padding(10.dp),
     ) {
         Content(text = "Your package has been sent.")
-        SmallButton(onClick = {})
+        SmallButton(modifier = Modifier.padding(top = 10.dp), onClick = {})
         DateDetails(text = "12/12/2021")
     }
 }

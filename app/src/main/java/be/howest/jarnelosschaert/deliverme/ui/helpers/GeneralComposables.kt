@@ -1,5 +1,6 @@
 package be.howest.jarnelosschaert.deliverme.ui.helpers
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,18 +38,22 @@ fun Title(text: String = "DeliverMe") {
 fun Label(text: String) {
     Text(
         text = text,
-        color = MaterialTheme.colors.onSurface,
+        color = MaterialTheme.colors.onSecondary,
         fontSize = 15.sp,
         modifier = Modifier.padding(0.dp)
     )
 }
 
 @Composable
-fun Content(text: String) {
+fun Content(
+    modifier: Modifier = Modifier,
+    text: String
+) {
     Text(
         text = text,
         color = MaterialTheme.colors.onBackground,
         fontSize = 17.sp,
+        modifier = modifier,
     )
 }
 
@@ -66,12 +71,13 @@ fun DateDetails(text: String) {
 
 @Composable
 fun SmallButton(
+    modifier: Modifier = Modifier,
     text: String = "See details",
     onClick: () -> Unit
 ) {
     Button(
         onClick = onClick,
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(15.dp))
     ) {
         Text(text = text, fontSize = 15.sp)
