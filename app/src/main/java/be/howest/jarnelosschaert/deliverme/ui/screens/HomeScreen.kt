@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import be.howest.jarnelosschaert.deliverme.R
+import be.howest.jarnelosschaert.deliverme.ui.helpers.*
 
 @Composable
 fun HomeScreen(
@@ -114,51 +115,11 @@ fun Delivery() {
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.End
             ) {
-                Button(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(15.dp))
-                ) {
-                    Text(text = "See details", color = MaterialTheme.colors.onPrimary)
-                }
-                Text(text = "12/10/2023")
+                SmallButton(onClick = {})
+                DateDetails(text = "12/10/2022")
             }
         }
     }
-}
-
-@Composable
-fun Title(text: String = "DeliverMe") {
-    Box(
-        modifier = Modifier.fillMaxWidth()) {
-        Text(
-            text = text,
-            color = MaterialTheme.colors.primary,
-            fontSize = 35.sp,
-            modifier = Modifier.padding(15.dp).align(Alignment.Center),
-            fontWeight = FontWeight.Bold,
-        )
-    }
-}
-
-@Composable
-fun Label(text: String) {
-    Text(
-        text = text,
-        color = MaterialTheme.colors.onSurface,
-        fontSize = 15.sp,
-        modifier = Modifier.padding(0.dp)
-    )
-}
-
-@Composable
-fun Content(text: String) {
-    Text(
-        text = text,
-        color = MaterialTheme.colors.onBackground,
-        fontSize = 17.sp,
-        modifier = Modifier.padding(0.dp)
-    )
 }
 
 @Composable
