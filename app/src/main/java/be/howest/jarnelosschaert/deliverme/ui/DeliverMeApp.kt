@@ -18,10 +18,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import be.howest.jarnelosschaert.deliverme.ui.screens.DeliverScreen
-import be.howest.jarnelosschaert.deliverme.ui.screens.HomeScreen
-import be.howest.jarnelosschaert.deliverme.ui.screens.NotificationsScreen
-import be.howest.jarnelosschaert.deliverme.ui.screens.SettingScreen
+import be.howest.jarnelosschaert.deliverme.ui.helpers.roundedBottomNav
+import be.howest.jarnelosschaert.deliverme.ui.screens.*
 
 sealed class BottomNavigationScreens(val route: String, val icon: ImageVector) {
     object Home : BottomNavigationScreens("home", Icons.Filled.Home)
@@ -31,6 +29,7 @@ sealed class BottomNavigationScreens(val route: String, val icon: ImageVector) {
 
 sealed class OtherScreens(val route: String) {
     object Deliver : OtherScreens("deliver")
+    object Contacts : OtherScreens("contacts")
 }
 
 //val uiState = UiState()
@@ -71,7 +70,8 @@ private fun MainScreenNavigationConfigurations(
     NavHost(navController, startDestination = BottomNavigationScreens.Home.route) {
         composable(BottomNavigationScreens.Home.route) {
             HomeScreen(modifier = modifier,
-                navigateDeliver = { navController.navigate(OtherScreens.Deliver.route) }
+                navigateDeliver = { navController.navigate(OtherScreens.Deliver.route) },
+                navigateContacts = { navController.navigate(OtherScreens.Contacts.route) }
             )
             onNavigation(BottomNavigationScreens.Home.route)
         }
@@ -85,6 +85,11 @@ private fun MainScreenNavigationConfigurations(
         }
         composable(OtherScreens.Deliver.route) {
             DeliverScreen(modifier = modifier)
+            onNavigation(OtherScreens.Deliver.route)
+        }
+        composable(OtherScreens.Contacts.route) {
+            ContactsScreen(modifier = modifier)
+            onNavigation(OtherScreens.Contacts.route)
         }
     }
 }
@@ -99,7 +104,7 @@ fun DeliverMeBottomNavigation(
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.secondary,
         contentColor = MaterialTheme.colors.onBackground,
-        modifier = Modifier.clip(RoundedTopCornersShape()),
+        modifier = Modifier.clip(roundedBottomNav()),
     ) {
         val currentRoute = currentRoute(navController)
         items.forEach { screen ->
@@ -119,13 +124,7 @@ fun DeliverMeBottomNavigation(
         }
     }
 }
-@Composable
-fun RoundedTopCornersShape() = RoundedCornerShape(
-    topStart = 16.dp,
-    topEnd = 16.dp,
-    bottomStart = 0.dp,
-    bottomEnd = 0.dp
-)
+
 @Composable
 private fun currentRoute(navController: NavHostController): String? {
     val navBackStackEntry by navController.currentBackStackEntryAsState()

@@ -47,12 +47,13 @@ fun Label(text: String) {
 @Composable
 fun Content(
     modifier: Modifier = Modifier,
+    fontSize: Int = 17,
     text: String
 ) {
     Text(
         text = text,
         color = MaterialTheme.colors.onBackground,
-        fontSize = 17.sp,
+        fontSize = fontSize.sp,
         modifier = modifier,
     )
 }
@@ -78,8 +79,16 @@ fun SmallButton(
     Button(
         onClick = onClick,
         modifier = modifier
-            .clip(RoundedCornerShape(15.dp))
+            .clip(RoundedCornerShape(15.dp)),
     ) {
         Text(text = text, fontSize = 15.sp)
     }
 }
+
+@Composable
+fun roundedBottomNav() = RoundedCornerShape(
+    topStart = 16.dp,
+    topEnd = 16.dp,
+    bottomStart = 0.dp,
+    bottomEnd = 0.dp
+)
