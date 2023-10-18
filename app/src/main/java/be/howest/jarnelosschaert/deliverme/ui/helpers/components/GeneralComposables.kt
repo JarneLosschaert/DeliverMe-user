@@ -1,4 +1,4 @@
-package be.howest.jarnelosschaert.deliverme.ui.helpers
+package be.howest.jarnelosschaert.deliverme.ui.helpers.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

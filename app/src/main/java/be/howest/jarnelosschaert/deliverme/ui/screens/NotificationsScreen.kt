@@ -5,16 +5,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import be.howest.jarnelosschaert.deliverme.ui.helpers.Content
-import be.howest.jarnelosschaert.deliverme.ui.helpers.DateDetails
-import be.howest.jarnelosschaert.deliverme.ui.helpers.SmallButton
-import be.howest.jarnelosschaert.deliverme.ui.helpers.Title
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Content
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.DateDetails
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.SmallButton
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 
 @Composable
 fun NotificationsScreen(

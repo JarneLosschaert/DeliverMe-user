@@ -1,9 +1,7 @@
 package be.howest.jarnelosschaert.deliverme.ui
 
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -18,8 +16,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import be.howest.jarnelosschaert.deliverme.ui.helpers.roundedBottomNav
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNav
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
+import be.howest.jarnelosschaert.deliverme.ui.screens.settingPages.ProfileScreen
 
 sealed class BottomNavigationScreens(val route: String, val icon: ImageVector) {
     object Home : BottomNavigationScreens("home", Icons.Filled.Home)
@@ -30,6 +29,7 @@ sealed class BottomNavigationScreens(val route: String, val icon: ImageVector) {
 sealed class OtherScreens(val route: String) {
     object Deliver : OtherScreens("deliver")
     object Contacts : OtherScreens("contacts")
+    object Profile : OtherScreens("profile")
 }
 
 //val uiState = UiState()
@@ -80,7 +80,8 @@ private fun MainScreenNavigationConfigurations(
             onNavigation(BottomNavigationScreens.Notifications.route)
         }
         composable(BottomNavigationScreens.Settings.route) {
-            SettingScreen(modifier = modifier)
+            SettingScreen(modifier = modifier,
+                navigateTo = { navController.navigate(it) })
             onNavigation(BottomNavigationScreens.Settings.route)
         }
         composable(OtherScreens.Deliver.route) {
@@ -90,6 +91,9 @@ private fun MainScreenNavigationConfigurations(
         composable(OtherScreens.Contacts.route) {
             ContactsScreen(modifier = modifier)
             onNavigation(OtherScreens.Contacts.route)
+        }
+        composable(OtherScreens.Profile.route) {
+            ProfileScreen(modifier = modifier)
         }
     }
 }
