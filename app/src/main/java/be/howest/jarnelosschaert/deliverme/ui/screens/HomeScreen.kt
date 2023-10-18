@@ -3,7 +3,6 @@ package be.howest.jarnelosschaert.deliverme.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.magnifier
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -16,11 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import be.howest.jarnelosschaert.deliverme.R
-import be.howest.jarnelosschaert.deliverme.ui.helpers.*
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 
 @Composable
 fun HomeScreen(
