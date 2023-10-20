@@ -18,8 +18,6 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Content
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Label
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.SmallButton
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
-import be.howest.jarnelosschaert.deliverme.ui.screens.SettingItem
-import be.howest.jarnelosschaert.deliverme.ui.screens.SettingsPopup
 
 data class PopupContent(
     val title: String,
