@@ -30,6 +30,7 @@ sealed class OtherScreens(val route: String) {
     object Deliver : OtherScreens("deliver")
     object Contacts : OtherScreens("contacts")
     object Profile : OtherScreens("profile")
+    object PackageDetails : OtherScreens("packageDetails")
 }
 
 //val uiState = UiState()
@@ -71,7 +72,8 @@ private fun MainScreenNavigationConfigurations(
         composable(BottomNavigationScreens.Home.route) {
             HomeScreen(modifier = modifier,
                 navigateDeliver = { navController.navigate(OtherScreens.Deliver.route) },
-                navigateContacts = { navController.navigate(OtherScreens.Contacts.route) }
+                navigateContacts = { navController.navigate(OtherScreens.Contacts.route) },
+                showPackageDetails = { navController.navigate(OtherScreens.PackageDetails.route) }
             )
             onNavigation(BottomNavigationScreens.Home.route)
         }
@@ -94,6 +96,9 @@ private fun MainScreenNavigationConfigurations(
         }
         composable(OtherScreens.Profile.route) {
             ProfileScreen(modifier = modifier)
+        }
+        composable(OtherScreens.PackageDetails.route) {
+            PackageDetailsScreen(modifier = modifier)
         }
     }
 }

@@ -24,15 +24,15 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 fun HomeScreen(
     modifier: Modifier = Modifier,
     navigateDeliver: () -> Unit,
-    navigateContacts: () -> Unit
+    navigateContacts: () -> Unit,
+    showPackageDetails: () -> Unit
 ) {
-    // text in the center
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
             Title()
             HomeButtons(navigateDeliver = navigateDeliver, navigateContacts = navigateContacts)
             SubTitle(text = "Active Deliveries")
-            Delivery()
+            Delivery(showPackageDetails = showPackageDetails)
             SubTitle(text = "History")
         }
     }
@@ -92,7 +92,10 @@ fun HomeButton(
     }
 }
 @Composable
-fun Delivery() {
+fun Delivery(
+    modifier: Modifier = Modifier,
+    showPackageDetails: () -> Unit
+) {
     Box(
         modifier = Modifier
             .padding(start = 8.dp),
@@ -118,7 +121,7 @@ fun Delivery() {
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.End
             ) {
-                SmallButton(onClick = {})
+                SmallButton(onClick = showPackageDetails)
                 DateDetails(text = "12/10/2022")
             }
         }

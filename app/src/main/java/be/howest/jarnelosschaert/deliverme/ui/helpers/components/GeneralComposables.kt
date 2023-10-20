@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -74,12 +76,15 @@ fun DateDetails(text: String) {
 fun SmallButton(
     modifier: Modifier = Modifier,
     text: String = "See details",
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    isError: Boolean = false
 ) {
+    var color = MaterialTheme.colors.primary
+    if (isError) color = MaterialTheme.colors.primaryVariant
     Button(
         onClick = onClick,
-        modifier = modifier
-            .clip(RoundedCornerShape(15.dp)),
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(backgroundColor = color)
     ) {
         Text(text = text, fontSize = 15.sp)
     }

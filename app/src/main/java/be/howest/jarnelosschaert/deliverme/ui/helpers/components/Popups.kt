@@ -74,7 +74,7 @@ fun GeneralChoicePopup(
                 onClick = { onDismiss() },
                 modifier = Modifier.padding(end = 10.dp)
             ) {
-                Text(text = "cancel")
+                Text(text = "Cancel")
             }
         },
     )
@@ -122,7 +122,7 @@ fun GeneralTextPopup(
                 onClick = { onDismiss() },
                 modifier = Modifier.padding(end = 10.dp)
             ) {
-                Text(text = "cancel")
+                Text(text = "Cancel")
             }
         },
     )
