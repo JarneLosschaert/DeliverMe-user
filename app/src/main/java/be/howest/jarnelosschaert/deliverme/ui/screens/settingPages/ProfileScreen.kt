@@ -143,8 +143,6 @@ fun EditableContentLabel(
     Spacer(modifier = Modifier.height(10.dp))
 }
 
-
-
 @Composable
 fun ProfilePicture() {
     Column(
