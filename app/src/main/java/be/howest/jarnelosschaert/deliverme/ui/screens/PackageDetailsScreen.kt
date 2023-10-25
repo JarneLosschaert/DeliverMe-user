@@ -11,11 +11,12 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 
 @Composable
 fun PackageDetailsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onGoBack: () -> Unit
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
-            Title(text = "Package details")
+            Title(text = "Package details", onGoBack = onGoBack, withGoBack = true)
             Label(text = "Sender")
             Content(text = "Daan Hautekiet")
             Spacer(modifier = Modifier.height(10.dp))

@@ -33,8 +33,6 @@ sealed class OtherScreens(val route: String) {
     object PackageDetails : OtherScreens("packageDetails")
 }
 
-//val uiState = UiState()
-
 @Composable
 fun DeliverMeApp() {
     //HandleNotifications()
@@ -68,12 +66,14 @@ private fun MainScreenNavigationConfigurations(
     navController: NavHostController,
     onNavigation: (String) -> Unit
 ) {
+    val controller = Controller(navController)
+
     NavHost(navController, startDestination = BottomNavigationScreens.Home.route) {
         composable(BottomNavigationScreens.Home.route) {
             HomeScreen(modifier = modifier,
-                navigateDeliver = { navController.navigate(OtherScreens.Deliver.route) },
-                navigateContacts = { navController.navigate(OtherScreens.Contacts.route) },
-                showPackageDetails = { navController.navigate(OtherScreens.PackageDetails.route) }
+                navigateDeliver = { controller.navigateTo(OtherScreens.Deliver.route) },
+                navigateContacts = { controller.navigateTo(OtherScreens.Contacts.route) },
+                showPackageDetails = { controller.navigateTo(OtherScreens.PackageDetails.route) }
             )
             onNavigation(BottomNavigationScreens.Home.route)
         }
@@ -83,22 +83,31 @@ private fun MainScreenNavigationConfigurations(
         }
         composable(BottomNavigationScreens.Settings.route) {
             SettingScreen(modifier = modifier,
-                navigateTo = { navController.navigate(it) })
+                navigateTo = { controller.navigateTo(it) }
+            )
             onNavigation(BottomNavigationScreens.Settings.route)
         }
         composable(OtherScreens.Deliver.route) {
-            DeliverScreen(modifier = modifier)
+            DeliverScreen(modifier = modifier,
+                onGoBack = { controller.goBack() }
+            )
             onNavigation(OtherScreens.Deliver.route)
         }
         composable(OtherScreens.Contacts.route) {
-            ContactsScreen(modifier = modifier)
+            ContactsScreen(modifier = modifier,
+                onGoBack = { controller.goBack() }
+            )
             onNavigation(OtherScreens.Contacts.route)
         }
         composable(OtherScreens.Profile.route) {
-            ProfileScreen(modifier = modifier)
+            ProfileScreen(modifier = modifier,
+                onGoBack = { controller.goBack() }
+            )
         }
         composable(OtherScreens.PackageDetails.route) {
-            PackageDetailsScreen(modifier = modifier)
+            PackageDetailsScreen(modifier = modifier,
+                onGoBack = { controller.goBack() }
+            )
         }
     }
 }

@@ -29,13 +29,14 @@ data class PopupContent(
 )
 @Composable
 fun ProfileScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onGoBack: () -> Unit
 ) {
     var isPopupVisible by remember { mutableStateOf(false) }
     var popupContent by remember { mutableStateOf(PopupContent("", "", "", "", {}, {})) }
     Box(modifier = modifier.fillMaxWidth()) {
         Column() {
-            Title("Profile")
+            Title(text = "Profile", onGoBack = onGoBack, withGoBack = true)
             LazyColumn(content = {
                 item {
                     ProfilePicture()
