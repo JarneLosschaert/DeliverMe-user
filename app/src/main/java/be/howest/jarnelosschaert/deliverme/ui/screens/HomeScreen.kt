@@ -127,13 +127,3 @@ fun Delivery(
         }
     }
 }
-
-@Composable
-fun SubTitle(text: String) {
-    Text(
-        text = text,
-        modifier = Modifier.padding(top = 10.dp, bottom = 10.dp),
-        fontWeight = FontWeight.Bold,
-        fontSize = 20.sp
-    )
-}

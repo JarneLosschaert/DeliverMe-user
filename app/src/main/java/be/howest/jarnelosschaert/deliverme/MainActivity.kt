@@ -6,11 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import be.howest.jarnelosschaert.deliverme.ui.DeliverMeApp
+import be.howest.jarnelosschaert.deliverme.ui.Authorize
 import be.howest.jarnelosschaert.deliverme.ui.theme.DeliverMeTheme
 
 class MainActivity : ComponentActivity() {
@@ -23,7 +20,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    DeliverMeApp()
+                    Authorize()
                 }
             }
         }
