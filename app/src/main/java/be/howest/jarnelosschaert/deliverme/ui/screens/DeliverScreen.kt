@@ -25,11 +25,12 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 
 @Composable
 fun DeliverScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onGoBack: () -> Unit
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
-            Title()
+            Title(onGoBack = onGoBack, withGoBack = true)
             DropDownLabel(
                 label = "From",
                 options = listOf("Home", "Work", "Other"),

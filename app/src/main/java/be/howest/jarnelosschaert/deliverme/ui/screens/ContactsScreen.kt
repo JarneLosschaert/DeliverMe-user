@@ -27,12 +27,13 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 
 @Composable
 fun ContactsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onGoBack: () -> Unit
 ) {
     val query = remember { mutableStateOf("") }
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
-            Title(text = "Contacts")
+            Title(text = "Contacts", onGoBack = onGoBack, withGoBack = true)
             SearchBar(
                 query = query.value,
                 onQueryChange = { query.value = it },
