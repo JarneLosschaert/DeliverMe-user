@@ -30,7 +30,9 @@ data class PopupContent(
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    onGoBack: () -> Unit
+    onGoBack: () -> Unit,
+    logout: () -> Unit,
+    deleteAccount: () -> Unit
 ) {
     var isPopupVisible by remember { mutableStateOf(false) }
     var popupContent by remember { mutableStateOf(PopupContent("", "", "", "", {}, {})) }
@@ -41,7 +43,7 @@ fun ProfileScreen(
                 item {
                     ProfilePicture()
                     Profile(onEdit = { popupContent = it; isPopupVisible = true }, onDismiss = {isPopupVisible = false})
-                    ProfileButtons()
+                    ProfileButtons(logout = logout, deleteAccount = deleteAccount)
                 }
             })
         }
@@ -59,7 +61,10 @@ fun ProfileScreen(
 }
 
 @Composable
-fun ProfileButtons() {
+fun ProfileButtons(
+    logout: () -> Unit,
+    deleteAccount: () -> Unit
+) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -67,8 +72,8 @@ fun ProfileButtons() {
         SmallButton(text = "Add address", onClick = {})
         SmallButton(text = "Change password", onClick = {})
         SmallButton(text = "Change profile picture", onClick = {})
-        SmallButton(text = "Log out", onClick = {}, isError = true, modifier = Modifier.align(Alignment.End))
-        SmallButton(text = "Delete account", onClick = {}, isError = true, modifier = Modifier.align(Alignment.End))
+        SmallButton(text = "Log out", onClick = logout, isError = true, modifier = Modifier.align(Alignment.End))
+        SmallButton(text = "Delete account", onClick = deleteAccount, isError = true, modifier = Modifier.align(Alignment.End))
     }
 }
 

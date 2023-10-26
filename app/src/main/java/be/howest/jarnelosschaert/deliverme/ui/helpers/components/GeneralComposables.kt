@@ -1,5 +1,6 @@
 package be.howest.jarnelosschaert.deliverme.ui.helpers.components
 
+import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,9 +16,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.*
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
@@ -127,14 +131,14 @@ fun roundedBottomNav() = RoundedCornerShape(
 )
 
 @Composable
-fun GeneralTextField(text: String, onValueChange: (String) -> Unit, isPassword: Boolean = false) {
+fun GeneralTextField(text: String, onValueChange: (String) -> Unit, isPassword: Boolean = false, isEmail: Boolean = false, isPhone : Boolean = false) {
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
     ) {
-        BasicTextField(
+        TextField(
             value = text,
             onValueChange = { onValueChange(it) },
             textStyle = TextStyle(
@@ -142,8 +146,33 @@ fun GeneralTextField(text: String, onValueChange: (String) -> Unit, isPassword: 
             ),
             singleLine = true,
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
-            modifier = Modifier.padding(10.dp),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = if (isEmail) KeyboardType.Email else if (isPhone) KeyboardType.Phone else KeyboardType.Text
+            ),
+            modifier = Modifier.padding(start = 5.dp, end = 5.dp).fillMaxWidth()
         )
     }
 }
 
+@Composable
+fun AuthTextField(label: String, value: String, onValueChange: (String) -> Unit, isPassword: Boolean = false, isEmail: Boolean = false, isPhone : Boolean = false) {
+    Label(text = label)
+    GeneralTextField(text = value, onValueChange = onValueChange, isPassword = isPassword, isEmail = isEmail, isPhone = isPhone)
+    Spacer(modifier = Modifier.padding(top = 10.dp))
+}
+
+@Composable
+fun AuthBottomNavigate(
+    label: String,
+    text: String,
+    navigate: () -> Unit
+) {
+    Spacer(modifier = Modifier.height(30.dp))
+    Row(modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Label(text = label)
+        SmallButton(text = text, onClick = navigate, modifier = Modifier.padding(start = 30.dp))
+    }
+}

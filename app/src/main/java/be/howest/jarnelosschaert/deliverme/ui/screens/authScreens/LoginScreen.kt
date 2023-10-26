@@ -10,42 +10,26 @@ import androidx.compose.ui.unit.dp
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(
+    modifier: Modifier = Modifier,
+    navigateToSignUp: () -> Unit,
+    login: () -> Unit
+) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(modifier = modifier.fillMaxWidth()) {
         Column {
             Title()
             SubTitle(text = "Login details", modifier = Modifier.padding(top = 20.dp))
-            LoginTextField(label = "Email", value = email, onValueChange = { email = it })
-            LoginTextField(label = "Password", value = password, onValueChange = { password = it }, isPassword = true)
+            AuthTextField(label = "Email", value = email, onValueChange = { email = it }, isEmail = true)
+            AuthTextField(label = "Password", value = password, onValueChange = { password = it }, isPassword = true)
             SmallButton(
                 text = "Log in",
-                onClick = { /*TODO*/ },
+                onClick = login,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally))
-            SignUp()
+            AuthBottomNavigate(navigate = navigateToSignUp, label = "Don't have an account?", text = "Sign up")
         }
-    }
-}
-
-@Composable
-fun LoginTextField(label: String, value: String, onValueChange: (String) -> Unit, isPassword: Boolean = false) {
-    Label(text = label)
-    GeneralTextField(text = value, onValueChange = onValueChange, isPassword = isPassword)
-    Spacer(modifier = Modifier.padding(top = 10.dp))
-}
-
-@Composable
-fun SignUp() {
-    Spacer(modifier = Modifier.height(30.dp))
-    // space between
-    Row(modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Label(text = "Don't have an account?")
-        SmallButton(text = "Sign up", onClick = { /*TODO*/ }, modifier = Modifier.padding(start = 30.dp))
     }
 }
