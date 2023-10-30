@@ -1,22 +1,27 @@
 package be.howest.jarnelosschaert.deliverme.ui.helpers.components
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
 fun Title(text: String = "DeliverMe", onGoBack: () -> Unit = {}, withGoBack: Boolean = false) {
@@ -51,6 +56,16 @@ fun Title(text: String = "DeliverMe", onGoBack: () -> Unit = {}, withGoBack: Boo
 }
 
 @Composable
+fun SubTitle(text: String, modifier: Modifier = Modifier) {
+    Text(
+        text = text,
+        modifier = modifier.padding(top = 10.dp, bottom = 10.dp),
+        fontWeight = FontWeight.Bold,
+        fontSize = 20.sp
+    )
+}
+
+@Composable
 fun Label(text: String) {
     Text(
         text = text,
@@ -64,13 +79,16 @@ fun Label(text: String) {
 fun Content(
     modifier: Modifier = Modifier,
     fontSize: Int = 17,
-    text: String
+    text: String,
+    isError: Boolean = false
 ) {
     Text(
         text = text,
-        color = MaterialTheme.colors.onBackground,
+        color = if (isError) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.onBackground,
         fontSize = fontSize.sp,
         modifier = modifier,
+        fontWeight = if (isError) FontWeight.Bold else FontWeight.Normal,
+        overflow = TextOverflow.Ellipsis,
     )
 }
 
@@ -111,3 +129,66 @@ fun roundedBottomNav() = RoundedCornerShape(
     bottomStart = 0.dp,
     bottomEnd = 0.dp
 )
+
+@Composable
+fun TextFieldLabel(label: String, value: String, onValueChange: (String) -> Unit, isPassword: Boolean = false, isEmail: Boolean = false, isPhone : Boolean = false) {
+    Label(text = label)
+    GeneralTextField(text = value, onValueChange = onValueChange, isPassword = isPassword, isEmail = isEmail, isPhone = isPhone)
+    Spacer(modifier = Modifier.padding(top = 10.dp))
+}
+
+@Composable
+fun GeneralTextField(text: String, onValueChange: (String) -> Unit, isPassword: Boolean = false, isEmail: Boolean = false, isPhone : Boolean = false, placeholder: String = "") {
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
+    ) {
+        TextField(
+            value = text,
+            onValueChange = { onValueChange(it) },
+            textStyle = TextStyle(
+                fontSize = 18.sp
+            ),
+            singleLine = true,
+            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+            keyboardOptions = KeyboardOptions(
+                keyboardType = if (isEmail) KeyboardType.Email else if (isPhone) KeyboardType.Phone else KeyboardType.Text
+            ),
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    color = Color.Gray,
+                    fontSize = 18.sp
+                )
+            },
+            modifier = Modifier
+                .padding(start = 5.dp, end = 5.dp)
+                .fillMaxWidth()
+        )
+    }
+}
+
+@Composable
+fun AuthErrors(errors: List<String>) {
+    errors.forEach {
+        Content(text = it, isError = true)
+    }
+}
+
+@Composable
+fun AuthBottomNavigate(
+    label: String,
+    text: String,
+    navigate: () -> Unit
+) {
+    Spacer(modifier = Modifier.height(20.dp))
+    Row(modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Label(text = label)
+        SmallButton(text = text, onClick = navigate, modifier = Modifier.padding(start = 30.dp))
+    }
+}

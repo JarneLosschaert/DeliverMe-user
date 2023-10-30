@@ -16,6 +16,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
+import be.howest.jarnelosschaert.deliverme.logic.controllers.DeliverMeController
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNav
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingPages.ProfileScreen
@@ -34,7 +36,7 @@ sealed class OtherScreens(val route: String) {
 }
 
 @Composable
-fun DeliverMeApp() {
+fun DeliverMeApp(authController: AuthController) {
     //HandleNotifications()
 
     val navController = rememberNavController()
@@ -51,9 +53,10 @@ fun DeliverMeApp() {
             DeliverMeBottomNavigation(navController, bottomNavigationItems, pageClicked)
         },
         content = { innerPadding ->
-            MainScreenNavigationConfigurations(
+            AuthScreenNavigationConfigurations(
                 modifier = Modifier.padding(innerPadding).padding(start = 15.dp, end = 8.dp),
                 navController = navController,
+                authController = authController,
                 onNavigation = { pageClicked = it }
             )
         }
@@ -61,12 +64,13 @@ fun DeliverMeApp() {
 }
 
 @Composable
-private fun MainScreenNavigationConfigurations(
+private fun AuthScreenNavigationConfigurations(
     modifier: Modifier = Modifier,
     navController: NavHostController,
+    authController: AuthController,
     onNavigation: (String) -> Unit
 ) {
-    val controller = Controller(navController)
+    val controller = DeliverMeController(navController)
 
     NavHost(navController, startDestination = BottomNavigationScreens.Home.route) {
         composable(BottomNavigationScreens.Home.route) {
@@ -101,7 +105,9 @@ private fun MainScreenNavigationConfigurations(
         }
         composable(OtherScreens.Profile.route) {
             ProfileScreen(modifier = modifier,
-                onGoBack = { controller.goBack() }
+                onGoBack = { controller.goBack() },
+                logout = { authController.logout() },
+                deleteAccount = { authController.deleteAccount() }
             )
         }
         composable(OtherScreens.PackageDetails.route) {

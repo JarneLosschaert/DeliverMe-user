@@ -1,4 +1,4 @@
-package be.howest.jarnelosschaert.deliverme.data
+package be.howest.jarnelosschaert.deliverme.logic
 
 import androidx.lifecycle.ViewModel
 

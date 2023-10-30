@@ -1,10 +1,9 @@
 package be.howest.jarnelosschaert.deliverme.ui.screens
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +20,19 @@ fun NotificationsScreen(
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
             Title(text = "Notifications")
-            Notification()
+            LazyColumn(content = {
+                item {
+                    Notification()
+                    Notification()
+                    Notification()
+                    Notification()
+                    Notification()
+                    Notification()
+                    Notification()
+                    Notification()
+                    Notification()
+                }
+            })
         }
     }
 }
@@ -29,10 +40,13 @@ fun NotificationsScreen(
 @Composable
 fun Notification() {
     Column(
-        modifier = Modifier.border(1.dp, Color.Black).padding(10.dp),
+        modifier = Modifier
+            .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
+            .padding(10.dp),
     ) {
         Content(text = "Your package has been sent.")
         SmallButton(modifier = Modifier.padding(top = 10.dp), onClick = {})
         DateDetails(text = "12/12/2021")
     }
+    Spacer(modifier = Modifier.height(10.dp))
 }

@@ -1,9 +1,10 @@
-package be.howest.jarnelosschaert.deliverme.ui
+package be.howest.jarnelosschaert.deliverme.logic.controllers
 
 import androidx.navigation.NavController
-import be.howest.jarnelosschaert.deliverme.data.UiState
+import be.howest.jarnelosschaert.deliverme.logic.UiState
+import be.howest.jarnelosschaert.deliverme.ui.BottomNavigationScreens
 
-class Controller(private val navController: NavController) {
+class DeliverMeController(private val navController: NavController) {
     private val uiState: UiState = UiState()
 
     fun goBack() {
