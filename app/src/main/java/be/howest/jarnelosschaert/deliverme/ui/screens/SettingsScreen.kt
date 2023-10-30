@@ -29,7 +29,7 @@ sealed class SettingsPage(override val setting: String, override val icon: Image
 }
 
 sealed class SettingsPopup(override val setting: String, override val icon: ImageVector, val popup: @Composable (() -> Unit) -> Unit): Setting() {
-object Nothing : SettingsPopup("", Icons.Default.Lock, {})
+    object Nothing : SettingsPopup("", Icons.Default.Lock, {})
     object Help : SettingsPopup("Help", Icons.Default.Call, { onDismiss ->
         GeneralTextPopup(
             title = "Help",
@@ -60,7 +60,7 @@ object Nothing : SettingsPopup("", Icons.Default.Lock, {})
 @Composable
 fun SettingScreen(
     modifier: Modifier = Modifier,
-    navigateTo: (String) -> Unit
+    navigateTo: (String) -> Unit,
 ) {
 
     val settings = listOf(

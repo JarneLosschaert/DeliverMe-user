@@ -33,6 +33,7 @@ sealed class OtherScreens(val route: String) {
     object Contacts : OtherScreens("contacts")
     object Profile : OtherScreens("profile")
     object PackageDetails : OtherScreens("packageDetails")
+    object Address : OtherScreens("address")
 }
 
 @Composable
@@ -82,12 +83,14 @@ private fun AuthScreenNavigationConfigurations(
             onNavigation(BottomNavigationScreens.Home.route)
         }
         composable(BottomNavigationScreens.Notifications.route) {
-            NotificationsScreen(modifier = modifier)
+            NotificationsScreen(modifier = modifier,
+                showPackageDetails = { controller.navigateTo(OtherScreens.PackageDetails.route) }
+            )
             onNavigation(BottomNavigationScreens.Notifications.route)
         }
         composable(BottomNavigationScreens.Settings.route) {
             SettingScreen(modifier = modifier,
-                navigateTo = { controller.navigateTo(it) }
+                navigateTo = { controller.navigateTo(it) },
             )
             onNavigation(BottomNavigationScreens.Settings.route)
         }
@@ -106,12 +109,18 @@ private fun AuthScreenNavigationConfigurations(
         composable(OtherScreens.Profile.route) {
             ProfileScreen(modifier = modifier,
                 onGoBack = { controller.goBack() },
+                navigateAddress = { controller.navigateTo(OtherScreens.Address.route) },
                 logout = { authController.logout() },
                 deleteAccount = { authController.deleteAccount() }
             )
         }
         composable(OtherScreens.PackageDetails.route) {
             PackageDetailsScreen(modifier = modifier,
+                onGoBack = { controller.goBack() }
+            )
+        }
+        composable(OtherScreens.Address.route) {
+            AddressScreen(modifier = modifier,
                 onGoBack = { controller.goBack() }
             )
         }
