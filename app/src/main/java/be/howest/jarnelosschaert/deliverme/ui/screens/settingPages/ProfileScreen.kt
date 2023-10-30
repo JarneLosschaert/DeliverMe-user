@@ -13,6 +13,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import be.howest.jarnelosschaert.deliverme.ui.helpers.GeneralChoicePopup
 import be.howest.jarnelosschaert.deliverme.ui.helpers.GeneralTextPopup
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Content
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Label
@@ -21,102 +22,181 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 
 data class PopupContent(
     val title: String,
-    val label: String,
+    val label: String = "",
+    val content: String = "",
     val confirmButton: String = "Change",
     val toastText: String,
     val onDismiss: () -> Unit,
     val onConfirm: () -> Unit
 )
+
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
     onGoBack: () -> Unit,
+    navigateAddress: () -> Unit,
     logout: () -> Unit,
     deleteAccount: () -> Unit
 ) {
-    var isPopupVisible by remember { mutableStateOf(false) }
-    var popupContent by remember { mutableStateOf(PopupContent("", "", "", "", {}, {})) }
+    var isTextPopupVisible by remember { mutableStateOf(false) }
+    var textPopupContent by remember { mutableStateOf(PopupContent("", "", "", "", "", {}, {})) }
+    if (isTextPopupVisible) {
+        GeneralTextPopup(
+            title = textPopupContent.title,
+            label = textPopupContent.label,
+            confirmButton = textPopupContent.confirmButton,
+            toastText = textPopupContent.toastText,
+            onDismiss = textPopupContent.onDismiss,
+            onConfirm = { isTextPopupVisible = false }
+        )
+    }
+    var isChoicePopupVisible by remember { mutableStateOf(false) }
+    var choicePopupContent by remember { mutableStateOf(PopupContent("", "", "", "", "", {}, {})) }
+    if (isChoicePopupVisible) {
+        GeneralChoicePopup(
+            title = choicePopupContent.title,
+            content = choicePopupContent.content,
+            confirmButton = choicePopupContent.confirmButton,
+            toastText = choicePopupContent.toastText,
+            onDismiss = choicePopupContent.onDismiss,
+            onConfirm = choicePopupContent.onConfirm
+        )
+    }
     Box(modifier = modifier.fillMaxWidth()) {
         Column() {
             Title(text = "Profile", onGoBack = onGoBack, withGoBack = true)
             LazyColumn(content = {
                 item {
                     ProfilePicture()
-                    Profile(onEdit = { popupContent = it; isPopupVisible = true }, onDismiss = {isPopupVisible = false})
-                    ProfileButtons(logout = logout, deleteAccount = deleteAccount)
+                    Profile(
+                        onTextEdit = { textPopupContent = it; isTextPopupVisible = true },
+                        onChoiceEdit = { choicePopupContent = it; isChoicePopupVisible = true },
+                        onDismiss = { isTextPopupVisible = false; isChoicePopupVisible = false },
+                        navigateAddress = navigateAddress,
+                    )
+                    ProfileButtons(
+                        logout = logout,
+                        deleteAccount = deleteAccount,
+                        navigateAddress = navigateAddress,
+                        onEdit = { choicePopupContent = it; isChoicePopupVisible = true },
+                        onDismiss = { isChoicePopupVisible = false }
+                    )
                 }
             })
         }
     }
-    if (isPopupVisible) {
-        GeneralTextPopup(
-            title = popupContent.title,
-            label = popupContent.label,
-            confirmButton = popupContent.confirmButton,
-            toastText = popupContent.toastText,
-            onDismiss = popupContent.onDismiss,
-            onConfirm = { isPopupVisible = false }
-        )
-    }
+
 }
 
 @Composable
 fun ProfileButtons(
     logout: () -> Unit,
-    deleteAccount: () -> Unit
+    deleteAccount: () -> Unit,
+    onEdit: (PopupContent) -> Unit,
+    onDismiss: () -> Unit,
+    navigateAddress: () -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         Spacer(modifier = Modifier.height(10.dp))
-        SmallButton(text = "Add address", onClick = {})
+        SmallButton(text = "Add address", onClick = navigateAddress)
         SmallButton(text = "Change password", onClick = {})
         SmallButton(text = "Change profile picture", onClick = {})
-        SmallButton(text = "Log out", onClick = logout, isError = true, modifier = Modifier.align(Alignment.End))
-        SmallButton(text = "Delete account", onClick = deleteAccount, isError = true, modifier = Modifier.align(Alignment.End))
+        SmallButton(
+            text = "Log out",
+            isError = true,
+            modifier = Modifier.align(Alignment.End),
+            onClick = {
+                onEdit(
+                    PopupContent(
+                        title = "Log out",
+                        content = "Are you sure you want to log out?",
+                        toastText = "Logged out",
+                        confirmButton = "Log out",
+                        onDismiss = { onDismiss() },
+                        onConfirm = { logout() }
+                    )
+                )
+            }
+        )
+        SmallButton(
+            text = "Delete account",
+            isError = true,
+            modifier = Modifier.align(Alignment.End),
+            onClick = {
+                onEdit(
+                    PopupContent(
+                        title = "Delete account",
+                        content = "Are you sure you want to delete your account?",
+                        confirmButton = "Delete",
+                        toastText = "Account deleted",
+                        onDismiss = { onDismiss() },
+                        onConfirm = { deleteAccount() }
+                    )
+                )
+            }
+        )
     }
 }
 
 @Composable
 fun Profile(
-    onEdit : (PopupContent) -> Unit,
-    onDismiss: () -> Unit
+    onTextEdit: (PopupContent) -> Unit,
+    onChoiceEdit: (PopupContent) -> Unit,
+    onDismiss: () -> Unit,
+    navigateAddress: () -> Unit
 ) {
-    EditableContentLabel(label = "Username", text = "Daan Hautekiet", onEdit = onEdit, popupContent = PopupContent(
-        title = "Change username",
-        label = "New username",
-        toastText = "Username changed",
-        onDismiss = {onDismiss()},
-        onConfirm = {}
-    ))
-    EditableContentLabel(label = "Email", text = "daan.hautekiet@gmail.com", onEdit = onEdit, popupContent = PopupContent(
-        title = "Change email",
-        label = "New email",
-        toastText = "Email changed",
-        onDismiss = {onDismiss()},
-        onConfirm = {}
-    ))
-    EditableContentLabel(label = "Phone number", text = "0472 12 34 56", onEdit = onEdit, popupContent = PopupContent(
-        title = "Change phone number",
-        label = "New phone number",
-        toastText = "Phone number changed",
-        onDismiss = {onDismiss()},
-        onConfirm = {}
-    ))
-    EditableContentLabel(label = "Home", text = "Kortrijksestraat 12, 8500 Kortrijk", onEdit = onEdit, popupContent = PopupContent(
-        title = "Change home address",
-        label = "New home address",
-        toastText = "Home address changed",
-        onDismiss = {onDismiss()},
-        onConfirm = {}
-    ))
-    EditableContentLabel(label = "Extra address 1", text = "Kortrijksestraat 14, 8500 Kortrijk", onEdit = onEdit, popupContent = PopupContent(
-        title = "Change extra address 1",
-        label = "New extra address 1",
-        toastText = "Extra address 1 changed",
-        onDismiss = {onDismiss()},
-        onConfirm = {}
-    ))
+    EditableContentLabel(label = "Username",
+        text = "Daan Hautekiet",
+        onEdit = onTextEdit,
+        popupContent = PopupContent(
+            title = "Change username",
+            label = "New username",
+            toastText = "Username changed",
+            onDismiss = { onDismiss() },
+            onConfirm = {}
+        ))
+    EditableContentLabel(label = "Email",
+        text = "daan.hautekiet@gmail.com",
+        onEdit = onTextEdit,
+        popupContent = PopupContent(
+            title = "Change email",
+            label = "New email",
+            toastText = "Email changed",
+            onDismiss = { onDismiss() },
+            onConfirm = {}
+        ))
+    EditableContentLabel(label = "Phone number",
+        text = "0472 12 34 56",
+        onEdit = onTextEdit,
+        popupContent = PopupContent(
+            title = "Change phone number",
+            label = "New phone number",
+            toastText = "Phone number changed",
+            onDismiss = { onDismiss() },
+            onConfirm = {}
+        ))
+    EditableContentLabel(label = "Home address",
+        text = "Kortrijksestraat 12, 8500 Kortrijk",
+        onEdit = onChoiceEdit,
+        popupContent = PopupContent(
+            title = "Change home address",
+            content = "Are you sure you want to change your home address?",
+            toastText = "Changing home address",
+            onDismiss = { onDismiss() },
+            onConfirm = { navigateAddress() }
+        ))
+    EditableContentLabel(label = "Extra address 1",
+        text = "Kortrijksestraat 12, 8500 Kortrijk",
+        onEdit = onChoiceEdit,
+        popupContent = PopupContent(
+            title = "Change work address",
+            content = "Are you sure you want to change your work address?",
+            toastText = "Changing work address",
+            onDismiss = { onDismiss() },
+            onConfirm = { navigateAddress() }
+        ))
 }
 
 @Composable
@@ -140,7 +220,7 @@ fun EditableContentLabel(
                 contentDescription = "Edit",
                 modifier = Modifier
                     .size(20.dp)
-                    .clickable(onClick = {onEdit(popupContent)})
+                    .clickable(onClick = { onEdit(popupContent) })
             )
         }
     }

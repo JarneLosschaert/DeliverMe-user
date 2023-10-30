@@ -15,22 +15,24 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 
 @Composable
 fun NotificationsScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    showPackageDetails: () -> Unit
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
             Title(text = "Notifications")
             LazyColumn(content = {
                 item {
-                    Notification()
-                    Notification()
-                    Notification()
-                    Notification()
-                    Notification()
-                    Notification()
-                    Notification()
-                    Notification()
-                    Notification()
+                    Notification(showPackageDetails = showPackageDetails)
+                    Notification(showPackageDetails = showPackageDetails)
+                    Notification(showPackageDetails = showPackageDetails)
+                    Notification(showPackageDetails = showPackageDetails)
+                    Notification(showPackageDetails = showPackageDetails)
+                    Notification(showPackageDetails = showPackageDetails)
+                    Notification(showPackageDetails = showPackageDetails)
+                    Notification(showPackageDetails = showPackageDetails)
+                    Notification(showPackageDetails = showPackageDetails)
+                    Notification(showPackageDetails = showPackageDetails)
                 }
             })
         }
@@ -38,14 +40,16 @@ fun NotificationsScreen(
 }
 
 @Composable
-fun Notification() {
+fun Notification(
+    showPackageDetails: () -> Unit
+) {
     Column(
         modifier = Modifier
             .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
             .padding(10.dp),
     ) {
         Content(text = "Your package has been sent.")
-        SmallButton(modifier = Modifier.padding(top = 10.dp), onClick = {})
+        SmallButton(modifier = Modifier.padding(top = 10.dp), onClick = showPackageDetails)
         DateDetails(text = "12/12/2021")
     }
     Spacer(modifier = Modifier.height(10.dp))
