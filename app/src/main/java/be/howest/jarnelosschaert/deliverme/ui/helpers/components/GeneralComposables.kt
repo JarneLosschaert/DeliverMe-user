@@ -1,6 +1,5 @@
 package be.howest.jarnelosschaert.deliverme.ui.helpers.components
 
-import android.provider.ContactsContract.CommonDataKinds.Email
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -15,16 +14,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextOverflow
 
 @Composable
 fun Title(text: String = "DeliverMe", onGoBack: () -> Unit = {}, withGoBack: Boolean = false) {
@@ -82,13 +79,16 @@ fun Label(text: String) {
 fun Content(
     modifier: Modifier = Modifier,
     fontSize: Int = 17,
-    text: String
+    text: String,
+    isError: Boolean = false
 ) {
     Text(
         text = text,
-        color = MaterialTheme.colors.onBackground,
+        color = if (isError) MaterialTheme.colors.primaryVariant else MaterialTheme.colors.onBackground,
         fontSize = fontSize.sp,
         modifier = modifier,
+        fontWeight = if (isError) FontWeight.Bold else FontWeight.Normal,
+        overflow = TextOverflow.Ellipsis,
     )
 }
 
@@ -131,7 +131,14 @@ fun roundedBottomNav() = RoundedCornerShape(
 )
 
 @Composable
-fun GeneralTextField(text: String, onValueChange: (String) -> Unit, isPassword: Boolean = false, isEmail: Boolean = false, isPhone : Boolean = false) {
+fun TextFieldLabel(label: String, value: String, onValueChange: (String) -> Unit, isPassword: Boolean = false, isEmail: Boolean = false, isPhone : Boolean = false) {
+    Label(text = label)
+    GeneralTextField(text = value, onValueChange = onValueChange, isPassword = isPassword, isEmail = isEmail, isPhone = isPhone)
+    Spacer(modifier = Modifier.padding(top = 10.dp))
+}
+
+@Composable
+fun GeneralTextField(text: String, onValueChange: (String) -> Unit, isPassword: Boolean = false, isEmail: Boolean = false, isPhone : Boolean = false, placeholder: String = "") {
 
     Box(
         modifier = Modifier
@@ -149,16 +156,25 @@ fun GeneralTextField(text: String, onValueChange: (String) -> Unit, isPassword: 
             keyboardOptions = KeyboardOptions(
                 keyboardType = if (isEmail) KeyboardType.Email else if (isPhone) KeyboardType.Phone else KeyboardType.Text
             ),
-            modifier = Modifier.padding(start = 5.dp, end = 5.dp).fillMaxWidth()
+            placeholder = {
+                Text(
+                    text = placeholder,
+                    color = Color.Gray,
+                    fontSize = 18.sp
+                )
+            },
+            modifier = Modifier
+                .padding(start = 5.dp, end = 5.dp)
+                .fillMaxWidth()
         )
     }
 }
 
 @Composable
-fun AuthTextField(label: String, value: String, onValueChange: (String) -> Unit, isPassword: Boolean = false, isEmail: Boolean = false, isPhone : Boolean = false) {
-    Label(text = label)
-    GeneralTextField(text = value, onValueChange = onValueChange, isPassword = isPassword, isEmail = isEmail, isPhone = isPhone)
-    Spacer(modifier = Modifier.padding(top = 10.dp))
+fun AuthErrors(errors: List<String>) {
+    errors.forEach {
+        Content(text = it, isError = true)
+    }
 }
 
 @Composable
@@ -167,7 +183,7 @@ fun AuthBottomNavigate(
     text: String,
     navigate: () -> Unit
 ) {
-    Spacer(modifier = Modifier.height(30.dp))
+    Spacer(modifier = Modifier.height(20.dp))
     Row(modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically

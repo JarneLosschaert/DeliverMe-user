@@ -18,70 +18,45 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Content
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Label
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.SmallButton
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 
 @Composable
 fun DeliverScreen(
     modifier: Modifier = Modifier,
     onGoBack: () -> Unit
 ) {
+    var description by remember { mutableStateOf("") }
+
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
             Title(onGoBack = onGoBack, withGoBack = true)
+            SubTitle(text = "Deliver details")
             DropDownLabel(
-                label = "From",
+                label = "Address (sender)",
                 options = listOf("Home", "Work", "Other"),
                 onOptionSelected = {}
             )
             DropDownLabel(
                 label = "Receiver",
-                options = listOf("Home", "Work", "Other"),
+                options = listOf("Daan", "Glenn", "Jarne"),
                 onOptionSelected = {}
             )
             DropDownLabel(
-                label = "Address",
-                options = listOf("Small", "Medium", "Large"),
+                label = "Address (receiver)",
+                options = listOf("Home", "Work", "Other"),
                 onOptionSelected = {}
             )
-            TextFieldLabel(label = "Description", input = "")
-            SmallButton(modifier = Modifier.align(Alignment.CenterHorizontally), text = "Search driver", onClick = {})
+            TextFieldLabel(label = "Description", value = description, onValueChange = {description = it})
+            SmallButton(modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .fillMaxWidth()
+                .padding(start = 10.dp, end = 10.dp),
+                text = "Search driver",
+                onClick = {}
+            )
         }
     }
 }
-
-@Composable
-fun TextFieldLabel(
-    label: String,
-    input: String
-) {
-    var text by remember { mutableStateOf(input) }
-
-    Column {
-        Label(text = label)
-        Box(
-            modifier = Modifier.fillMaxWidth(),
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .border(1.dp, Color.Black),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BasicTextField(
-                    value = text,
-                    onValueChange = { text = it },
-                    textStyle = TextStyle(fontSize = 17.sp),
-                    modifier = Modifier.padding(start = 10.dp, end = 10.dp, top = 15.dp, bottom = 15.dp),
-                )
-            }
-        }
-    }
-    Spacer(modifier = Modifier.height(10.dp))
-}
-
 
 @Composable
 fun DropDownLabel(

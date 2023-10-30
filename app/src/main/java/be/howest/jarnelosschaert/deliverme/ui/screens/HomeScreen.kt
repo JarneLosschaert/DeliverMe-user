@@ -3,6 +3,7 @@ package be.howest.jarnelosschaert.deliverme.ui.screens
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
@@ -31,9 +32,18 @@ fun HomeScreen(
         Column {
             Title()
             HomeButtons(navigateDeliver = navigateDeliver, navigateContacts = navigateContacts)
-            SubTitle(text = "Active Deliveries")
-            Delivery(showPackageDetails = showPackageDetails)
-            SubTitle(text = "History")
+            LazyColumn(content = {
+                item {
+                    SubTitle(text = "Active Deliveries")
+                    Delivery(showPackageDetails = showPackageDetails)
+                    Delivery(showPackageDetails = showPackageDetails)
+                    SubTitle(text = "History")
+                    Delivery(showPackageDetails = showPackageDetails)
+                    Delivery(showPackageDetails = showPackageDetails)
+                    Delivery(showPackageDetails = showPackageDetails)
+                    Delivery(showPackageDetails = showPackageDetails)
+                }
+            })
         }
     }
 }
@@ -97,13 +107,13 @@ fun Delivery(
     showPackageDetails: () -> Unit
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .padding(start = 8.dp),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, Color.Black)
+                .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
                 .clip(MaterialTheme.shapes.medium)
                 .padding(8.dp)
                 .height(95.dp),
@@ -126,4 +136,5 @@ fun Delivery(
             }
         }
     }
+    Spacer(modifier = Modifier.height(10.dp))
 }

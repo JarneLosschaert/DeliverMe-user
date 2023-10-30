@@ -19,9 +19,10 @@ fun PackageDetailsScreen(
             Title(text = "Package details", onGoBack = onGoBack, withGoBack = true)
 
             PackageDetail(label = "Sender", content = "Daan Hautekiet")
-            PackageDetail(label = "Address", content = "Kortrijksestraat 12, 8500 Kortrijk")
+            PackageDetail(label = "Address (sender)", content = "Kortrijksestraat 12, 8500 Kortrijk")
             PackageDetail(label = "Receiver", content = "Glenn Callens")
-            PackageDetail(label = "Address", content = "Kortrijksestraat 12, 8500 Kortrijk")
+            PackageDetail(label = "Address (receiver)", content = "Kortrijksestraat 12, 8500 Kortrijk")
+            PackageDetail(label = "Date", content = "12/10/2022")
             PackageDetail(label = "Departure", content = "13:20")
             PackageDetail(label = "Expected arrival", content = "13:40")
             PackageDetail(label = "Arrival", content = "13:41")

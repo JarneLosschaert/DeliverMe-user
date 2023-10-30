@@ -4,18 +4,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Text
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import be.howest.jarnelosschaert.deliverme.logic.models.SignUp
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     navigateToLogin: () -> Unit,
-    signUp: () -> Unit
+    signUp: (SignUp) -> List<String>
 ) {
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -23,21 +24,39 @@ fun SignUpScreen(
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
-    Box(modifier = modifier.fillMaxWidth()) {
+    var errors by remember { mutableStateOf(listOf<String>()) }
+    val signUpCheck = {
+        errors = signUp(SignUp(username, email, phone, password, confirmPassword))
+    }
+
+    Box(
+        modifier = modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
         Column {
             Title()
-            SubTitle(text = "Create your account", modifier = Modifier.padding(top = 20.dp))
-            AuthTextField(label = "Username", value = username, onValueChange = { username = it })
-            AuthTextField(label = "Email", value = email, onValueChange = { email = it }, isEmail = true)
-            AuthTextField(label = "Phone number", value = phone, onValueChange = { phone = it}, isPhone = true)
-            AuthTextField(label = "Password", value = password, onValueChange = { password = it }, isPassword = true)
-            AuthTextField(label = "Confirm password", value = confirmPassword, onValueChange = { confirmPassword = it }, isPassword = true)
-            SmallButton(
-                text = "Sign up",
-                onClick = signUp,
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally))
-            AuthBottomNavigate(navigate = navigateToLogin, label = "Already have an account?", text = "Log in")
+            LazyColumn(
+                content = {
+                    item {
+                        SubTitle(text = "Create your account", modifier = Modifier.padding(top = 20.dp))
+                        TextFieldLabel(label = "Username", value = username, onValueChange = { username = it })
+                        TextFieldLabel(label = "Email", value = email, onValueChange = { email = it }, isEmail = true)
+                        TextFieldLabel(label = "Phone number", value = phone, onValueChange = { phone = it}, isPhone = true)
+                        TextFieldLabel(label = "Password", value = password, onValueChange = { password = it }, isPassword = true)
+                        TextFieldLabel(label = "Confirm password", value = confirmPassword, onValueChange = { confirmPassword = it }, isPassword = true)
+                        AuthErrors(errors = errors)
+                        SmallButton(
+                            text = "Sign up",
+                            onClick = signUpCheck,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        )
+                        AuthBottomNavigate(navigate = navigateToLogin, label = "Already have an account?", text = "Log in")
+                    }
+                }
+            )
         }
     }
+
 }

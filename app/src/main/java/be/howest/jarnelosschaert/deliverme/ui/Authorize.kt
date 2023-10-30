@@ -57,7 +57,7 @@ private fun AuthScreenNavigationConfigurations(
             SignUpScreen(
                 modifier = modifier,
                 navigateToLogin = { navController.navigate(AuthorizeScreens.Login.route) },
-                signUp = { controller.signUp() }
+                signUp = { controller.signUp(it) }
             )
         }
         composable(AuthorizeScreens.App.route) {
