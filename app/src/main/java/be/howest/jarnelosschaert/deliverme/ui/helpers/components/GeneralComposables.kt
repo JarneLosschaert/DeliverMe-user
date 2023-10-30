@@ -15,8 +15,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -131,9 +129,9 @@ fun roundedBottomNav() = RoundedCornerShape(
 )
 
 @Composable
-fun TextFieldLabel(label: String, value: String, onValueChange: (String) -> Unit, isPassword: Boolean = false, isEmail: Boolean = false, isPhone : Boolean = false) {
+fun TextFieldLabel(label: String, value: String, onValueChange: (String) -> Unit, isPassword: Boolean = false, isEmail: Boolean = false, isNumber : Boolean = false) {
     Label(text = label)
-    GeneralTextField(text = value, onValueChange = onValueChange, isPassword = isPassword, isEmail = isEmail, isPhone = isPhone)
+    GeneralTextField(text = value, onValueChange = onValueChange, isPassword = isPassword, isEmail = isEmail, isPhone = isNumber)
     Spacer(modifier = Modifier.padding(top = 10.dp))
 }
 

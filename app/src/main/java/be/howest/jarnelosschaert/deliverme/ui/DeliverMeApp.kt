@@ -20,6 +20,7 @@ import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.DeliverMeController
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNav
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
+import be.howest.jarnelosschaert.deliverme.ui.screens.settingPages.AddressScreen
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingPages.ProfileScreen
 
 sealed class BottomNavigationScreens(val route: String, val icon: ImageVector) {

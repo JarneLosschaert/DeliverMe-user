@@ -41,7 +41,7 @@ fun SignUpScreen(
                         SubTitle(text = "Create your account", modifier = Modifier.padding(top = 20.dp))
                         TextFieldLabel(label = "Username", value = username, onValueChange = { username = it })
                         TextFieldLabel(label = "Email", value = email, onValueChange = { email = it }, isEmail = true)
-                        TextFieldLabel(label = "Phone number", value = phone, onValueChange = { phone = it}, isPhone = true)
+                        TextFieldLabel(label = "Phone number", value = phone, onValueChange = { phone = it}, isNumber = true)
                         TextFieldLabel(label = "Password", value = password, onValueChange = { password = it }, isPassword = true)
                         TextFieldLabel(label = "Confirm password", value = confirmPassword, onValueChange = { confirmPassword = it }, isPassword = true)
                         AuthErrors(errors = errors)
