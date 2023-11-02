@@ -130,7 +130,7 @@ fun Delivery(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.End
             ) {
-                SmallButton(onClick = showPackageDetails)
+                GeneralButton(onClick = showPackageDetails)
                 DateDetails(text = "12/10/2022")
             }
         }

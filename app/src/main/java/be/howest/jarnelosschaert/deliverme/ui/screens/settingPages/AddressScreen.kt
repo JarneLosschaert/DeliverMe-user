@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.SmallButton
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.SubTitle
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.TextFieldLabel
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
@@ -55,7 +55,7 @@ fun AddressScreen(
                         label = "Country",
                         value = country.value,
                         onValueChange = { country.value = it })
-                    SmallButton(
+                    GeneralButton(
                         text = "Use address", modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 10.dp, end = 10.dp),

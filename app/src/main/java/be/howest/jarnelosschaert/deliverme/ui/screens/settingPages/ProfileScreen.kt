@@ -17,7 +17,7 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralChoicePo
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralTextPopup
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Content
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Label
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.SmallButton
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 
 data class PopupContent(
@@ -100,10 +100,10 @@ fun ProfileButtons(
         modifier = Modifier.fillMaxWidth()
     ) {
         Spacer(modifier = Modifier.height(10.dp))
-        SmallButton(text = "Add address", onClick = navigateAddress)
-        SmallButton(text = "Change password", onClick = {})
-        SmallButton(text = "Change profile picture", onClick = {})
-        SmallButton(
+        GeneralButton(text = "Add address", onClick = navigateAddress)
+        GeneralButton(text = "Change password", onClick = {})
+        GeneralButton(text = "Change profile picture", onClick = {})
+        GeneralButton(
             text = "Log out",
             isError = true,
             modifier = Modifier.align(Alignment.End),
@@ -120,7 +120,7 @@ fun ProfileButtons(
                 )
             }
         )
-        SmallButton(
+        GeneralButton(
             text = "Delete account",
             isError = true,
             modifier = Modifier.align(Alignment.End),
