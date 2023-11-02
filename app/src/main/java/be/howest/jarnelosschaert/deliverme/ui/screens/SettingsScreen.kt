@@ -1,6 +1,5 @@
 package be.howest.jarnelosschaert.deliverme.ui.screens
 
-import android.media.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,9 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
-import be.howest.jarnelosschaert.deliverme.ui.helpers.GeneralPopup
-import be.howest.jarnelosschaert.deliverme.ui.helpers.GeneralTextPopup
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Content
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralPopup
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralTextPopup
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 
 sealed class Setting {
@@ -37,7 +35,8 @@ sealed class SettingsPopup(override val setting: String, override val icon: Imag
             confirmButton = "Send",
             toastText = "Your message has been sent!",
             onDismiss = { onDismiss() }
-        )})
+        )
+    })
     object Problem : SettingsPopup("Problem", Icons.Default.Warning, { onDismiss ->
         GeneralTextPopup(
             title = "Problem",
@@ -45,7 +44,8 @@ sealed class SettingsPopup(override val setting: String, override val icon: Imag
             confirmButton = "Send",
             toastText = "Your message has been sent!",
             onDismiss = { onDismiss() }
-        )})
+        )
+    })
     object Info : SettingsPopup("Info", Icons.Default.Info, { onDismiss ->
         GeneralPopup(
             title = "Info",
