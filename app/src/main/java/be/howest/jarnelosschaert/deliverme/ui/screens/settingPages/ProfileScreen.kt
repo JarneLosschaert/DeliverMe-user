@@ -13,8 +13,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import be.howest.jarnelosschaert.deliverme.ui.helpers.GeneralChoicePopup
-import be.howest.jarnelosschaert.deliverme.ui.helpers.GeneralTextPopup
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralChoicePopup
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralTextPopup
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Content
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Label
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.SmallButton

@@ -25,6 +25,28 @@ fun DeliverScreen(
     modifier: Modifier = Modifier,
     onGoBack: () -> Unit
 ) {
+    var isLoading by remember { mutableStateOf(false) }
+
+    if (isLoading) {
+        // center of the screen
+        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Loader(Text = "Searching driver", withCancel = true, onCancel = {isLoading = false})
+        }
+    } else {
+        DeliverScreenContent(
+            modifier = modifier,
+            searchDriver = {isLoading = true},
+            onGoBack = onGoBack
+        )
+    }
+}
+
+@Composable
+fun DeliverScreenContent(
+    modifier: Modifier = Modifier,
+    searchDriver: () -> Unit,
+    onGoBack: () -> Unit
+) {
     var description by remember { mutableStateOf("") }
 
     Box(modifier = modifier.fillMaxWidth()) {
@@ -52,7 +74,7 @@ fun DeliverScreen(
                 .fillMaxWidth()
                 .padding(start = 10.dp, end = 10.dp),
                 text = "Search driver",
-                onClick = {}
+                onClick = searchDriver
             )
         }
     }
