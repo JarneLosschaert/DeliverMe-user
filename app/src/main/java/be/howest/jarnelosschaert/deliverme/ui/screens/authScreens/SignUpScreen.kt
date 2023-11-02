@@ -45,7 +45,7 @@ fun SignUpScreen(
                         TextFieldLabel(label = "Password", value = password, onValueChange = { password = it }, isPassword = true)
                         TextFieldLabel(label = "Confirm password", value = confirmPassword, onValueChange = { confirmPassword = it }, isPassword = true)
                         AuthErrors(errors = errors)
-                        SmallButton(
+                        GeneralButton(
                             text = "Sign up",
                             onClick = signUpCheck,
                             modifier = Modifier

@@ -39,7 +39,7 @@ fun LoginScreen(
                         onValueChange = { password = it },
                         isPassword = true
                     )
-                    SmallButton(
+                    GeneralButton(
                         text = "Log in",
                         onClick = login,
                         modifier = Modifier

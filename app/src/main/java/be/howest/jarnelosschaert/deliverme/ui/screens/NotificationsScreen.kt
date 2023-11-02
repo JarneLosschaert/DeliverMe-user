@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Content
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.DateDetails
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.SmallButton
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 
 @Composable
@@ -49,7 +49,7 @@ fun Notification(
             .padding(10.dp),
     ) {
         Content(text = "Your package has been sent.")
-        SmallButton(modifier = Modifier.padding(top = 10.dp), onClick = showPackageDetails)
+        GeneralButton(modifier = Modifier.padding(top = 10.dp), onClick = showPackageDetails)
         DateDetails(text = "12/12/2021")
     }
     Spacer(modifier = Modifier.height(10.dp))
