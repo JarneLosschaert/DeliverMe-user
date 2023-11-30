@@ -1,5 +1,6 @@
 package be.howest.jarnelosschaert.deliverme.logic.controllers
 
+import RegistrationViewModel
 import androidx.navigation.NavController
 import be.howest.jarnelosschaert.deliverme.logic.models.SignUp
 import be.howest.jarnelosschaert.deliverme.ui.AuthorizeScreens
@@ -7,11 +8,14 @@ import be.howest.jarnelosschaert.deliverme.ui.AuthorizeScreens
 class AuthController(
     private val navController: NavController
 ) {
+    private val registrationViewModel = RegistrationViewModel()
+
     private var isLoggedIn: Boolean = false
 
     fun login() {
         isLoggedIn = true
         navController.navigate(AuthorizeScreens.App.route)
+        registrationViewModel.registerUser( "username", "email2@gmail.com", "0474635234", "password","street", "city", "zip", "number")
     }
 
     fun logout() {
