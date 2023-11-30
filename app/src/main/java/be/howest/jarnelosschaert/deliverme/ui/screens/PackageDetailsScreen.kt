@@ -6,13 +6,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Content
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Label
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.SmallButton
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 
 @Composable
 fun PackageDetailsScreen(
     modifier: Modifier = Modifier,
-    onGoBack: () -> Unit
+    onGoBack: () -> Unit,
+    navigateMap: () -> Unit
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
@@ -28,7 +29,7 @@ fun PackageDetailsScreen(
             PackageDetail(label = "Arrival", content = "13:41")
             PackageDetail(label = "Description", content = "A small package")
 
-            SmallButton(text = "See live location", onClick = {})
+            GeneralButton(text = "See live location", onClick = navigateMap)
         }
     }
 }

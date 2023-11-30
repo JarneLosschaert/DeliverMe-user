@@ -1,17 +1,16 @@
-package be.howest.jarnelosschaert.deliverme.ui.helpers
+package be.howest.jarnelosschaert.deliverme.ui.helpers.components
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.AlertDialog
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 
 @Composable
@@ -126,4 +125,31 @@ fun GeneralTextPopup(
             }
         },
     )
+}
+
+@Composable
+fun Loader(modifier: Modifier = Modifier, Text: String, withCancel : Boolean = false, onCancel: () -> Unit = {}) {
+    Column(
+        modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        CircularProgressIndicator()
+        Text(
+            text = Text,
+            modifier = Modifier.padding(top = 20.dp),
+            color = MaterialTheme.colors.primary,
+            style = MaterialTheme.typography.h6
+        )
+        if (withCancel) {
+            TextButton(
+                onClick = onCancel,
+                modifier = Modifier.padding(top = 10.dp),
+            ) {
+                Text(
+                    text = "Cancel",
+                    color = MaterialTheme.colors.onBackground,
+                    textDecoration = TextDecoration.Underline
+                )
+            }
+        }
+    }
 }

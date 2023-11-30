@@ -35,6 +35,7 @@ sealed class OtherScreens(val route: String) {
     object Profile : OtherScreens("profile")
     object PackageDetails : OtherScreens("packageDetails")
     object Address : OtherScreens("address")
+    object Map : OtherScreens("map")
 }
 
 @Composable
@@ -117,13 +118,21 @@ private fun AuthScreenNavigationConfigurations(
         }
         composable(OtherScreens.PackageDetails.route) {
             PackageDetailsScreen(modifier = modifier,
-                onGoBack = { controller.goBack() }
+                onGoBack = { controller.goBack() },
+                navigateMap = { controller.navigateTo(OtherScreens.Map.route) }
             )
+            onNavigation(OtherScreens.PackageDetails.route)
         }
         composable(OtherScreens.Address.route) {
             AddressScreen(modifier = modifier,
                 onGoBack = { controller.goBack() }
             )
+        }
+        composable(OtherScreens.Map.route) {
+            MapScreen(
+                onGoBack = { controller.goBack() }
+            )
+            onNavigation(OtherScreens.Map.route)
         }
     }
 }

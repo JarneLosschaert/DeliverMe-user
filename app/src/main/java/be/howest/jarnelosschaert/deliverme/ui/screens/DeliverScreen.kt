@@ -2,22 +2,15 @@ package be.howest.jarnelosschaert.deliverme.ui.screens
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 
 @Composable
@@ -25,6 +18,30 @@ fun DeliverScreen(
     modifier: Modifier = Modifier,
     onGoBack: () -> Unit
 ) {
+    var isLoading by remember { mutableStateOf(false) }
+
+    if (isLoading) {
+        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Loader(Text = "Searching driver", withCancel = true, onCancel = { isLoading = false })
+        }
+    } else {
+        DeliverScreenContent(
+            modifier = modifier,
+            searchDriver = { isLoading = true },
+            onGoBack = onGoBack
+        )
+    }
+}
+
+@Composable
+fun DeliverScreenContent(
+    modifier: Modifier = Modifier,
+    searchDriver: () -> Unit,
+    onGoBack: () -> Unit
+) {
+    var addressSender by remember { mutableStateOf("") }
+    var receiver by remember { mutableStateOf("") }
+    var addressReceiver by remember { mutableStateOf("") }
     var description by remember { mutableStateOf("") }
 
     Box(modifier = modifier.fillMaxWidth()) {
@@ -34,25 +51,29 @@ fun DeliverScreen(
             DropDownLabel(
                 label = "Address (sender)",
                 options = listOf("Home", "Work", "Other"),
-                onOptionSelected = {}
+                onOptionSelected = { addressSender = it }
             )
             DropDownLabel(
                 label = "Receiver",
                 options = listOf("Daan", "Glenn", "Jarne"),
-                onOptionSelected = {}
+                onOptionSelected = { receiver = it }
             )
             DropDownLabel(
                 label = "Address (receiver)",
                 options = listOf("Home", "Work", "Other"),
-                onOptionSelected = {}
+                onOptionSelected = { addressReceiver = it }
             )
-            TextFieldLabel(label = "Description", value = description, onValueChange = {description = it})
-            SmallButton(modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .fillMaxWidth()
-                .padding(start = 10.dp, end = 10.dp),
+            TextFieldLabel(
+                label = "Description",
+                value = description,
+                onValueChange = { description = it })
+            GeneralButton(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .fillMaxWidth()
+                    .padding(start = 10.dp, end = 10.dp),
                 text = "Search driver",
-                onClick = {}
+                onClick = searchDriver
             )
         }
     }
@@ -81,7 +102,8 @@ fun DropDownLabel(
             ) {
                 Content(modifier = Modifier
                     .weight(1f)
-                    .clickable(onClick = { expanded = true }), text = text)
+                    .clickable(onClick = { expanded = true }), text = text
+                )
                 IconButton(
                     onClick = { expanded = true },
                 ) {

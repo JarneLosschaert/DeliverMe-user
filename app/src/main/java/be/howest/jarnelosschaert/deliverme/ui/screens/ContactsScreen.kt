@@ -6,27 +6,23 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import be.howest.jarnelosschaert.deliverme.R
-import be.howest.jarnelosschaert.deliverme.ui.helpers.GeneralTextPopup
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Content
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralTextField
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralTextPopup
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 
 
@@ -56,19 +52,19 @@ fun ContactsScreen(
                 displayContactPopup = { displayPopup = true }
             )
             LazyColumn(content =
-                {
-                    item {
-                        Contact()
-                        Contact()
-                        Contact()
-                        Contact()
-                        Contact()
-                        Contact()
-                        Contact()
-                        Contact()
-                        Contact()
-                    }
-                })
+            {
+                item {
+                    Contact()
+                    Contact()
+                    Contact()
+                    Contact()
+                    Contact()
+                    Contact()
+                    Contact()
+                    Contact()
+                    Contact()
+                }
+            })
         }
     }
 }
@@ -86,7 +82,11 @@ fun SearchBar(
                 .width(280.dp)
                 .padding(0.dp)
         ) {
-            GeneralTextField(text = query, onValueChange = { onQueryChange(it) }, placeholder = "Search contact")
+            GeneralTextField(
+                text = query,
+                onValueChange = { onQueryChange(it) },
+                placeholder = "Search contact"
+            )
         }
         Image(
             painter = painterResource(id = R.drawable.add_contact),
@@ -109,24 +109,33 @@ fun Contact() {
             .padding(10.dp),
     ) {
         Content(text = "Glenn Callens", fontSize = 19)
-        Address(address = "Kortrijksesteenweg 100, 9000 Gent")
-        Address(address = "LageSteenweg 33, 9000 Gent", isExtra = true)
+
+        Info(text = "glenncallens@gmail.com", isEmail = true)
+        Info(text = "0499 99 99 99", isPhone = true)
+        Info(text = "Kortrijksesteenweg 100, 9000 Gent")
+        Info(text = "LageSteenweg 33, 9000 Gent", isExtraAddress = true)
     }
     Spacer(modifier = Modifier.height(10.dp))
 }
 
 @Composable
-fun Address(
-    address: String,
-    isExtra: Boolean = false
+fun Info(
+    text: String,
+    isExtraAddress: Boolean = false,
+    isEmail: Boolean = false,
+    isPhone: Boolean = false,
 ) {
     Row {
-        if (isExtra) {
-            Icon(imageVector = Icons.Default.Add, contentDescription = null)
-        } else {
-            Icon(imageVector = Icons.Default.Home, contentDescription = null)
-        }
+        var icon = Icons.Default.Home
+        if (isExtraAddress) icon = Icons.Default.Add
+        if (isEmail) icon = Icons.Default.Email
+        if (isPhone) icon = Icons.Default.Phone
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colors.primary
+        )
         Spacer(modifier = Modifier.width(10.dp))
-        Content(text = address)
+        Content(text = text)
     }
 }

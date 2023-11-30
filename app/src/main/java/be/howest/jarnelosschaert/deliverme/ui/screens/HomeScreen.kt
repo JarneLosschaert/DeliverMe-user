@@ -15,7 +15,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import be.howest.jarnelosschaert.deliverme.R
@@ -61,7 +60,7 @@ fun HomeButtons(
         HomeButton(
             onClick = navigateDeliver,
             text = "Send a package",
-            image = R.drawable.box
+            image = R.drawable.delivery
         )
         HomeButton(
             onClick = navigateContacts,
@@ -93,14 +92,14 @@ fun HomeButton(
                 painter = painterResource(id = image),
                 contentDescription = text,
                 modifier = Modifier
-                    .height(50.dp)
-                    .padding(5.dp),
+                    .height(45.dp),
                 colorFilter = ColorFilter.tint(MaterialTheme.colors.onPrimary)
             )
             Text(text = text, color = MaterialTheme.colors.onPrimary, fontSize = 14.sp)
         }
     }
 }
+
 @Composable
 fun Delivery(
     modifier: Modifier = Modifier,
@@ -131,7 +130,7 @@ fun Delivery(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.End
             ) {
-                SmallButton(onClick = showPackageDetails)
+                GeneralButton(onClick = showPackageDetails)
                 DateDetails(text = "12/10/2022")
             }
         }
