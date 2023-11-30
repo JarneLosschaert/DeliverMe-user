@@ -1,34 +1,57 @@
 package be.howest.jarnelosschaert.deliverme.logic.controllers
 
-import RegistrationViewModel
 import androidx.navigation.NavController
 import be.howest.jarnelosschaert.deliverme.logic.models.SignUp
+import be.howest.jarnelosschaert.deliverme.logic.services.AuthService
 import be.howest.jarnelosschaert.deliverme.ui.AuthorizeScreens
 
 class AuthController(
     private val navController: NavController
 ) {
-    private val registrationViewModel = RegistrationViewModel()
+    private val registrationViewModel = AuthService()
 
-    private var isLoggedIn: Boolean = false
+    private var _isLoggedIn: Boolean = false
+    private var _signUp: SignUp = SignUp("", "", "", "", "")
 
-    fun login() {
-        isLoggedIn = true
+    fun login(email: String, password: String) {
+        registrationViewModel.loginUser(email, password)
+        _isLoggedIn = true
         navController.navigate(AuthorizeScreens.App.route)
-        registrationViewModel.registerUser( "username", "email2@gmail.com", "0474635234", "password","street", "city", "zip", "number")
     }
 
     fun logout() {
-        isLoggedIn = false
+        _isLoggedIn = false
         navController.navigate(AuthorizeScreens.Login.route)
     }
 
-    fun signUp(signUp: SignUp) : List<String> {
-        val errors = checkValuesSignUp(signUp.username, signUp.email, signUp.phone, signUp.password, signUp.confirmPassword)
+    fun checkSignUp(signUp: SignUp): List<String> {
+        val errors = checkValuesSignUp(
+            signUp.username,
+            signUp.email,
+            signUp.phone,
+            signUp.password,
+            signUp.confirmPassword
+        )
         if (errors.isEmpty()) {
-            login()
+            _signUp = signUp
+            navController.navigate(AuthorizeScreens.Address.route)
         }
         return errors
+    }
+
+    fun signUp(street: String, city: String, zip: String, number: String) {
+        registrationViewModel.registerUser(
+            _signUp.username,
+            _signUp.email,
+            _signUp.phone,
+            _signUp.password,
+            street,
+            city,
+            zip,
+            number
+        )
+        _isLoggedIn = true
+        navController.navigate(AuthorizeScreens.App.route)
     }
 
     fun deleteAccount() {
@@ -36,7 +59,7 @@ class AuthController(
     }
 
     fun isLoggedIn(): Boolean {
-        return isLoggedIn
+        return _isLoggedIn
     }
 
     private fun checkValuesSignUp(

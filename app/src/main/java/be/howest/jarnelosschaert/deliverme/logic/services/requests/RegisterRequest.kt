@@ -12,29 +12,3 @@ data class RegisterRequest(
     @SerializedName("Zip") val zip: String,
     @SerializedName("Number") val number: String
 )
-
-data class RegistrationResponse(
-    @SerializedName("jwt") val jwt: String,
-    @SerializedName("customer") val customer: Customer
-)
-
-data class Customer(
-    @SerializedName("id") val id: Int,
-    @SerializedName("homeAddress") val homeAddress: HomeAddress,
-    @SerializedName("person") val person: Person
-)
-
-data class HomeAddress(
-    @SerializedName("id") val id: Int,
-    @SerializedName("street") val street: String,
-    @SerializedName("city") val city: String,
-    @SerializedName("zip") val zip: String,
-    @SerializedName("number") val number: String
-)
-
-data class Person(
-    @SerializedName("id") val id: Int,
-    @SerializedName("name") val name: String,
-    @SerializedName("email") val email: String,
-    @SerializedName("phone") val phone: String
-)

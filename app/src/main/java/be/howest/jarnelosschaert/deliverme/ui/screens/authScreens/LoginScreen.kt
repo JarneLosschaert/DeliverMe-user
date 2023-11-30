@@ -14,7 +14,7 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 fun LoginScreen(
     modifier: Modifier = Modifier,
     navigateToSignUp: () -> Unit,
-    login: () -> Unit
+    login: (String, String) -> Unit
 ) {
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
@@ -41,7 +41,7 @@ fun LoginScreen(
                     )
                     GeneralButton(
                         text = "Log in",
-                        onClick = login,
+                        onClick = { login(email, password) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(16.dp)

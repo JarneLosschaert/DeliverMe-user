@@ -66,7 +66,6 @@ dependencies {
     // navigation
     implementation "androidx.navigation:navigation-compose:2.4.0-alpha10"
 
-<<<<<<< HEAD
     // For Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
@@ -74,11 +73,8 @@ dependencies {
     // For Gson
     implementation "com.google.code.gson:gson:2.8.8"
 
-
-=======
     // Maps SDK for Android
     implementation 'com.google.android.gms:play-services-maps:17.0.1'
     implementation 'com.google.android.gms:play-services-location:17.1.0'
     implementation 'com.google.maps.android:maps-compose:2.11.2'
->>>>>>> 7f4f120c29388ba8a17b1bd28d0e45a3518c0871
 }

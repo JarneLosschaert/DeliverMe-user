@@ -18,14 +18,14 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 @Composable
 fun AddressScreen(
     modifier: Modifier = Modifier,
+    subtitle: String = "Address details",
     onGoBack: () -> Unit,
-    isChanging: Boolean = false
+    onConfirmAddress: (String, String, String, String) -> Unit
 ) {
     val street = remember { mutableStateOf("") }
     val number = remember { mutableStateOf("") }
     val city = remember { mutableStateOf("") }
     val postalCode = remember { mutableStateOf("") }
-    val country = remember { mutableStateOf("") }
 
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
@@ -33,7 +33,7 @@ fun AddressScreen(
             LazyColumn(content =
             {
                 item {
-                    SubTitle(text = "Address details")
+                    SubTitle(text = subtitle)
                     TextFieldLabel(
                         label = "Street",
                         value = street.value,
@@ -50,17 +50,19 @@ fun AddressScreen(
                         label = "Postal code",
                         value = postalCode.value,
                         onValueChange = { postalCode.value = it },
-                        isNumber = true)
-                    TextFieldLabel(
-                        label = "Country",
-                        value = country.value,
-                        onValueChange = { country.value = it })
+                        isNumber = true
+                    )
                     GeneralButton(
                         text = "Use address", modifier = Modifier
                             .fillMaxWidth()
                             .padding(start = 10.dp, end = 10.dp),
                         onClick = {
-                            onGoBack()
+                            onConfirmAddress(
+                                street.value,
+                                number.value,
+                                city.value,
+                                postalCode.value
+                            )
                         }
                     )
                 }

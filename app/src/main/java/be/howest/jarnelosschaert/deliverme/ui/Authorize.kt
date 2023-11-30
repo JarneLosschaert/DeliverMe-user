@@ -13,10 +13,12 @@ import androidx.navigation.compose.rememberNavController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
 import be.howest.jarnelosschaert.deliverme.ui.screens.authScreens.LoginScreen
 import be.howest.jarnelosschaert.deliverme.ui.screens.authScreens.SignUpScreen
+import be.howest.jarnelosschaert.deliverme.ui.screens.settingPages.AddressScreen
 
 sealed class AuthorizeScreens(val route: String) {
     object Login : AuthorizeScreens("login")
     object SignUp : AuthorizeScreens("signUp")
+    object Address : AuthorizeScreens("address")
     object App : AuthorizeScreens("app")
 }
 
@@ -50,14 +52,24 @@ private fun AuthScreenNavigationConfigurations(
             LoginScreen(
                 modifier = modifier,
                 navigateToSignUp = { navController.navigate(AuthorizeScreens.SignUp.route) },
-                login = { controller.login() }
+                login = { email, password -> controller.login(email, password) }
             )
         }
         composable(AuthorizeScreens.SignUp.route) {
             SignUpScreen(
                 modifier = modifier,
                 navigateToLogin = { navController.navigate(AuthorizeScreens.Login.route) },
-                signUp = { controller.signUp(it) }
+                signUp = { controller.checkSignUp(it) }
+            )
+        }
+        composable(AuthorizeScreens.Address.route) {
+            AddressScreen(
+                modifier = Modifier.padding(start = 15.dp, end = 8.dp),
+                subtitle = "Please enter your home address",
+                onGoBack = { navController.popBackStack() },
+                onConfirmAddress = { street, city, zip, number ->
+                    controller.signUp(street, city, zip, number)
+                }
             )
         }
         composable(AuthorizeScreens.App.route) {

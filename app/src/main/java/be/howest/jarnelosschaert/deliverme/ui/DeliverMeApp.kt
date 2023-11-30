@@ -125,7 +125,10 @@ private fun AuthScreenNavigationConfigurations(
         }
         composable(OtherScreens.Address.route) {
             AddressScreen(modifier = modifier,
-                onGoBack = { controller.goBack() }
+                onGoBack = { controller.goBack() },
+                onConfirmAddress = {street, city, zip, number ->
+
+                }
             )
         }
         composable(OtherScreens.Map.route) {
