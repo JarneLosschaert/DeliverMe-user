@@ -61,9 +61,3 @@ class AuthService: ViewModel() {
         }
     }
 }
-
-data class LoginResult(
-    var success: Boolean = false,
-    var response: RegistrationLoginResponse? = null,
-    var error: String = ""
-)

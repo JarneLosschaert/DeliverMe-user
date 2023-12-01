@@ -19,4 +19,5 @@ class AppUiState : ViewModel() {
     var description by mutableStateOf("")
 
     var addressScreenStatus by mutableStateOf(AddressScreenStatus.SENDER_ADDRESS)
+    var addressErrors by mutableStateOf(emptyList<String>())
 }

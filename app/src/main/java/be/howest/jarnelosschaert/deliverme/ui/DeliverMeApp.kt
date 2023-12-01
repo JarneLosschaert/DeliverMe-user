@@ -142,6 +142,7 @@ private fun AuthScreenNavigationConfigurations(
         composable(OtherScreens.Address.route) {
             AddressScreen(modifier = modifier,
                 subtitle = controller.uiState.addressScreenStatus.subtitle,
+                errors = controller.uiState.addressErrors,
                 onGoBack = { controller.goBack() },
                 onConfirmAddress = { controller.onConfirmAddress(it) },
             )

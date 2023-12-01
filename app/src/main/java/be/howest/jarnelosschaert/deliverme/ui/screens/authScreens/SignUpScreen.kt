@@ -40,7 +40,7 @@ fun SignUpScreen(
                         TextFieldLabel(label = "Phone number", value = phone, onValueChange = { phone = it}, isNumber = true)
                         TextFieldLabel(label = "Password", value = password, onValueChange = { password = it }, isPassword = true)
                         TextFieldLabel(label = "Confirm password", value = confirmPassword, onValueChange = { confirmPassword = it }, isPassword = true)
-                        AuthErrors(errors = errors)
+                        Errors(errors = errors)
                         GeneralButton(
                             text = "Sign up",
                             onClick = { signUp(SignUp(username, email, phone, password, confirmPassword)) },

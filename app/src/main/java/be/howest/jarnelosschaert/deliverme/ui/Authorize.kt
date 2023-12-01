@@ -68,6 +68,7 @@ private fun AuthScreenNavigationConfigurations(
             AddressScreen(
                 modifier = Modifier.padding(start = 15.dp, end = 8.dp),
                 subtitle = "Please enter your home address",
+                errors = controller.uiState.addressErrors,
                 onGoBack = { navController.popBackStack() },
                 onConfirmAddress = { controller.signUp(it) }
             )

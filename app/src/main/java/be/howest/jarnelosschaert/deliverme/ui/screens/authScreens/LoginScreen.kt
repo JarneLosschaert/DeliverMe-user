@@ -40,7 +40,7 @@ fun LoginScreen(
                         onValueChange = { password = it },
                         isPassword = true
                     )
-                    AuthErrors(errors = errors)
+                    Errors(errors = errors)
                     GeneralButton(
                         text = "Log in",
                         onClick = { login(email, password) },

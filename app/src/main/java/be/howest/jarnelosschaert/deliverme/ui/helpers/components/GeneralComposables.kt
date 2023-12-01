@@ -189,7 +189,7 @@ fun GeneralTextField(
 }
 
 @Composable
-fun AuthErrors(errors: List<String>) {
+fun Errors(errors: List<String>) {
     errors.forEach {
         Content(text = it, isError = true)
     }

@@ -1,6 +1,7 @@
 package be.howest.jarnelosschaert.deliverme.logic.controllers
 
 import androidx.navigation.NavController
+import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.logic.AppUiState
 import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
@@ -92,15 +93,19 @@ class AppController(
     }
 
     fun onConfirmAddress(homeAddress: HomeAddress) {
-        when (uiState.addressScreenStatus) {
-            AddressScreenStatus.SENDER_ADDRESS -> {
-                uiState.senderAddress = homeAddress
+        val errors = checkAddress(homeAddress)
+        uiState.addressErrors = errors
+        if (errors.isEmpty()) {
+            when (uiState.addressScreenStatus) {
+                AddressScreenStatus.SENDER_ADDRESS -> {
+                    uiState.senderAddress = homeAddress
+                }
+                AddressScreenStatus.RECEIVER_ADDRESS -> {
+                    uiState.receiverAddress = homeAddress
+                }
             }
-            AddressScreenStatus.RECEIVER_ADDRESS -> {
-                uiState.receiverAddress = homeAddress
-            }
+            goBack()
         }
-        goBack()
     }
 
     fun goBack() {

@@ -1,6 +1,8 @@
 package be.howest.jarnelosschaert.deliverme.logic.controllers
 
 import androidx.navigation.NavController
+import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
+import be.howest.jarnelosschaert.deliverme.helpers.checkValuesSignUp
 import be.howest.jarnelosschaert.deliverme.logic.AuthUiState
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
@@ -20,7 +22,7 @@ class AuthController(
     private var _isLoggedIn: Boolean = false
 
     fun login(email: String, password: String) {
-        cleanErros()
+        cleanErrors()
         authService.login(
             email,
             password,
@@ -36,7 +38,7 @@ class AuthController(
     }
 
     fun checkSignUp(signUp: SignUp) {
-        cleanErros()
+        cleanErrors()
         val errors = checkValuesSignUp(
             signUp.username,
             signUp.email,
@@ -53,21 +55,25 @@ class AuthController(
     }
 
     fun signUp(homeAddress: HomeAddress) {
-        cleanErros()
-        authService.signUp(
-            _signUp.username,
-            _signUp.email,
-            _signUp.phone,
-            _signUp.password,
-            homeAddress.street,
-            homeAddress.number,
-            homeAddress.zip,
-            homeAddress.city,
-            { handleLoginSignUpSuccess(it) },
-            { handleSignUpFailure(it) }
-        )
-        _isLoggedIn = true
-        navController.navigate(AuthorizeScreens.App.route)
+        val errors = checkAddress(homeAddress)
+        uiState.addressErrors = errors
+        if (errors.isEmpty()) {
+            cleanErrors()
+            authService.signUp(
+                _signUp.username,
+                _signUp.email,
+                _signUp.phone,
+                _signUp.password,
+                homeAddress.street,
+                homeAddress.number,
+                homeAddress.zip,
+                homeAddress.city,
+                { handleLoginSignUpSuccess(it) },
+                { handleSignUpFailure(it) }
+            )
+            _isLoggedIn = true
+            navController.navigate(AuthorizeScreens.App.route)
+        }
     }
 
     fun deleteAccount() {
@@ -84,7 +90,7 @@ class AuthController(
         uiState.customer = response.customer
         _isLoggedIn = true
         navController.navigate(AuthorizeScreens.App.route)
-        cleanErros()
+        cleanErrors()
     }
     private fun handleLoginFailure(error: String) {
         uiState.loginErrors = listOf(error)
@@ -94,53 +100,8 @@ class AuthController(
         uiState.signUpErrors = listOf(error)
     }
 
-    private fun cleanErros() {
+    private fun cleanErrors() {
         uiState.loginErrors = emptyList()
         uiState.signUpErrors = emptyList()
-    }
-    private fun checkValuesSignUp(
-        username: String,
-        email: String,
-        phone: String,
-        password: String,
-        confirmPassword: String
-    ): List<String> {
-        val errors = mutableListOf<String>()
-
-        if (username.isBlank()) {
-            errors.add("Username is required.")
-        }
-
-        if (email.isBlank()) {
-            errors.add("Email is required.")
-        } else if (!isValidEmail(email)) {
-            errors.add("Invalid email format.")
-        }
-
-        if (phone.isBlank()) {
-            errors.add("Phone number is required.")
-        } else if (!isValidPhoneNumber(phone)) {
-            errors.add("Invalid phone number format.")
-        }
-
-        if (password.isBlank()) {
-            errors.add("Password is required.")
-        } else if (password.length < 8) {
-            errors.add("Password must be at least 8 characters long.")
-        } else if (password != confirmPassword) {
-            errors.add("Passwords do not match.")
-        }
-
-        return errors
-    }
-
-    private fun isValidEmail(email: String): Boolean {
-        val emailRegex = "^[A-Za-z](.*)(@)(.+)(\\.)(.+)"
-        return email.matches(emailRegex.toRegex())
-    }
-
-    private fun isValidPhoneNumber(phone: String): Boolean {
-        val cleanedPhoneNumber = phone.replace(Regex("\\D"), "")
-        return cleanedPhoneNumber.startsWith("0") && cleanedPhoneNumber.length == 10
     }
 }

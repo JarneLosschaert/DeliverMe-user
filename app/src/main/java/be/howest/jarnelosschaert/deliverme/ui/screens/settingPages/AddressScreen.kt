@@ -11,15 +11,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.SubTitle
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.TextFieldLabel
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 
 @Composable
 fun AddressScreen(
     modifier: Modifier = Modifier,
     subtitle: String = "Address details",
+    errors: List<String>,
     onGoBack: () -> Unit,
     onConfirmAddress: (HomeAddress) -> Unit
 ) {
@@ -44,15 +42,16 @@ fun AddressScreen(
                         value = number.value,
                         onValueChange = { number.value = it })
                     TextFieldLabel(
-                        label = "City",
-                        value = city.value,
-                        onValueChange = { city.value = it })
-                    TextFieldLabel(
                         label = "Zip",
                         value = zip.value,
                         onValueChange = { zip.value = it },
                         isNumber = true
                     )
+                    TextFieldLabel(
+                        label = "City",
+                        value = city.value,
+                        onValueChange = { city.value = it })
+                    Errors(errors = errors)
                     GeneralButton(
                         text = "Use address", modifier = Modifier
                             .fillMaxWidth()

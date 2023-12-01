@@ -14,4 +14,5 @@ class AuthUiState : ViewModel() {
 
     var loginErrors by mutableStateOf(emptyList<String>())
     var signUpErrors by mutableStateOf(emptyList<String>())
+    var addressErrors by mutableStateOf(emptyList<String>())
 }
