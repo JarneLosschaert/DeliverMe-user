@@ -13,6 +13,7 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 @Composable
 fun LoginScreen(
     modifier: Modifier = Modifier,
+    errors: List<String>,
     navigateToSignUp: () -> Unit,
     login: (String, String) -> Unit
 ) {
@@ -39,6 +40,7 @@ fun LoginScreen(
                         onValueChange = { password = it },
                         isPassword = true
                     )
+                    AuthErrors(errors = errors)
                     GeneralButton(
                         text = "Log in",
                         onClick = { login(email, password) },

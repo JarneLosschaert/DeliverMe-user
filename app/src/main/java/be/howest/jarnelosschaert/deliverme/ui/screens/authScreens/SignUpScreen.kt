@@ -15,19 +15,15 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
+    errors: List<String>,
     navigateToLogin: () -> Unit,
-    signUp: (SignUp) -> List<String>
+    signUp: (SignUp) -> Unit
 ) {
     var username by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var phone by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
-
-    var errors by remember { mutableStateOf(listOf<String>()) }
-    val signUpCheck = {
-        errors = signUp(SignUp(username, email, phone, password, confirmPassword))
-    }
 
     Box(
         modifier = modifier.fillMaxWidth(),
@@ -47,7 +43,7 @@ fun SignUpScreen(
                         AuthErrors(errors = errors)
                         GeneralButton(
                             text = "Sign up",
-                            onClick = signUpCheck,
+                            onClick = { signUp(SignUp(username, email, phone, password, confirmPassword)) },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp)

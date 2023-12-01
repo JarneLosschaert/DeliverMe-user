@@ -1,30 +1,40 @@
 package be.howest.jarnelosschaert.deliverme.logic.controllers
 
 import androidx.navigation.NavController
+import be.howest.jarnelosschaert.deliverme.logic.UiState
+import be.howest.jarnelosschaert.deliverme.logic.models.Customer
+import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
+import be.howest.jarnelosschaert.deliverme.logic.models.Person
 import be.howest.jarnelosschaert.deliverme.logic.models.SignUp
 import be.howest.jarnelosschaert.deliverme.logic.services.AuthService
+import be.howest.jarnelosschaert.deliverme.logic.services.responses.RegistrationLoginResponse
 import be.howest.jarnelosschaert.deliverme.ui.AuthorizeScreens
 
 class AuthController(
     private val navController: NavController
 ) {
-    private val registrationViewModel = AuthService()
+    private val authService = AuthService()
+    val uiState: UiState = UiState()
 
     private var _isLoggedIn: Boolean = false
     private var _signUp: SignUp = SignUp("", "", "", "", "")
 
     fun login(email: String, password: String) {
-        registrationViewModel.loginUser(email, password)
-        _isLoggedIn = true
-        navController.navigate(AuthorizeScreens.App.route)
+        authService.login(
+            email,
+            password,
+            { handleLoginSignUpSuccess(it) },
+            { handleLoginFailure(it) })
     }
 
     fun logout() {
         _isLoggedIn = false
         navController.navigate(AuthorizeScreens.Login.route)
+        uiState.jwt = ""
+        uiState.customer = Customer(-1, HomeAddress(-1, "", "", "", ""), Person(-1, "", "", ""))
     }
 
-    fun checkSignUp(signUp: SignUp): List<String> {
+    fun checkSignUp(signUp: SignUp) {
         val errors = checkValuesSignUp(
             signUp.username,
             signUp.email,
@@ -35,12 +45,13 @@ class AuthController(
         if (errors.isEmpty()) {
             _signUp = signUp
             navController.navigate(AuthorizeScreens.Address.route)
+            uiState.signUpErrors = errors
         }
-        return errors
+        uiState.signUpErrors = errors
     }
 
     fun signUp(street: String, city: String, zip: String, number: String) {
-        registrationViewModel.registerUser(
+        authService.registerUser(
             _signUp.username,
             _signUp.email,
             _signUp.phone,
@@ -48,7 +59,9 @@ class AuthController(
             street,
             city,
             zip,
-            number
+            number,
+            { handleLoginSignUpSuccess(it) },
+            { handleSignUpFailure(it) }
         )
         _isLoggedIn = true
         navController.navigate(AuthorizeScreens.App.route)
@@ -60,6 +73,24 @@ class AuthController(
 
     fun isLoggedIn(): Boolean {
         return _isLoggedIn
+    }
+
+    private fun handleLoginSignUpSuccess(response: RegistrationLoginResponse) {
+        println("Login success: $response")
+        uiState.jwt = response.jwt
+        uiState.customer = response.customer
+        _isLoggedIn = true
+        navController.navigate(AuthorizeScreens.App.route)
+        uiState.loginErrors = listOf()
+        uiState.signUpErrors = listOf()
+    }
+
+    private fun handleLoginFailure(error: String) {
+        uiState.loginErrors = listOf(error)
+    }
+
+    private fun handleSignUpFailure(error: String) {
+        uiState.signUpErrors = listOf(error)
     }
 
     private fun checkValuesSignUp(

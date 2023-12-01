@@ -51,6 +51,7 @@ private fun AuthScreenNavigationConfigurations(
         composable(AuthorizeScreens.Login.route) {
             LoginScreen(
                 modifier = modifier,
+                errors = controller.uiState.loginErrors,
                 navigateToSignUp = { navController.navigate(AuthorizeScreens.SignUp.route) },
                 login = { email, password -> controller.login(email, password) }
             )
@@ -58,8 +59,9 @@ private fun AuthScreenNavigationConfigurations(
         composable(AuthorizeScreens.SignUp.route) {
             SignUpScreen(
                 modifier = modifier,
+                errors = controller.uiState.signUpErrors,
                 navigateToLogin = { navController.navigate(AuthorizeScreens.Login.route) },
-                signUp = { controller.checkSignUp(it) }
+                signUp = { controller.checkSignUp(it) },
             )
         }
         composable(AuthorizeScreens.Address.route) {

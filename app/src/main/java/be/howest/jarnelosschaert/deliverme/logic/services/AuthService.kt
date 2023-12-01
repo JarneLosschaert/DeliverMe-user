@@ -19,7 +19,9 @@ class AuthService : ViewModel() {
         street: String,
         city: String,
         zip: String,
-        number: String
+        number: String,
+        handleSuccess: (RegistrationLoginResponse) -> Unit,
+        handleFailure: (String) -> Unit,
     ) {
         val registerRequest =
             RegisterRequest(username, email, phone, password, street, city, zip, number)
@@ -27,46 +29,34 @@ class AuthService : ViewModel() {
         viewModelScope.launch {
             try {
                 val response = apiService.registerUser(registerRequest)
-                handleRegistrationResponse(response)
+                //handleRegistrationResponse(response)
             } catch (e: Exception) {
                 // Handle any exceptions that may occur
                 println("Error signUp: ${e.message}")
             }
         }
     }
-    fun loginUser(
-        email: String,
-        password: String
-    ) {
-        val loginRequest =
-            LoginRequest(email, password)
 
+    fun login(
+        email: String, password: String,
+        handleSuccess: (RegistrationLoginResponse) -> Unit,
+        handleFailure: (String) -> Unit,
+    ) {
         viewModelScope.launch {
+            val loginRequest = LoginRequest(email, password)
             try {
                 val response = apiService.loginUser(loginRequest)
-                handleLoginResponse(response)
+                handleSuccess(response)
             } catch (e: Exception) {
-                // Handle any exceptions that may occur
+                handleFailure("Failed to login")
                 println("Error login: ${e.message}")
             }
         }
     }
-
-    private fun handleRegistrationResponse(response: RegistrationLoginResponse) {
-        // Handle the response as needed
-        println("JWT: ${response.jwt}")
-        println("Customer ID: ${response.customer.id}")
-        println("Customer Name: ${response.customer.person.name}")
-        println("Customer Email: ${response.customer.person.email}")
-        // Continue extracting other relevant information from the response
-    }
-
-    private fun handleLoginResponse(response: RegistrationLoginResponse) {
-        // Handle the response as needed
-        println("JWT: ${response.jwt}")
-        println("Customer ID: ${response.customer.id}")
-        println("Customer Name: ${response.customer.person.name}")
-        println("Customer Email: ${response.customer.person.email}")
-        // Continue extracting other relevant information from the response
-    }
 }
+
+data class LoginResult(
+    var success: Boolean = false,
+    var response: RegistrationLoginResponse? = null,
+    var error: String = ""
+)
