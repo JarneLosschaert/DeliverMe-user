@@ -108,6 +108,8 @@ private fun AuthScreenNavigationConfigurations(
                 senderAddress = controller.uiState.senderAddress,
                 receiver = controller.uiState.receiver,
                 receiverAddress = controller.uiState.receiverAddress,
+                packageSize = controller.uiState.packageSize,
+                onPackageSizeChange = { controller.uiState.packageSize = it },
                 description = controller.uiState.description,
                 onGoBack = { controller.goBack() },
                 onSenderAddressChange = { controller.onSenderAddressChange() },

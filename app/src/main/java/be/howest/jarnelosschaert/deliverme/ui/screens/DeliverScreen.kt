@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import be.howest.jarnelosschaert.deliverme.logic.data.PackageSize
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
@@ -24,11 +25,13 @@ fun DeliverScreen(
     senderAddress: HomeAddress,
     receiver: Customer,
     receiverAddress: HomeAddress,
+    packageSize: PackageSize,
     description: String,
     onGoBack: () -> Unit,
     onSenderAddressChange: () -> Unit,
     onReceiverChange: (Customer) -> Unit,
     onReceiverAddressChange: () -> Unit,
+    onPackageSizeChange: (PackageSize) -> Unit,
     onDescriptionChange: (String) -> Unit,
 ) {
     var isLoading by remember { mutableStateOf(false) }
@@ -44,12 +47,14 @@ fun DeliverScreen(
             senderAddress = senderAddress,
             receiver = receiver,
             receiverAddress = receiverAddress,
+            packageSize = packageSize,
             description = description,
             searchDriver = { isLoading = true },
             onGoBack = onGoBack,
             onSenderAddressChange = onSenderAddressChange,
             onReceiverChange = onReceiverChange,
             onReceiverAddressChange = onReceiverAddressChange,
+            onPackageSizeChange = onPackageSizeChange,
             onDescriptionChange = onDescriptionChange,
         )
     }
@@ -62,30 +67,47 @@ fun DeliverScreenContent(
     senderAddress: HomeAddress,
     receiver: Customer,
     receiverAddress: HomeAddress,
+    packageSize: PackageSize,
     description: String,
     searchDriver: () -> Unit,
     onGoBack: () -> Unit,
     onSenderAddressChange: () -> Unit,
     onReceiverChange: (Customer) -> Unit,
     onReceiverAddressChange: () -> Unit,
+    onPackageSizeChange: (PackageSize) -> Unit,
     onDescriptionChange: (String) -> Unit,
 ) {
-        Box(modifier = modifier.fillMaxWidth()) {
+    Box(modifier = modifier.fillMaxWidth()) {
         Column {
             Title(onGoBack = onGoBack, withGoBack = true)
-            SubTitle(text = "Deliver details")
-            ChooseAddressLabel(label = "Address (sender)", address = showAddress(senderAddress), onAddressChange = onSenderAddressChange)
-            DropDownLabel(
+            SubTitle(text = "Delivery details")
+            ChooseAddressLabel(
+                label = "Address (sender)",
+                address = showAddress(senderAddress),
+                onAddressChange = onSenderAddressChange
+            )
+            DropDownContacts(
                 label = "Receiver",
-                contacts =  contacts,
+                contacts = contacts,
                 receiver = receiver,
                 onContactSelected = onReceiverChange
             )
-            ChooseAddressLabel(label = "Address (receiver)", address = showAddress(receiverAddress), onAddressChange = onReceiverAddressChange)
+            ChooseAddressLabel(
+                label = "Address (receiver)",
+                address = showAddress(receiverAddress),
+                onAddressChange = onReceiverAddressChange
+            )
+            DropDownPackageSize(
+                label = "Package size",
+                sizes = PackageSize.values().toList(),
+                size = packageSize,
+                onSizeSelected = onPackageSizeChange
+            )
             TextFieldLabel(
                 label = "Description",
                 value = description,
-                onValueChange = onDescriptionChange)
+                onValueChange = onDescriptionChange
+            )
             GeneralButton(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -127,7 +149,7 @@ fun ChooseAddressLabel(label: String, address: String, onAddressChange: () -> Un
 }
 
 @Composable
-fun DropDownLabel(
+fun DropDownContacts(
     label: String,
     contacts: List<Customer>,
     receiver: Customer,
@@ -170,6 +192,57 @@ fun DropDownLabel(
                     onContactSelected(option)
                 }) {
                     Text(text = option.person.name)
+                }
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(10.dp))
+}
+
+@Composable
+fun DropDownPackageSize(
+    label: String,
+    sizes: List<PackageSize>,
+    size: PackageSize,
+    onSizeSelected: (PackageSize) -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    Column {
+        Label(text = label)
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(1.dp, Color.Black)
+                    .padding(start = 10.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Content(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable(onClick = { expanded = true }), text = size.value
+                )
+                IconButton(
+                    onClick = { expanded = true },
+                ) {
+                    Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+                }
+            }
+        }
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false }
+        ) {
+            sizes.forEach { option ->
+                DropdownMenuItem(onClick = {
+                    expanded = false
+                    onSizeSelected(option)
+                }) {
+                    Text(text = option.value)
                 }
             }
         }
