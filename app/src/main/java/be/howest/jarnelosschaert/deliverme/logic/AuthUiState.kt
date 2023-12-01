@@ -8,10 +8,10 @@ import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
 import be.howest.jarnelosschaert.deliverme.logic.models.Person
 
-class UiState : ViewModel() {
+class AuthUiState : ViewModel() {
     var jwt by mutableStateOf("")
     var customer by  mutableStateOf(Customer(-1, HomeAddress(-1, "", "", "", ""), Person(-1, "", "", "")))
 
-    var loginErrors by mutableStateOf(listOf<String>())
-    var signUpErrors by mutableStateOf(listOf<String>())
+    var loginErrors by mutableStateOf(emptyList<String>())
+    var signUpErrors by mutableStateOf(emptyList<String>())
 }

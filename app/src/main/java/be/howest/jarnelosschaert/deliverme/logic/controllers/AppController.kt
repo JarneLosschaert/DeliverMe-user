@@ -1,11 +1,13 @@
 package be.howest.jarnelosschaert.deliverme.logic.controllers
 
 import androidx.navigation.NavController
-import be.howest.jarnelosschaert.deliverme.logic.UiState
+import be.howest.jarnelosschaert.deliverme.logic.AppUiState
 import be.howest.jarnelosschaert.deliverme.ui.BottomNavigationScreens
 
-class DeliverMeController(private val navController: NavController) {
-    private val uiState: UiState = UiState()
+class AppController(
+    private val navController: NavController
+) {
+    private val uiState: AppUiState = AppUiState()
 
     fun goBack() {
         if (navController.currentDestination?.route == BottomNavigationScreens.Home.route) {

@@ -8,7 +8,7 @@ data class RegisterRequest(
     @SerializedName("Phone") val phone: String,
     @SerializedName("Password") val password: String,
     @SerializedName("Street") val street: String,
-    @SerializedName("City") val city: String,
     @SerializedName("Zip") val zip: String,
+    @SerializedName("City") val city: String,
     @SerializedName("Number") val number: String
 )

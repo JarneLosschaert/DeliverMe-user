@@ -1,7 +1,7 @@
 package be.howest.jarnelosschaert.deliverme.logic.controllers
 
 import androidx.navigation.NavController
-import be.howest.jarnelosschaert.deliverme.logic.UiState
+import be.howest.jarnelosschaert.deliverme.logic.AuthUiState
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
 import be.howest.jarnelosschaert.deliverme.logic.models.Person
@@ -14,12 +14,13 @@ class AuthController(
     private val navController: NavController
 ) {
     private val authService = AuthService()
-    val uiState: UiState = UiState()
+    val uiState = AuthUiState()
 
-    private var _isLoggedIn: Boolean = false
     private var _signUp: SignUp = SignUp("", "", "", "", "")
+    private var _isLoggedIn: Boolean = false
 
     fun login(email: String, password: String) {
+        cleanErros()
         authService.login(
             email,
             password,
@@ -35,6 +36,7 @@ class AuthController(
     }
 
     fun checkSignUp(signUp: SignUp) {
+        cleanErros()
         val errors = checkValuesSignUp(
             signUp.username,
             signUp.email,
@@ -51,15 +53,16 @@ class AuthController(
     }
 
     fun signUp(street: String, city: String, zip: String, number: String) {
-        authService.registerUser(
+        cleanErros()
+        authService.signUp(
             _signUp.username,
             _signUp.email,
             _signUp.phone,
             _signUp.password,
             street,
-            city,
-            zip,
             number,
+            zip,
+            city,
             { handleLoginSignUpSuccess(it) },
             { handleSignUpFailure(it) }
         )
@@ -81,10 +84,8 @@ class AuthController(
         uiState.customer = response.customer
         _isLoggedIn = true
         navController.navigate(AuthorizeScreens.App.route)
-        uiState.loginErrors = listOf()
-        uiState.signUpErrors = listOf()
+        cleanErros()
     }
-
     private fun handleLoginFailure(error: String) {
         uiState.loginErrors = listOf(error)
     }
@@ -93,6 +94,10 @@ class AuthController(
         uiState.signUpErrors = listOf(error)
     }
 
+    private fun cleanErros() {
+        uiState.loginErrors = emptyList()
+        uiState.signUpErrors = emptyList()
+    }
     private fun checkValuesSignUp(
         username: String,
         email: String,

@@ -17,7 +17,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
-import be.howest.jarnelosschaert.deliverme.logic.controllers.DeliverMeController
+import be.howest.jarnelosschaert.deliverme.logic.controllers.AppController
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNav
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingPages.AddressScreen
@@ -73,7 +73,7 @@ private fun AuthScreenNavigationConfigurations(
     authController: AuthController,
     onNavigation: (String) -> Unit
 ) {
-    val controller = DeliverMeController(navController)
+    val controller = AppController(navController)
 
     NavHost(navController, startDestination = BottomNavigationScreens.Home.route) {
         composable(BottomNavigationScreens.Home.route) {
@@ -110,6 +110,7 @@ private fun AuthScreenNavigationConfigurations(
         }
         composable(OtherScreens.Profile.route) {
             ProfileScreen(modifier = modifier,
+                customer = authController.uiState.customer,
                 onGoBack = { controller.goBack() },
                 navigateAddress = { controller.navigateTo(OtherScreens.Address.route) },
                 logout = { authController.logout() },

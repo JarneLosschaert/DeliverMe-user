@@ -8,31 +8,38 @@ import be.howest.jarnelosschaert.deliverme.logic.services.requests.RegisterReque
 import be.howest.jarnelosschaert.deliverme.logic.services.responses.RegistrationLoginResponse
 import kotlinx.coroutines.launch
 
-class AuthService : ViewModel() {
+class AuthService: ViewModel() {
     private val apiService = RetrofitInstance.apiService
 
-    fun registerUser(
+    fun signUp(
         username: String,
         email: String,
         phone: String,
         password: String,
         street: String,
-        city: String,
-        zip: String,
         number: String,
+        zip: String,
+        city: String,
         handleSuccess: (RegistrationLoginResponse) -> Unit,
         handleFailure: (String) -> Unit,
     ) {
-        val registerRequest =
-            RegisterRequest(username, email, phone, password, street, city, zip, number)
-
         viewModelScope.launch {
+            val registerRequest = RegisterRequest(
+                username,
+                email,
+                phone,
+                password,
+                street,
+                number,
+                zip,
+                city,
+            )
             try {
                 val response = apiService.registerUser(registerRequest)
-                //handleRegistrationResponse(response)
+                handleSuccess(response)
             } catch (e: Exception) {
-                // Handle any exceptions that may occur
-                println("Error signUp: ${e.message}")
+                handleFailure("Failed to register")
+                println("Error register: ${e.message}")
             }
         }
     }
