@@ -21,6 +21,7 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Label
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showPhoneNumber
 
 data class PopupContent(
     val title: String,
@@ -170,7 +171,7 @@ fun Profile(
             onConfirm = {}
         ))
     EditableContentLabel(label = "Phone number",
-        text = customer.person.phone,
+        text = showPhoneNumber(customer.person.phone),
         onEdit = onTextEdit,
         popupContent = PopupContent(
             title = "Change phone number",

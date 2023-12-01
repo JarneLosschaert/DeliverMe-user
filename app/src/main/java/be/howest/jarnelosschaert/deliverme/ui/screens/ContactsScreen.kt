@@ -24,6 +24,7 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Content
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralTextField
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralTextPopup
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showPhoneNumber
 
 
 @Composable
@@ -111,9 +112,8 @@ fun Contact() {
         Content(text = "Glenn Callens", fontSize = 19)
 
         Info(text = "glenncallens@gmail.com", isEmail = true)
-        Info(text = "0499 99 99 99", isPhone = true)
+        Info(text = showPhoneNumber("0499 99 99 99"), isPhone = true)
         Info(text = "Kortrijksesteenweg 100, 9000 Gent")
-        Info(text = "LageSteenweg 33, 9000 Gent", isExtraAddress = true)
     }
     Spacer(modifier = Modifier.height(10.dp))
 }
@@ -121,13 +121,11 @@ fun Contact() {
 @Composable
 fun Info(
     text: String,
-    isExtraAddress: Boolean = false,
     isEmail: Boolean = false,
     isPhone: Boolean = false,
 ) {
     Row {
         var icon = Icons.Default.Home
-        if (isExtraAddress) icon = Icons.Default.Add
         if (isEmail) icon = Icons.Default.Email
         if (isPhone) icon = Icons.Default.Phone
         Icon(
