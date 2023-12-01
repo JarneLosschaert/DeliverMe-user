@@ -5,18 +5,31 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import be.howest.jarnelosschaert.deliverme.logic.models.Customer
+import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
 
 @Composable
 fun DeliverScreen(
     modifier: Modifier = Modifier,
-    onGoBack: () -> Unit
+    contacts: List<Customer>,
+    senderAddress: HomeAddress,
+    receiver: Customer,
+    receiverAddress: HomeAddress,
+    description: String,
+    onGoBack: () -> Unit,
+    onSenderAddressChange: () -> Unit,
+    onReceiverChange: (Customer) -> Unit,
+    onReceiverAddressChange: () -> Unit,
+    onDescriptionChange: (String) -> Unit,
 ) {
     var isLoading by remember { mutableStateOf(false) }
 
@@ -27,8 +40,17 @@ fun DeliverScreen(
     } else {
         DeliverScreenContent(
             modifier = modifier,
+            contacts = contacts,
+            senderAddress = senderAddress,
+            receiver = receiver,
+            receiverAddress = receiverAddress,
+            description = description,
             searchDriver = { isLoading = true },
-            onGoBack = onGoBack
+            onGoBack = onGoBack,
+            onSenderAddressChange = onSenderAddressChange,
+            onReceiverChange = onReceiverChange,
+            onReceiverAddressChange = onReceiverAddressChange,
+            onDescriptionChange = onDescriptionChange,
         )
     }
 }
@@ -36,37 +58,34 @@ fun DeliverScreen(
 @Composable
 fun DeliverScreenContent(
     modifier: Modifier = Modifier,
+    contacts: List<Customer>,
+    senderAddress: HomeAddress,
+    receiver: Customer,
+    receiverAddress: HomeAddress,
+    description: String,
     searchDriver: () -> Unit,
-    onGoBack: () -> Unit
+    onGoBack: () -> Unit,
+    onSenderAddressChange: () -> Unit,
+    onReceiverChange: (Customer) -> Unit,
+    onReceiverAddressChange: () -> Unit,
+    onDescriptionChange: (String) -> Unit,
 ) {
-    var addressSender by remember { mutableStateOf("") }
-    var receiver by remember { mutableStateOf("") }
-    var addressReceiver by remember { mutableStateOf("") }
-    var description by remember { mutableStateOf("") }
-
-    Box(modifier = modifier.fillMaxWidth()) {
+        Box(modifier = modifier.fillMaxWidth()) {
         Column {
             Title(onGoBack = onGoBack, withGoBack = true)
             SubTitle(text = "Deliver details")
-            DropDownLabel(
-                label = "Address (sender)",
-                options = listOf("Home", "Work", "Other"),
-                onOptionSelected = { addressSender = it }
-            )
+            ChooseAddressLabel(label = "Address (sender)", address = showAddress(senderAddress), onAddressChange = onSenderAddressChange)
             DropDownLabel(
                 label = "Receiver",
-                options = listOf("Daan", "Glenn", "Jarne"),
-                onOptionSelected = { receiver = it }
+                contacts =  contacts,
+                receiver = receiver,
+                onContactSelected = onReceiverChange
             )
-            DropDownLabel(
-                label = "Address (receiver)",
-                options = listOf("Home", "Work", "Other"),
-                onOptionSelected = { addressReceiver = it }
-            )
+            ChooseAddressLabel(label = "Address (receiver)", address = showAddress(receiverAddress), onAddressChange = onReceiverAddressChange)
             TextFieldLabel(
                 label = "Description",
                 value = description,
-                onValueChange = { description = it })
+                onValueChange = onDescriptionChange)
             GeneralButton(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
@@ -80,13 +99,41 @@ fun DeliverScreenContent(
 }
 
 @Composable
+fun ChooseAddressLabel(label: String, address: String, onAddressChange: () -> Unit) {
+    Label(text = label)
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(1.dp, Color.Black)
+                .padding(start = 10.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Content(
+                modifier = Modifier
+                    .weight(1f),
+                text = address
+            )
+            IconButton(
+                onClick = onAddressChange,
+            ) {
+                Icon(imageVector = Icons.Default.Add, contentDescription = null)
+            }
+        }
+    }
+    Spacer(modifier = Modifier.height(10.dp))
+}
+
+@Composable
 fun DropDownLabel(
     label: String,
-    options: List<String>,
-    onOptionSelected: (String) -> Unit,
+    contacts: List<Customer>,
+    receiver: Customer,
+    onContactSelected: (Customer) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var text by remember { mutableStateOf(options[0]) }
 
     Column {
         Label(text = label)
@@ -100,9 +147,10 @@ fun DropDownLabel(
                     .padding(start = 10.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Content(modifier = Modifier
-                    .weight(1f)
-                    .clickable(onClick = { expanded = true }), text = text
+                Content(
+                    modifier = Modifier
+                        .weight(1f)
+                        .clickable(onClick = { expanded = true }), text = receiver.person.name
                 )
                 IconButton(
                     onClick = { expanded = true },
@@ -116,13 +164,12 @@ fun DropDownLabel(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            options.forEach { option ->
+            contacts.forEach { option ->
                 DropdownMenuItem(onClick = {
-                    text = option
                     expanded = false
-                    onOptionSelected(option)
+                    onContactSelected(option)
                 }) {
-                    Text(text = option)
+                    Text(text = option.person.name)
                 }
             }
         }

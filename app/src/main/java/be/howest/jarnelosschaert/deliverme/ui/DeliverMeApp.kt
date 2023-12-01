@@ -16,8 +16,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AppController
+import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
+import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
+import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNav
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingPages.AddressScreen
@@ -57,7 +59,9 @@ fun DeliverMeApp(authController: AuthController) {
         },
         content = { innerPadding ->
             AuthScreenNavigationConfigurations(
-                modifier = Modifier.padding(innerPadding).padding(start = 15.dp, end = 8.dp),
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .padding(start = 15.dp, end = 8.dp),
                 navController = navController,
                 authController = authController,
                 onNavigation = { pageClicked = it }
@@ -73,7 +77,7 @@ private fun AuthScreenNavigationConfigurations(
     authController: AuthController,
     onNavigation: (String) -> Unit
 ) {
-    val controller = AppController(navController)
+    val controller = AppController(navController = navController, authController = authController)
 
     NavHost(navController, startDestination = BottomNavigationScreens.Home.route) {
         composable(BottomNavigationScreens.Home.route) {
@@ -91,14 +95,25 @@ private fun AuthScreenNavigationConfigurations(
             onNavigation(BottomNavigationScreens.Notifications.route)
         }
         composable(BottomNavigationScreens.Settings.route) {
-            SettingScreen(modifier = modifier,
+            SettingScreen(
+                modifier = modifier,
                 navigateTo = { controller.navigateTo(it) },
             )
             onNavigation(BottomNavigationScreens.Settings.route)
         }
         composable(OtherScreens.Deliver.route) {
-            DeliverScreen(modifier = modifier,
-                onGoBack = { controller.goBack() }
+            DeliverScreen(
+                modifier = modifier,
+                contacts = controller.uiState.contacts,
+                senderAddress = controller.uiState.senderAddress,
+                receiver = controller.uiState.receiver,
+                receiverAddress = controller.uiState.receiverAddress,
+                description = controller.uiState.description,
+                onGoBack = { controller.goBack() },
+                onSenderAddressChange = { controller.onSenderAddressChange() },
+                onReceiverChange = { controller.onReceiverChange(it) },
+                onReceiverAddressChange = { controller.onReceiverAddressChange() },
+                onDescriptionChange = { controller.uiState.description = it },
             )
             onNavigation(OtherScreens.Deliver.route)
         }
@@ -126,10 +141,9 @@ private fun AuthScreenNavigationConfigurations(
         }
         composable(OtherScreens.Address.route) {
             AddressScreen(modifier = modifier,
+                subtitle = controller.uiState.addressScreenStatus.subtitle,
                 onGoBack = { controller.goBack() },
-                onConfirmAddress = {street, city, zip, number ->
-
-                }
+                onConfirmAddress = { controller.onConfirmAddress(it) },
             )
         }
         composable(OtherScreens.Map.route) {
@@ -160,7 +174,14 @@ fun DeliverMeBottomNavigation(
                 color = MaterialTheme.colors.primary
             }
             BottomNavigationItem(
-                icon = { Icon(screen.icon, contentDescription = null, tint = color, modifier = Modifier.size(36.dp)) },
+                icon = {
+                    Icon(
+                        screen.icon,
+                        contentDescription = null,
+                        tint = color,
+                        modifier = Modifier.size(36.dp)
+                    )
+                },
                 selected = currentRoute == screen.route,
                 onClick = {
                     if (currentRoute != screen.route) {

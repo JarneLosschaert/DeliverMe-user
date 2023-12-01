@@ -52,17 +52,17 @@ class AuthController(
         uiState.signUpErrors = errors
     }
 
-    fun signUp(street: String, city: String, zip: String, number: String) {
+    fun signUp(homeAddress: HomeAddress) {
         cleanErros()
         authService.signUp(
             _signUp.username,
             _signUp.email,
             _signUp.phone,
             _signUp.password,
-            street,
-            number,
-            zip,
-            city,
+            homeAddress.street,
+            homeAddress.number,
+            homeAddress.zip,
+            homeAddress.city,
             { handleLoginSignUpSuccess(it) },
             { handleSignUpFailure(it) }
         )

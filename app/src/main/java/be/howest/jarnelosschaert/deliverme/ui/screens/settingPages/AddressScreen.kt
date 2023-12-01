@@ -10,6 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.SubTitle
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.TextFieldLabel
@@ -20,12 +21,12 @@ fun AddressScreen(
     modifier: Modifier = Modifier,
     subtitle: String = "Address details",
     onGoBack: () -> Unit,
-    onConfirmAddress: (String, String, String, String) -> Unit
+    onConfirmAddress: (HomeAddress) -> Unit
 ) {
     val street = remember { mutableStateOf("") }
     val number = remember { mutableStateOf("") }
     val city = remember { mutableStateOf("") }
-    val postalCode = remember { mutableStateOf("") }
+    val zip = remember { mutableStateOf("") }
 
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
@@ -47,9 +48,9 @@ fun AddressScreen(
                         value = city.value,
                         onValueChange = { city.value = it })
                     TextFieldLabel(
-                        label = "Postal code",
-                        value = postalCode.value,
-                        onValueChange = { postalCode.value = it },
+                        label = "Zip",
+                        value = zip.value,
+                        onValueChange = { zip.value = it },
                         isNumber = true
                     )
                     GeneralButton(
@@ -58,10 +59,13 @@ fun AddressScreen(
                             .padding(start = 10.dp, end = 10.dp),
                         onClick = {
                             onConfirmAddress(
-                                street.value,
-                                number.value,
-                                city.value,
-                                postalCode.value
+                                HomeAddress(
+                                    id = -1,
+                                    street = street.value,
+                                    number = number.value,
+                                    zip = zip.value,
+                                    city = city.value,
+                                )
                             )
                         }
                     )

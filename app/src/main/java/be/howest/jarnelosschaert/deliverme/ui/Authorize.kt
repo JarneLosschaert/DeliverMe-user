@@ -69,9 +69,7 @@ private fun AuthScreenNavigationConfigurations(
                 modifier = Modifier.padding(start = 15.dp, end = 8.dp),
                 subtitle = "Please enter your home address",
                 onGoBack = { navController.popBackStack() },
-                onConfirmAddress = { street, city, zip, number ->
-                    controller.signUp(street, city, zip, number)
-                }
+                onConfirmAddress = { controller.signUp(it) }
             )
         }
         composable(AuthorizeScreens.App.route) {
