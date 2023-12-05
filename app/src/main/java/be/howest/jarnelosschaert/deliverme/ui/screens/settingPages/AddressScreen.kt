@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
+import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 
 @Composable
@@ -19,7 +19,7 @@ fun AddressScreen(
     subtitle: String = "Address details",
     errors: List<String>,
     onGoBack: () -> Unit,
-    onConfirmAddress: (HomeAddress) -> Unit
+    onConfirmAddress: (Address) -> Unit
 ) {
     val street = remember { mutableStateOf("") }
     val number = remember { mutableStateOf("") }
@@ -58,7 +58,7 @@ fun AddressScreen(
                             .padding(start = 10.dp, end = 10.dp),
                         onClick = {
                             onConfirmAddress(
-                                HomeAddress(
+                                Address(
                                     id = -1,
                                     street = street.value,
                                     number = number.value,

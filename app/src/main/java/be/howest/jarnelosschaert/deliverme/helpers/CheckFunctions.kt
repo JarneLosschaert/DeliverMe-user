@@ -1,6 +1,6 @@
 package be.howest.jarnelosschaert.deliverme.helpers
 
-import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
+import be.howest.jarnelosschaert.deliverme.logic.models.Address
 
 fun checkValuesSignUp(
     username: String,
@@ -48,30 +48,30 @@ private fun isValidPhoneNumber(phone: String): Boolean {
     return cleanedPhoneNumber.startsWith("0") && cleanedPhoneNumber.length == 10
 }
 
-fun checkAddress(HomeAddress: HomeAddress): List<String> {
+fun checkAddress(Address: Address): List<String> {
     val errors = mutableListOf<String>()
 
-    if (HomeAddress.street.isBlank()) {
+    if (Address.street.isBlank()) {
         errors.add("Street is required.")
-    } else if (!isValidStreet(HomeAddress.street)) {
+    } else if (!isValidStreet(Address.street)) {
         errors.add("Invalid street format.")
     }
 
-    if (HomeAddress.number.isBlank()) {
+    if (Address.number.isBlank()) {
         errors.add("Number is required.")
-    } else if (!isValidNumber(HomeAddress.number)) {
+    } else if (!isValidNumber(Address.number)) {
         errors.add("Invalid number format.")
     }
 
-    if (HomeAddress.zip.isBlank()) {
+    if (Address.zip.isBlank()) {
         errors.add("Zip code is required.")
-    } else if (!isValidPostalCode(HomeAddress.zip)) {
+    } else if (!isValidPostalCode(Address.zip)) {
         errors.add("Invalid zip code format.")
     }
 
-    if (HomeAddress.city.isBlank()) {
+    if (Address.city.isBlank()) {
         errors.add("City is required.")
-    } else if (!isValidCity(HomeAddress.city)) {
+    } else if (!isValidCity(Address.city)) {
         errors.add("Invalid city format.")
     }
 

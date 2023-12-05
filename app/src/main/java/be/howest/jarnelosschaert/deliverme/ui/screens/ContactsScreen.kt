@@ -114,7 +114,7 @@ fun Contact(
 
         Info(text = contact.person.email, isEmail = true)
         Info(text = showPhoneNumber(contact.person.phone), isPhone = true)
-        Info(text = showAddress(contact.homeAddress))
+        Info(text = showAddress(contact.address))
     }
     Spacer(modifier = Modifier.height(10.dp))
 }

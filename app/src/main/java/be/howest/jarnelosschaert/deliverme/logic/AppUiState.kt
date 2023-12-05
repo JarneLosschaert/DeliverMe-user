@@ -9,8 +9,6 @@ import be.howest.jarnelosschaert.deliverme.logic.data.PackageSize
 import be.howest.jarnelosschaert.deliverme.logic.data.defaultAddress
 import be.howest.jarnelosschaert.deliverme.logic.data.defaultCustomer
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
-import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
-import be.howest.jarnelosschaert.deliverme.logic.models.Person
 
 class AppUiState : ViewModel() {
 

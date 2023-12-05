@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import be.howest.jarnelosschaert.deliverme.logic.data.PackageSize
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
-import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
+import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
 
@@ -22,9 +22,9 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
 fun DeliverScreen(
     modifier: Modifier = Modifier,
     contacts: List<Customer>,
-    senderAddress: HomeAddress,
+    senderAddress: Address,
     receiver: Customer,
-    receiverAddress: HomeAddress,
+    receiverAddress: Address,
     packageSize: PackageSize,
     description: String,
     onGoBack: () -> Unit,
@@ -64,9 +64,9 @@ fun DeliverScreen(
 fun DeliverScreenContent(
     modifier: Modifier = Modifier,
     contacts: List<Customer>,
-    senderAddress: HomeAddress,
+    senderAddress: Address,
     receiver: Customer,
-    receiverAddress: HomeAddress,
+    receiverAddress: Address,
     packageSize: PackageSize,
     description: String,
     searchDriver: () -> Unit,

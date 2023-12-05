@@ -6,7 +6,7 @@ import be.howest.jarnelosschaert.deliverme.logic.AppUiState
 import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
 import be.howest.jarnelosschaert.deliverme.logic.data.dummyContacts
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
-import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
+import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.ui.BottomNavigationScreens
 import be.howest.jarnelosschaert.deliverme.ui.OtherScreens
 
@@ -17,10 +17,10 @@ class AppController(
     val uiState: AppUiState = AppUiState()
 
     init {
-        uiState.senderAddress = authController.uiState.customer.homeAddress
+        uiState.senderAddress = authController.uiState.customer.address
         uiState.contacts = dummyContacts
         uiState.receiver = dummyContacts[0]
-        uiState.receiverAddress = dummyContacts[0].homeAddress
+        uiState.receiverAddress = dummyContacts[0].address
     }
 
     fun onSenderAddressChange() {
@@ -35,19 +35,19 @@ class AppController(
 
     fun onReceiverChange(customer: Customer) {
         uiState.receiver = customer
-        uiState.receiverAddress = customer.homeAddress
+        uiState.receiverAddress = customer.address
     }
 
-    fun onConfirmAddress(homeAddress: HomeAddress) {
-        val errors = checkAddress(homeAddress)
+    fun onConfirmAddress(address: Address) {
+        val errors = checkAddress(address)
         uiState.addressErrors = errors
         if (errors.isEmpty()) {
             when (uiState.addressScreenStatus) {
                 AddressScreenStatus.SENDER_ADDRESS -> {
-                    uiState.senderAddress = homeAddress
+                    uiState.senderAddress = address
                 }
                 AddressScreenStatus.RECEIVER_ADDRESS -> {
-                    uiState.receiverAddress = homeAddress
+                    uiState.receiverAddress = address
                 }
             }
             goBack()
@@ -60,8 +60,8 @@ class AppController(
             it.person.name.lowercase().contains(queryLowerCase, true) ||
             it.person.phone.lowercase().contains(queryLowerCase, true) ||
             it.person.email.lowercase().contains(queryLowerCase, true) ||
-            it.homeAddress.street.lowercase().contains(queryLowerCase, true) ||
-            it.homeAddress.city.lowercase().contains(queryLowerCase, true)
+            it.address.street.lowercase().contains(queryLowerCase, true) ||
+            it.address.city.lowercase().contains(queryLowerCase, true)
         }
     }
 

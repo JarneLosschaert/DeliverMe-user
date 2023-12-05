@@ -5,7 +5,7 @@ import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.helpers.checkValuesSignUp
 import be.howest.jarnelosschaert.deliverme.logic.AuthUiState
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
-import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
+import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.logic.models.Person
 import be.howest.jarnelosschaert.deliverme.logic.models.SignUp
 import be.howest.jarnelosschaert.deliverme.logic.services.AuthService
@@ -34,7 +34,7 @@ class AuthController(
         _isLoggedIn = false
         navController.navigate(AuthorizeScreens.Login.route)
         uiState.jwt = ""
-        uiState.customer = Customer(-1, HomeAddress(-1, "", "", "", ""), Person(-1, "", "", ""))
+        uiState.customer = Customer(-1, Address(-1, "", "", "", ""), Person(-1, "", "", ""))
     }
 
     fun checkSignUp(signUp: SignUp) {
@@ -54,8 +54,8 @@ class AuthController(
         uiState.signUpErrors = errors
     }
 
-    fun signUp(homeAddress: HomeAddress) {
-        val errors = checkAddress(homeAddress)
+    fun signUp(address: Address) {
+        val errors = checkAddress(address)
         uiState.addressErrors = errors
         if (errors.isEmpty()) {
             cleanErrors()
@@ -64,10 +64,10 @@ class AuthController(
                 _signUp.email,
                 _signUp.phone,
                 _signUp.password,
-                homeAddress.street,
-                homeAddress.number,
-                homeAddress.zip,
-                homeAddress.city,
+                address.street,
+                address.number,
+                address.zip,
+                address.city,
                 { handleLoginSignUpSuccess(it) },
                 { handleSignUpFailure(it) }
             )

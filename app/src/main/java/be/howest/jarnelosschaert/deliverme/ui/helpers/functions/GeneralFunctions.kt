@@ -1,9 +1,9 @@
 package be.howest.jarnelosschaert.deliverme.ui.helpers.functions
 
-import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
+import be.howest.jarnelosschaert.deliverme.logic.models.Address
 
-fun showAddress(homeAddress: HomeAddress): String {
-    return "${homeAddress.street} ${homeAddress.number}, ${homeAddress.zip} ${homeAddress.city}"
+fun showAddress(address: Address): String {
+    return "${address.street} ${address.number}, ${address.zip} ${address.city}"
 }
 
 fun showPhoneNumber(phoneNumber: String): String {

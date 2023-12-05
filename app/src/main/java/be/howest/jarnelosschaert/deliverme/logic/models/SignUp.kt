@@ -6,5 +6,4 @@ class SignUp(
     val phone: String,
     val password: String,
     val confirmPassword: String,
-) {
-}
+)

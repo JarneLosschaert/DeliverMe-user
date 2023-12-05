@@ -2,7 +2,7 @@ package be.howest.jarnelosschaert.deliverme.logic.models
 
 import com.google.gson.annotations.SerializedName
 
-data class HomeAddress( // change to address
+data class Address( // change to address
     @SerializedName("id") val id: Int,
     @SerializedName("street") val street: String,
     @SerializedName("number") val number: String,
