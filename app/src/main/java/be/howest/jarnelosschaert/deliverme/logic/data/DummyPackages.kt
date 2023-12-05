@@ -15,4 +15,3 @@ val dummyPackages: List<Package> = dummyContacts.take(10).mapIndexed { index, co
         fee = 5.0 * (index + 1)
     )
 }
-
