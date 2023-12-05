@@ -34,7 +34,7 @@ sealed class OtherScreens(val route: String) {
     object Contacts : OtherScreens("contacts")
     object Contact : OtherScreens("contact")
     object Profile : OtherScreens("profile")
-    object PackageDetails : OtherScreens("packageDetails")
+    object DeliveryDetails : OtherScreens("deliveryDetails")
     object Address : OtherScreens("address")
     object Map : OtherScreens("map")
 }
@@ -79,15 +79,17 @@ private fun AuthScreenNavigationConfigurations(
     NavHost(navController, startDestination = BottomNavigationScreens.Home.route) {
         composable(BottomNavigationScreens.Home.route) {
             HomeScreen(modifier = modifier,
+                activeDeliveries = controller.uiState.activeDeliveries,
+                pastDeliveries = controller.uiState.pastDeliveries,
+                onDeliveryClick = { controller.onDeliveryClicked(it) },
                 navigateDeliver = { controller.navigateTo(OtherScreens.Deliver.route) },
                 navigateContacts = { controller.navigateTo(OtherScreens.Contacts.route) },
-                showPackageDetails = { controller.navigateTo(OtherScreens.PackageDetails.route) }
             )
             onNavigate(BottomNavigationScreens.Home.route)
         }
         composable(BottomNavigationScreens.Notifications.route) {
             NotificationsScreen(modifier = modifier,
-                showPackageDetails = { controller.navigateTo(OtherScreens.PackageDetails.route) }
+                showPackageDetails = { controller.navigateTo(OtherScreens.DeliveryDetails.route) }
             )
             onNavigate(BottomNavigationScreens.Notifications.route)
         }
@@ -142,12 +144,13 @@ private fun AuthScreenNavigationConfigurations(
                 deleteAccount = { authController.deleteAccount() }
             )
         }
-        composable(OtherScreens.PackageDetails.route) {
-            PackageDetailsScreen(modifier = modifier,
+        composable(OtherScreens.DeliveryDetails.route) {
+            DeliveryDetailsScreen(modifier = modifier,
+                delivery = controller.uiState.delivery,
                 onGoBack = { controller.goBack() },
                 navigateMap = { controller.navigateTo(OtherScreens.Map.route) }
             )
-            onNavigate(OtherScreens.PackageDetails.route)
+            onNavigate(OtherScreens.DeliveryDetails.route)
         }
         composable(OtherScreens.Address.route) {
             AddressScreen(modifier = modifier,

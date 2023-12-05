@@ -6,5 +6,5 @@ data class Person(
     @SerializedName("id") val id: Int,
     @SerializedName("name") val name: String,
     @SerializedName("email") val email: String,
-    @SerializedName("phone") val phone: String
+    @SerializedName("phone") val phone: String // to string
 )

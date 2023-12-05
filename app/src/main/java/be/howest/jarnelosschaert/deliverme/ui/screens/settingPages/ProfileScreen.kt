@@ -181,7 +181,7 @@ fun Profile(
             onConfirm = {}
         ))
     EditableContentLabel(label = "Home address",
-        text = showAddress(customer.homeAddress),
+        text = customer.homeAddress.toString,
         onEdit = onChoiceEdit,
         popupContent = PopupContent(
             title = "Change home address",

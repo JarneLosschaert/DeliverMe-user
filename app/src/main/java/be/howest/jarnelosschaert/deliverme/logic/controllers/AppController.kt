@@ -5,8 +5,11 @@ import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.logic.AppUiState
 import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
 import be.howest.jarnelosschaert.deliverme.logic.data.dummyContacts
+import be.howest.jarnelosschaert.deliverme.logic.data.dummyDeliveries
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
+import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
+import be.howest.jarnelosschaert.deliverme.logic.models.DeliveryState
 import be.howest.jarnelosschaert.deliverme.ui.BottomNavigationScreens
 import be.howest.jarnelosschaert.deliverme.ui.OtherScreens
 
@@ -17,10 +20,17 @@ class AppController(
     val uiState: AppUiState = AppUiState()
 
     init {
+        uiState.activeDeliveries = dummyDeliveries.filter { it.state == DeliveryState.ASSIGNED }
+        uiState.pastDeliveries = dummyDeliveries.filter { it.state == DeliveryState.DELIVERED }
         uiState.senderAddress = authController.uiState.customer.homeAddress
         uiState.contacts = dummyContacts
         uiState.receiver = dummyContacts[0]
         uiState.receiverAddress = dummyContacts[0].homeAddress
+    }
+
+    fun onDeliveryClicked(delivery : Delivery) {
+        uiState.delivery = delivery
+        navigateTo(OtherScreens.DeliveryDetails.route)
     }
 
     fun onSenderAddressChange() {

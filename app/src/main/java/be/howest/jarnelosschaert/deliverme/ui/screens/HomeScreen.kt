@@ -18,14 +18,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import be.howest.jarnelosschaert.deliverme.R
+import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
+    activeDeliveries: List<Delivery>,
+    pastDeliveries: List<Delivery>,
+    onDeliveryClick: (Delivery) -> Unit,
     navigateDeliver: () -> Unit,
     navigateContacts: () -> Unit,
-    showPackageDetails: () -> Unit
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
@@ -34,13 +37,19 @@ fun HomeScreen(
             LazyColumn(content = {
                 item {
                     SubTitle(text = "Active Deliveries")
-                    Delivery(showPackageDetails = showPackageDetails)
-                    Delivery(showPackageDetails = showPackageDetails)
+                    for (delivery in activeDeliveries) {
+                        Delivery(
+                            delivery = delivery,
+                            onDeliveryClick = onDeliveryClick
+                        )
+                    }
                     SubTitle(text = "History")
-                    Delivery(showPackageDetails = showPackageDetails)
-                    Delivery(showPackageDetails = showPackageDetails)
-                    Delivery(showPackageDetails = showPackageDetails)
-                    Delivery(showPackageDetails = showPackageDetails)
+                    for (delivery in pastDeliveries) {
+                        Delivery(
+                            delivery = delivery,
+                            onDeliveryClick = onDeliveryClick
+                        )
+                    }
                 }
             })
         }
@@ -103,7 +112,8 @@ fun HomeButton(
 @Composable
 fun Delivery(
     modifier: Modifier = Modifier,
-    showPackageDetails: () -> Unit
+    delivery: Delivery,
+    onDeliveryClick: (Delivery) -> Unit,
 ) {
     Box(
         modifier = modifier
@@ -120,17 +130,17 @@ fun Delivery(
         ) {
             Column {
                 Label(text = "Sender")
-                Content(text = "You")
+                Content(text = delivery.packageInfo.sender.person.name)
                 Spacer(modifier = Modifier.height(10.dp))
                 Label(text = "Receiver")
-                Content(text = "Glenn Callens")
+                Content(text = delivery.packageInfo.receiver.person.name)
             }
             Column(
                 modifier = Modifier.fillMaxHeight(),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.End
             ) {
-                GeneralButton(onClick = showPackageDetails)
+                GeneralButton(text = "Details", onClick = { onDeliveryClick(delivery) })
                 DateDetails(text = "12/10/2022")
             }
         }

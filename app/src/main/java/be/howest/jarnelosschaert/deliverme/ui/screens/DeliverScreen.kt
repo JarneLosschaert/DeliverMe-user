@@ -83,7 +83,7 @@ fun DeliverScreenContent(
             SubTitle(text = "Delivery details")
             ChooseAddressLabel(
                 label = "Address (sender)",
-                address = showAddress(senderAddress),
+                address = senderAddress.toString,
                 onAddressChange = onSenderAddressChange
             )
             DropDownContacts(
@@ -94,7 +94,7 @@ fun DeliverScreenContent(
             )
             ChooseAddressLabel(
                 label = "Address (receiver)",
-                address = showAddress(receiverAddress),
+                address = receiverAddress.toString,
                 onAddressChange = onReceiverAddressChange
             )
             DropDownPackageSize(

@@ -5,37 +5,36 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.ContentLabel
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 
 @Composable
-fun PackageDetailsScreen(
+fun DeliveryDetailsScreen(
     modifier: Modifier = Modifier,
+    delivery: Delivery,
     onGoBack: () -> Unit,
     navigateMap: () -> Unit
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         LazyColumn(content = {
             item {
-                Title(text = "Package details", onGoBack = onGoBack, withGoBack = true)
-
-                ContentLabel(label = "Sender", content = "Daan Hautekiet")
+                Title(text = "Delivery details", onGoBack = onGoBack, withGoBack = true)
+                ContentLabel(label = "Sender", content = delivery.packageInfo.sender.person.name)
                 ContentLabel(
                     label = "Address (sender)",
-                    content = "Kortrijksestraat 12, 8500 Kortrijk"
+                    content = delivery.packageInfo.sender.homeAddress.toString
                 )
-                ContentLabel(label = "Receiver", content = "Glenn Callens")
+                ContentLabel(label = "Receiver", content = delivery.packageInfo.receiver.person.name)
                 ContentLabel(
                     label = "Address (receiver)",
-                    content = "Kortrijksestraat 12, 8500 Kortrijk"
+                    content = delivery.packageInfo.receiver.homeAddress.toString
                 )
-                ContentLabel(label = "Date", content = "12/10/2022")
-                ContentLabel(label = "Departure", content = "13:20")
-                ContentLabel(label = "Expected arrival", content = "13:40")
-                ContentLabel(label = "Arrival", content = "13:41")
-                ContentLabel(label = "Description", content = "A small package")
-
+                ContentLabel(label = "Date", content = "12/10/2022") // later change to delivery.date
+                ContentLabel(label = "Departure", content = "13:20") // later change to delivery.departure
+                ContentLabel(label = "Arrival", content = "13:41") // later change to delivery.arrival
+                ContentLabel(label = "Description", content = delivery.packageInfo.description)
                 GeneralButton(text = "See live location", onClick = navigateMap)
             }
         })

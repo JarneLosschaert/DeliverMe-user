@@ -8,4 +8,6 @@ data class Address(
     @SerializedName("number") val number: String,
     @SerializedName("zip") val zip: String,
     @SerializedName("city") val city: String,
+
+    val toString: String = "$street $number, $zip $city"
 )
