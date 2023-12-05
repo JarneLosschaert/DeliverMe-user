@@ -30,7 +30,7 @@ fun ContactScreen(
                         content = showPhoneNumber(contact.person.phone)
                     )
                     ContentLabel(label = "Email", content = contact.person.email)
-                    ContentLabel(label = "Home address", content = showAddress(contact.address))
+                    ContentLabel(label = "Home address", content = showAddress(contact.homeAddress))
                 }
             })
         }

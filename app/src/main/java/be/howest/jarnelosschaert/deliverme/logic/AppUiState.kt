@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
-import be.howest.jarnelosschaert.deliverme.logic.data.PackageSize
+import be.howest.jarnelosschaert.deliverme.logic.models.PackageSize
 import be.howest.jarnelosschaert.deliverme.logic.data.defaultAddress
 import be.howest.jarnelosschaert.deliverme.logic.data.defaultCustomer
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer

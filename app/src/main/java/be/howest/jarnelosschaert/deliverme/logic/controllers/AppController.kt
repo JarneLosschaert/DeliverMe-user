@@ -17,10 +17,10 @@ class AppController(
     val uiState: AppUiState = AppUiState()
 
     init {
-        uiState.senderAddress = authController.uiState.customer.address
+        uiState.senderAddress = authController.uiState.customer.homeAddress
         uiState.contacts = dummyContacts
         uiState.receiver = dummyContacts[0]
-        uiState.receiverAddress = dummyContacts[0].address
+        uiState.receiverAddress = dummyContacts[0].homeAddress
     }
 
     fun onSenderAddressChange() {
@@ -35,7 +35,7 @@ class AppController(
 
     fun onReceiverChange(customer: Customer) {
         uiState.receiver = customer
-        uiState.receiverAddress = customer.address
+        uiState.receiverAddress = customer.homeAddress
     }
 
     fun onConfirmAddress(address: Address) {
@@ -60,8 +60,8 @@ class AppController(
             it.person.name.lowercase().contains(queryLowerCase, true) ||
             it.person.phone.lowercase().contains(queryLowerCase, true) ||
             it.person.email.lowercase().contains(queryLowerCase, true) ||
-            it.address.street.lowercase().contains(queryLowerCase, true) ||
-            it.address.city.lowercase().contains(queryLowerCase, true)
+            it.homeAddress.street.lowercase().contains(queryLowerCase, true) ||
+            it.homeAddress.city.lowercase().contains(queryLowerCase, true)
         }
     }
 

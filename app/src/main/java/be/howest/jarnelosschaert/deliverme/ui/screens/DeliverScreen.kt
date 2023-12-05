@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import be.howest.jarnelosschaert.deliverme.logic.data.PackageSize
+import be.howest.jarnelosschaert.deliverme.logic.models.PackageSize
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
@@ -223,7 +223,7 @@ fun DropDownPackageSize(
                 Content(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable(onClick = { expanded = true }), text = size.value
+                        .clickable(onClick = { expanded = true }), text = size.toString()
                 )
                 IconButton(
                     onClick = { expanded = true },
@@ -242,7 +242,7 @@ fun DropDownPackageSize(
                     expanded = false
                     onSizeSelected(option)
                 }) {
-                    Text(text = option.value)
+                    Text(text = option.toString())
                 }
             }
         }
