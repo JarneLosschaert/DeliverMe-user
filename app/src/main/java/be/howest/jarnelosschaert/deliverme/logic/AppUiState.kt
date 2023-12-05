@@ -13,6 +13,7 @@ import be.howest.jarnelosschaert.deliverme.logic.models.Person
 class AppUiState : ViewModel() {
 
     var contacts by mutableStateOf(emptyList<Customer>())
+    var contactsQuery by mutableStateOf("")
 
     var senderAddress by mutableStateOf(HomeAddress(-1, "", "", "", ""))
     var receiver by mutableStateOf(Customer(-1, HomeAddress(-1, "", "", "", ""), Person(-1, "", "", "")))

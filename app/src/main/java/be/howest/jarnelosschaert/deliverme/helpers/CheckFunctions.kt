@@ -24,7 +24,7 @@ fun checkValuesSignUp(
     if (phone.isBlank()) {
         errors.add("Phone number is required.")
     } else if (!isValidPhoneNumber(phone)) {
-        errors.add("Invalid phone number format.")
+        errors.add("Invalid phone number format (ex: 0499999999).")
     }
 
     if (password.isBlank()) {
@@ -66,7 +66,7 @@ fun checkAddress(HomeAddress: HomeAddress): List<String> {
     if (HomeAddress.zip.isBlank()) {
         errors.add("Zip code is required.")
     } else if (!isValidPostalCode(HomeAddress.zip)) {
-        errors.add("Invalid postal zip code format.")
+        errors.add("Invalid zip code format.")
     }
 
     if (HomeAddress.city.isBlank()) {
@@ -84,12 +84,13 @@ private fun isValidPostalCode(zip: String): Boolean {
 }
 
 private fun isValidStreet(street: String): Boolean {
+    
     val streetRegex = "^[A-Za-z]+(?:[\\s-][A-Za-z]+)*\$"
     return street.matches(streetRegex.toRegex())
 }
 
 private fun isValidNumber(number: String): Boolean {
-    val numberRegex = "^[0-9]+[a-zA-Z]*\$"
+    val numberRegex = "^\\d+[a-zA-Z]*\$"
     return number.matches(numberRegex.toRegex())
 }
 

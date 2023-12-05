@@ -9,7 +9,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Phone
@@ -20,20 +19,23 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import be.howest.jarnelosschaert.deliverme.R
+import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Content
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralTextField
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralTextPopup
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
 import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showPhoneNumber
 
 
 @Composable
 fun ContactsScreen(
     modifier: Modifier = Modifier,
-    onGoBack: () -> Unit
+    contacts: List<Customer>,
+    query: String,
+    onGoBack: () -> Unit,
+    onQueryChange: (String) -> Unit
 ) {
-    val query = remember { mutableStateOf("") }
-
     var displayPopup by remember { mutableStateOf(false) }
     if (displayPopup) {
         GeneralTextPopup(
@@ -48,22 +50,16 @@ fun ContactsScreen(
         Column {
             Title(text = "Contacts", onGoBack = onGoBack, withGoBack = true)
             SearchBar(
-                query = query.value,
-                onQueryChange = { query.value = it },
+                query = query,
+                onQueryChange = onQueryChange,
                 displayContactPopup = { displayPopup = true }
             )
             LazyColumn(content =
             {
                 item {
-                    Contact()
-                    Contact()
-                    Contact()
-                    Contact()
-                    Contact()
-                    Contact()
-                    Contact()
-                    Contact()
-                    Contact()
+                    for (contact in contacts) {
+                        Contact(contact = contact)
+                    }
                 }
             })
         }
@@ -102,18 +98,18 @@ fun SearchBar(
 }
 
 @Composable
-fun Contact() {
+fun Contact(contact: Customer) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
             .padding(10.dp),
     ) {
-        Content(text = "Glenn Callens", fontSize = 19)
+        Content(text = contact.person.name, fontSize = 19)
 
-        Info(text = "glenncallens@gmail.com", isEmail = true)
-        Info(text = showPhoneNumber("0499 99 99 99"), isPhone = true)
-        Info(text = "Kortrijksesteenweg 100, 9000 Gent")
+        Info(text = contact.person.email, isEmail = true)
+        Info(text = showPhoneNumber(contact.person.phone), isPhone = true)
+        Info(text = showAddress(contact.homeAddress))
     }
     Spacer(modifier = Modifier.height(10.dp))
 }

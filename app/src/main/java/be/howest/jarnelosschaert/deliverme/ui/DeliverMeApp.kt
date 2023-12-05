@@ -18,8 +18,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AppController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
-import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
-import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNav
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingPages.AddressScreen
@@ -121,7 +119,10 @@ private fun AuthScreenNavigationConfigurations(
         }
         composable(OtherScreens.Contacts.route) {
             ContactsScreen(modifier = modifier,
-                onGoBack = { controller.goBack() }
+                contacts = controller.getContacts(),
+                query = controller.uiState.contactsQuery,
+                onGoBack = { controller.goBack() },
+                onQueryChange = { controller.uiState.contactsQuery = it },
             )
             onNavigation(OtherScreens.Contacts.route)
         }

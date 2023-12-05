@@ -8,7 +8,7 @@ fun showAddress(homeAddress: HomeAddress): String {
 
 fun showPhoneNumber(phoneNumber: String): String {
     if (phoneNumber.length == 10) {
-        return "0${phoneNumber.substring(0, 2)} ${phoneNumber.substring(2, 4)} ${phoneNumber.substring(4, 6)} ${phoneNumber.substring(6, 8)} ${phoneNumber.substring(8, 10)}"
+        return "${phoneNumber.substring(0, 4)} ${phoneNumber.substring(4, 6)} ${phoneNumber.substring(6, 8)} ${phoneNumber.substring(8, 10)}"
     }
     return phoneNumber
 }
