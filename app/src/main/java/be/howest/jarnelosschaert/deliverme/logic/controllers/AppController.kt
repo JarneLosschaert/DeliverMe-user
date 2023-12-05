@@ -65,6 +65,11 @@ class AppController(
         }
     }
 
+    fun onContactClick(customer: Customer) {
+        uiState.contact = customer
+        navigateTo(OtherScreens.Contact.route)
+    }
+
     fun goBack() {
         if (navController.currentDestination?.route == BottomNavigationScreens.Home.route) {
             //uiState.showExitDialog = true

@@ -32,6 +32,7 @@ sealed class BottomNavigationScreens(val route: String, val icon: ImageVector) {
 sealed class OtherScreens(val route: String) {
     object Deliver : OtherScreens("deliver")
     object Contacts : OtherScreens("contacts")
+    object Contact : OtherScreens("contact")
     object Profile : OtherScreens("profile")
     object PackageDetails : OtherScreens("packageDetails")
     object Address : OtherScreens("address")
@@ -40,8 +41,6 @@ sealed class OtherScreens(val route: String) {
 
 @Composable
 fun DeliverMeApp(authController: AuthController) {
-    //HandleNotifications()
-
     val navController = rememberNavController()
     val bottomNavigationItems = listOf(
         BottomNavigationScreens.Home,
@@ -62,7 +61,7 @@ fun DeliverMeApp(authController: AuthController) {
                     .padding(start = 15.dp, end = 8.dp),
                 navController = navController,
                 authController = authController,
-                onNavigation = { pageClicked = it }
+                onNavigate = { pageClicked = it }
             )
         }
     )
@@ -73,7 +72,7 @@ private fun AuthScreenNavigationConfigurations(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     authController: AuthController,
-    onNavigation: (String) -> Unit
+    onNavigate: (String) -> Unit
 ) {
     val controller = AppController(navController = navController, authController = authController)
 
@@ -84,20 +83,20 @@ private fun AuthScreenNavigationConfigurations(
                 navigateContacts = { controller.navigateTo(OtherScreens.Contacts.route) },
                 showPackageDetails = { controller.navigateTo(OtherScreens.PackageDetails.route) }
             )
-            onNavigation(BottomNavigationScreens.Home.route)
+            onNavigate(BottomNavigationScreens.Home.route)
         }
         composable(BottomNavigationScreens.Notifications.route) {
             NotificationsScreen(modifier = modifier,
                 showPackageDetails = { controller.navigateTo(OtherScreens.PackageDetails.route) }
             )
-            onNavigation(BottomNavigationScreens.Notifications.route)
+            onNavigate(BottomNavigationScreens.Notifications.route)
         }
         composable(BottomNavigationScreens.Settings.route) {
             SettingScreen(
                 modifier = modifier,
                 navigateTo = { controller.navigateTo(it) },
             )
-            onNavigation(BottomNavigationScreens.Settings.route)
+            onNavigate(BottomNavigationScreens.Settings.route)
         }
         composable(OtherScreens.Deliver.route) {
             DeliverScreen(
@@ -115,7 +114,7 @@ private fun AuthScreenNavigationConfigurations(
                 onReceiverAddressChange = { controller.onReceiverAddressChange() },
                 onDescriptionChange = { controller.uiState.description = it },
             )
-            onNavigation(OtherScreens.Deliver.route)
+            onNavigate(OtherScreens.Deliver.route)
         }
         composable(OtherScreens.Contacts.route) {
             ContactsScreen(modifier = modifier,
@@ -123,8 +122,16 @@ private fun AuthScreenNavigationConfigurations(
                 query = controller.uiState.contactsQuery,
                 onGoBack = { controller.goBack() },
                 onQueryChange = { controller.uiState.contactsQuery = it },
+                onContactClick = { controller.onContactClick(it) }
             )
-            onNavigation(OtherScreens.Contacts.route)
+            onNavigate(OtherScreens.Contacts.route)
+        }
+        composable(OtherScreens.Contact.route) {
+            ContactScreen(modifier = modifier,
+                contact = controller.uiState.contact,
+                onGoBack = { controller.goBack() },
+            )
+            onNavigate(OtherScreens.Contact.route)
         }
         composable(OtherScreens.Profile.route) {
             ProfileScreen(modifier = modifier,
@@ -140,7 +147,7 @@ private fun AuthScreenNavigationConfigurations(
                 onGoBack = { controller.goBack() },
                 navigateMap = { controller.navigateTo(OtherScreens.Map.route) }
             )
-            onNavigation(OtherScreens.PackageDetails.route)
+            onNavigate(OtherScreens.PackageDetails.route)
         }
         composable(OtherScreens.Address.route) {
             AddressScreen(modifier = modifier,
@@ -154,7 +161,7 @@ private fun AuthScreenNavigationConfigurations(
             MapScreen(
                 onGoBack = { controller.goBack() }
             )
-            onNavigation(OtherScreens.Map.route)
+            onNavigate(OtherScreens.Map.route)
         }
     }
 }

@@ -104,6 +104,13 @@ fun DateDetails(text: String) {
 }
 
 @Composable
+fun ContentLabel(label: String, content: String) {
+    Label(text = label)
+    Content(text = content)
+    Spacer(modifier = Modifier.height(10.dp))
+}
+
+@Composable
 fun GeneralButton(
     modifier: Modifier = Modifier,
     text: String = "See details",

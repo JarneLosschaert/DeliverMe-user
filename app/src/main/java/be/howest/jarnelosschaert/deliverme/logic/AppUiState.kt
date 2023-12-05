@@ -6,6 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
 import be.howest.jarnelosschaert.deliverme.logic.data.PackageSize
+import be.howest.jarnelosschaert.deliverme.logic.data.defaultAddress
+import be.howest.jarnelosschaert.deliverme.logic.data.defaultCustomer
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.HomeAddress
 import be.howest.jarnelosschaert.deliverme.logic.models.Person
@@ -15,9 +17,11 @@ class AppUiState : ViewModel() {
     var contacts by mutableStateOf(emptyList<Customer>())
     var contactsQuery by mutableStateOf("")
 
-    var senderAddress by mutableStateOf(HomeAddress(-1, "", "", "", ""))
-    var receiver by mutableStateOf(Customer(-1, HomeAddress(-1, "", "", "", ""), Person(-1, "", "", "")))
-    var receiverAddress by mutableStateOf(HomeAddress(-1, "", "", "", ""))
+    var contact by mutableStateOf(defaultCustomer)
+
+    var senderAddress by mutableStateOf(defaultAddress)
+    var receiver by mutableStateOf(defaultCustomer)
+    var receiverAddress by mutableStateOf(defaultAddress)
     var packageSize by mutableStateOf(PackageSize.SMALL)
     var description by mutableStateOf("")
 

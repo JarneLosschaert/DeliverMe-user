@@ -34,7 +34,8 @@ fun ContactsScreen(
     contacts: List<Customer>,
     query: String,
     onGoBack: () -> Unit,
-    onQueryChange: (String) -> Unit
+    onQueryChange: (String) -> Unit,
+    onContactClick: (Customer) -> Unit
 ) {
     var displayPopup by remember { mutableStateOf(false) }
     if (displayPopup) {
@@ -58,7 +59,7 @@ fun ContactsScreen(
             {
                 item {
                     for (contact in contacts) {
-                        Contact(contact = contact)
+                        Contact(contact = contact, onContactClick = onContactClick)
                     }
                 }
             })
@@ -98,12 +99,16 @@ fun SearchBar(
 }
 
 @Composable
-fun Contact(contact: Customer) {
+fun Contact(
+    contact: Customer,
+    onContactClick: (Customer) -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .border(1.dp, Color.Black, RoundedCornerShape(8.dp))
-            .padding(10.dp),
+            .padding(10.dp)
+            .clickable(onClick = { onContactClick(contact) }),
     ) {
         Content(text = contact.person.name, fontSize = 19)
 
