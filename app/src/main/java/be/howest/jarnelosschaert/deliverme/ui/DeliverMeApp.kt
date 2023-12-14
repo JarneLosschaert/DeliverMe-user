@@ -134,7 +134,7 @@ private fun AuthScreenNavigationConfigurations(
             ContactScreen(modifier = modifier,
                 contact = controller.uiState.contact,
                 onGoBack = { controller.goBack() },
-                deleteContact = { controller.deleteContact(it) },
+                deleteContact = { controller.deleteContact() },
             )
             onNavigate(OtherScreens.Contact.route)
         }

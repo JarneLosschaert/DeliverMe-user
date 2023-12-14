@@ -119,15 +119,15 @@ class AppController(
             })
     }
 
-    fun deleteContact(customer: Customer) {
-        authService.deleteContact(authController.uiState.jwt, customer.id,
+    fun deleteContact() {
+        authService.deleteContact(authController.uiState.jwt, uiState.contact.id,
             handleSuccess = {
-                authController.uiState.customer = customer
+                authController.uiState.customer = authController.uiState.customer.copy(contacts = authController.uiState.customer.contacts.filter { it.id != uiState.contact.id })
                 goBack()
-                Toast.makeText(navController.context, "Deleted ${customer.person.name}", Toast.LENGTH_LONG).show()
+                Toast.makeText(navController.context, "Deleted ${uiState.contact.person.name}", Toast.LENGTH_LONG).show()
             }, handleFailure = { message ->
                 println(message)
-                Toast.makeText(navController.context, "Deleting ${customer.person.name} failed", Toast.LENGTH_LONG).show()
+                Toast.makeText(navController.context, "Deleting ${uiState.contact.person.name} failed", Toast.LENGTH_LONG).show()
             })
     }
 

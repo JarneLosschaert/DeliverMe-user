@@ -19,7 +19,7 @@ fun ContactScreen(
     contact: Customer,
     //deliveries: List<String>,
     onGoBack: () -> Unit,
-    deleteContact: (Customer) -> Unit
+    deleteContact: () -> Unit
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
@@ -35,7 +35,7 @@ fun ContactScreen(
                     ContentLabel(label = "Home address", content = showAddress(contact.homeAddress))
                     GeneralButton(
                         text = "Delete contact",
-                        onClick = { deleteContact(contact) }
+                        onClick = deleteContact
                     )
                 }
             })
