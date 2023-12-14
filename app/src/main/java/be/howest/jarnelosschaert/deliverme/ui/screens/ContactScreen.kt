@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.ContentLabel
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
 import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
 import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showPhoneNumber
@@ -17,7 +18,8 @@ fun ContactScreen(
     modifier: Modifier = Modifier,
     contact: Customer,
     //deliveries: List<String>,
-    onGoBack: () -> Unit
+    onGoBack: () -> Unit,
+    deleteContact: (Customer) -> Unit
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
@@ -31,6 +33,10 @@ fun ContactScreen(
                     )
                     ContentLabel(label = "Email", content = contact.person.email)
                     ContentLabel(label = "Home address", content = showAddress(contact.homeAddress))
+                    GeneralButton(
+                        text = "Delete contact",
+                        onClick = { deleteContact(contact) }
+                    )
                 }
             })
         }

@@ -29,7 +29,6 @@ class AppController(
         uiState.senderAddress = authController.uiState.customer.homeAddress
         uiState.receiver = authController.uiState.customer
         uiState.receiverAddress = authController.uiState.customer.homeAddress
-        getPackages()
     }
 
     fun getPackages() {
@@ -117,6 +116,18 @@ class AppController(
             }, handleFailure = { message ->
                 println(message)
                 Toast.makeText(navController.context, "Adding $email failed", Toast.LENGTH_LONG).show()
+            })
+    }
+
+    fun deleteContact(customer: Customer) {
+        authService.deleteContact(authController.uiState.jwt, customer.id,
+            handleSuccess = {
+                authController.uiState.customer = customer
+                goBack()
+                Toast.makeText(navController.context, "Deleted ${customer.person.name}", Toast.LENGTH_LONG).show()
+            }, handleFailure = { message ->
+                println(message)
+                Toast.makeText(navController.context, "Deleting ${customer.person.name} failed", Toast.LENGTH_LONG).show()
             })
     }
 

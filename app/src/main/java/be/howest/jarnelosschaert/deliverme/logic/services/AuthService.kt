@@ -63,16 +63,16 @@ class AuthService: ViewModel() {
         }
     }
 
-    fun deleteCustomer(
+    fun deleteAccount(
         jwt: String,
         id: Int,
-        handleSuccess: (String) -> Unit,
+        handleSuccess: () -> Unit,
         handleFailure: (String) -> Unit,
     ) {
         viewModelScope.launch {
             try {
-                val response = apiService.deleteCustomer("Bearer $jwt", id)
-                //handleSuccess(response)
+                apiService.deleteCustomer("Bearer $jwt", id)
+                handleSuccess()
             } catch (e: Exception) {
                 handleFailure("Failed to delete customer")
                 println("Error delete customer: ${e.message}")
@@ -94,6 +94,23 @@ class AuthService: ViewModel() {
             } catch (e: Exception) {
                 handleFailure("Failed to add contact")
                 println("Error add contact: ${e.message}")
+            }
+        }
+    }
+
+    fun deleteContact(
+        jwt: String,
+        id: Int,
+        handleSuccess: () -> Unit,
+        handleFailure: (String) -> Unit,
+    ) {
+        viewModelScope.launch {
+            try {
+                apiService.deleteContact("Bearer $jwt", id)
+                handleSuccess()
+            } catch (e: Exception) {
+                handleFailure("Failed to delete contact")
+                println("Error delete contact: ${e.message}")
             }
         }
     }

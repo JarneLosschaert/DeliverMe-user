@@ -1,11 +1,13 @@
 package be.howest.jarnelosschaert.deliverme.logic.controllers
 
+import android.widget.Toast
 import androidx.navigation.NavController
 import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.helpers.checkValuesSignUp
 import be.howest.jarnelosschaert.deliverme.logic.AuthUiState
-import be.howest.jarnelosschaert.deliverme.logic.models.Customer
+import be.howest.jarnelosschaert.deliverme.logic.data.defaultCustomer
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
+import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Person
 import be.howest.jarnelosschaert.deliverme.logic.models.SignUp
 import be.howest.jarnelosschaert.deliverme.logic.services.AuthService
@@ -34,7 +36,8 @@ class AuthController(
         _isLoggedIn = false
         navController.navigate(AuthorizeScreens.Login.route)
         uiState.jwt = ""
-        uiState.customer = Customer(-1, Address(-1, "", "", "", ""), Person(-1, "", "", ""), listOf())
+        uiState.customer = defaultCustomer
+        Toast.makeText(navController.context, "Logged out", Toast.LENGTH_SHORT).show()
     }
 
     fun checkSignUp(signUp: SignUp) {
@@ -77,7 +80,15 @@ class AuthController(
     }
 
     fun deleteAccount() {
-        logout()
+        authService.deleteAccount(uiState.jwt, uiState.customer.id,
+            handleSuccess = {
+                logout()
+                Toast.makeText(navController.context, "Account deleted", Toast.LENGTH_SHORT).show()
+            },
+            handleFailure = {
+                Toast.makeText(navController.context, "Failed", Toast.LENGTH_SHORT).show()
+            }
+        )
     }
 
     fun isLoggedIn(): Boolean {
@@ -92,6 +103,7 @@ class AuthController(
         navController.navigate(AuthorizeScreens.App.route)
         cleanErrors()
     }
+
     private fun handleLoginFailure(error: String) {
         uiState.loginErrors = listOf(error)
     }

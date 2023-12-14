@@ -27,6 +27,12 @@ interface ApiService {
         @Body addContactRequest: AddContactRequest
     ): Customer
 
+    @DELETE("/customers/contacts/{id}")
+    suspend fun deleteContact(
+        @Header("Authorization") authToken: String,
+        @Path("id") contactId: Int,
+    )
+
     @GET("/packages")
     suspend fun getPackages(@Header("Authorization") authToken: String): List<Package>
 

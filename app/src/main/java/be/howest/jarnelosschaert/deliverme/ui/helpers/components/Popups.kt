@@ -62,7 +62,8 @@ fun GeneralChoicePopup(
                 onClick = {
                     onConfirm()
                     onDismiss()
-                    Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
+                    if (toastText != "")
+                        Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                 }
             ) {
                 Text(text = confirmButton)

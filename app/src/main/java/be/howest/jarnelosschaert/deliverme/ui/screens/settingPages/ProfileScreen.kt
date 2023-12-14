@@ -28,7 +28,7 @@ data class PopupContent(
     val label: String = "",
     val content: String = "",
     val confirmButton: String = "Change",
-    val toastText: String,
+    val toastText: String = "",
     val onDismiss: () -> Unit,
     val onConfirm: () -> Unit
 )
@@ -114,7 +114,6 @@ fun ProfileButtons(
                     PopupContent(
                         title = "Log out",
                         content = "Are you sure you want to log out?",
-                        toastText = "Logged out",
                         confirmButton = "Log out",
                         onDismiss = { onDismiss() },
                         onConfirm = { logout() }
@@ -132,7 +131,6 @@ fun ProfileButtons(
                         title = "Delete account",
                         content = "Are you sure you want to delete your account?",
                         confirmButton = "Delete",
-                        toastText = "Account deleted",
                         onDismiss = { onDismiss() },
                         onConfirm = { deleteAccount() }
                     )
