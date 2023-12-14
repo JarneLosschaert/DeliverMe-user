@@ -1,13 +1,12 @@
 package be.howest.jarnelosschaert.deliverme.logic.services.other
 
+import be.howest.jarnelosschaert.deliverme.logic.models.Customer
+import be.howest.jarnelosschaert.deliverme.logic.services.requests.AddContactRequest
 import be.howest.jarnelosschaert.deliverme.logic.services.requests.CreatePackageRequest
 import be.howest.jarnelosschaert.deliverme.logic.services.requests.LoginRequest
 import be.howest.jarnelosschaert.deliverme.logic.services.requests.RegisterRequest
 import be.howest.jarnelosschaert.deliverme.logic.services.responses.RegistrationLoginResponse
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface ApiService {
     @POST("/customers")
@@ -15,6 +14,18 @@ interface ApiService {
 
     @POST("/customers/auth")
     suspend fun loginUser(@Body loginRequest: LoginRequest): RegistrationLoginResponse
+
+    @DELETE("/customers/{id}")
+    suspend fun deleteCustomer(
+        @Header("Authorization") authToken: String,
+        @Path("id") customerId: Int,
+    )
+
+    @POST("/customers/contacts")
+    suspend fun addContact(
+        @Header("Authorization") authToken: String,
+        @Body addContactRequest: AddContactRequest
+    ): Customer
 
     @GET("/packages")
     suspend fun getPackages(@Header("Authorization") authToken: String): List<Package>

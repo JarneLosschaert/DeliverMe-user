@@ -35,7 +35,8 @@ fun ContactsScreen(
     query: String,
     onGoBack: () -> Unit,
     onQueryChange: (String) -> Unit,
-    onContactClick: (Customer) -> Unit
+    onContactClick: (Customer) -> Unit,
+    addContact: (String) -> Unit
 ) {
     var displayPopup by remember { mutableStateOf(false) }
     if (displayPopup) {
@@ -43,8 +44,8 @@ fun ContactsScreen(
             title = "Add a contact",
             label = "Email",
             confirmButton = "Send",
-            toastText = "Contact has been added!",
-            onDismiss = { displayPopup = false }
+            onDismiss = { displayPopup = false },
+            onConfirm = { addContact(it) }
         )
     }
     Box(modifier = modifier.fillMaxWidth()) {
@@ -71,7 +72,7 @@ fun ContactsScreen(
 fun SearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
-    displayContactPopup: () -> Unit
+    displayContactPopup: () -> Unit,
 ) {
     Row() {
         Row(

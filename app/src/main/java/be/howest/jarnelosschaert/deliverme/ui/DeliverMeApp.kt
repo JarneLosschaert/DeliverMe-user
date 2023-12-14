@@ -125,7 +125,8 @@ private fun AuthScreenNavigationConfigurations(
                 query = controller.uiState.contactsQuery,
                 onGoBack = { controller.goBack() },
                 onQueryChange = { controller.uiState.contactsQuery = it },
-                onContactClick = { controller.onContactClick(it) }
+                onContactClick = { controller.onContactClick(it) },
+                addContact = { controller.addContact(it) },
             )
             onNavigate(OtherScreens.Contacts.route)
         }

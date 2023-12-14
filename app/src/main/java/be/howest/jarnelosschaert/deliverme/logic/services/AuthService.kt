@@ -2,7 +2,9 @@ package be.howest.jarnelosschaert.deliverme.logic.services
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.services.other.RetrofitInstance
+import be.howest.jarnelosschaert.deliverme.logic.services.requests.AddContactRequest
 import be.howest.jarnelosschaert.deliverme.logic.services.requests.LoginRequest
 import be.howest.jarnelosschaert.deliverme.logic.services.requests.RegisterRequest
 import be.howest.jarnelosschaert.deliverme.logic.services.responses.RegistrationLoginResponse
@@ -57,6 +59,41 @@ class AuthService: ViewModel() {
             } catch (e: Exception) {
                 handleFailure("Failed to login")
                 println("Error login: ${e.message}")
+            }
+        }
+    }
+
+    fun deleteCustomer(
+        jwt: String,
+        id: Int,
+        handleSuccess: (String) -> Unit,
+        handleFailure: (String) -> Unit,
+    ) {
+        viewModelScope.launch {
+            try {
+                val response = apiService.deleteCustomer("Bearer $jwt", id)
+                //handleSuccess(response)
+            } catch (e: Exception) {
+                handleFailure("Failed to delete customer")
+                println("Error delete customer: ${e.message}")
+            }
+        }
+    }
+
+    fun addContact(
+        jwt: String,
+        email: String,
+        handleSuccess: (Customer) -> Unit,
+        handleFailure: (String) -> Unit,
+    ) {
+        viewModelScope.launch {
+            val addContactRequest = AddContactRequest(email)
+            try {
+                val response = apiService.addContact("Bearer $jwt", addContactRequest)
+                handleSuccess(response)
+            } catch (e: Exception) {
+                handleFailure("Failed to add contact")
+                println("Error add contact: ${e.message}")
             }
         }
     }

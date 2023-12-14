@@ -85,9 +85,9 @@ fun GeneralTextPopup(
     title: String,
     label: String,
     confirmButton: String,
-    toastText: String,
+    toastText: String = "",
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit = {}
+    onConfirm: (String) -> Unit = {}
 ) {
     val context = LocalContext.current
     var text by remember { mutableStateOf("") }
@@ -108,9 +108,10 @@ fun GeneralTextPopup(
         confirmButton = {
             Button(
                 onClick = {
-                    onConfirm()
+                    onConfirm(text)
                     onDismiss()
-                    Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
+                    if (toastText != "")
+                        Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                 }
             ) {
                 Text(text = confirmButton)
