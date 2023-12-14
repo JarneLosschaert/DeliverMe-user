@@ -34,7 +34,7 @@ class AuthController(
         _isLoggedIn = false
         navController.navigate(AuthorizeScreens.Login.route)
         uiState.jwt = ""
-        uiState.customer = Customer(-1, Address(-1, "", "", "", ""), Person(-1, "", "", ""))
+        uiState.customer = Customer(-1, Address(-1, "", "", "", ""), Person(-1, "", "", ""), listOf())
     }
 
     fun checkSignUp(signUp: SignUp) {

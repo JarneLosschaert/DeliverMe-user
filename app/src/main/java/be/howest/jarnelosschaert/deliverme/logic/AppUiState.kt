@@ -24,7 +24,6 @@ class AppUiState : ViewModel() {
     var packageSize by mutableStateOf(PackageSize.SMALL)
     var description by mutableStateOf("")
 
-    var contacts by mutableStateOf(emptyList<Customer>())
     var contactsQuery by mutableStateOf("")
 
     var contact by mutableStateOf(defaultCustomer)

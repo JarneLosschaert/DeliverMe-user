@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.unit.dp
+import be.howest.jarnelosschaert.deliverme.logic.models.PackageSize
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 
 @Composable
@@ -23,6 +24,7 @@ fun LoginScreen(
     Box(modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
+        println("sizes: ${PackageSize.values()[0].value}")
         LazyColumn(
             content = {
                 item {

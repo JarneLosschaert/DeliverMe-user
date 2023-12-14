@@ -103,18 +103,19 @@ private fun AuthScreenNavigationConfigurations(
         composable(OtherScreens.Deliver.route) {
             DeliverScreen(
                 modifier = modifier,
-                contacts = controller.uiState.contacts,
+                contacts = authController.uiState.customer.contacts,
                 senderAddress = controller.uiState.senderAddress,
                 receiver = controller.uiState.receiver,
                 receiverAddress = controller.uiState.receiverAddress,
                 packageSize = controller.uiState.packageSize,
-                onPackageSizeChange = { controller.uiState.packageSize = it },
                 description = controller.uiState.description,
                 onGoBack = { controller.goBack() },
                 onSenderAddressChange = { controller.onSenderAddressChange() },
                 onReceiverChange = { controller.onReceiverChange(it) },
                 onReceiverAddressChange = { controller.onReceiverAddressChange() },
+                onPackageSizeChange = { controller.uiState.packageSize = it },
                 onDescriptionChange = { controller.uiState.description = it },
+                createPackage = { controller.createPackage() },
             )
             onNavigate(OtherScreens.Deliver.route)
         }

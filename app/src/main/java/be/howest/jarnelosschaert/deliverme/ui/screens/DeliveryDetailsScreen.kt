@@ -9,6 +9,7 @@ import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.ContentLabel
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
 
 @Composable
 fun DeliveryDetailsScreen(
@@ -24,17 +25,18 @@ fun DeliveryDetailsScreen(
                 ContentLabel(label = "Sender", content = delivery.packageInfo.sender.person.name)
                 ContentLabel(
                     label = "Address (sender)",
-                    content = delivery.packageInfo.sender.homeAddress.toString
+                    content = showAddress(delivery.packageInfo.sender.homeAddress)
                 )
                 ContentLabel(label = "Receiver", content = delivery.packageInfo.receiver.person.name)
                 ContentLabel(
                     label = "Address (receiver)",
-                    content = delivery.packageInfo.receiver.homeAddress.toString
+                    content = showAddress(delivery.packageInfo.receiver.homeAddress)
                 )
+                ContentLabel(label = "Description", content = delivery.packageInfo.description)
+                ContentLabel(label = "Package size", content = delivery.packageInfo.packageSize.value)
                 ContentLabel(label = "Date", content = "12/10/2022") // later change to delivery.date
                 ContentLabel(label = "Departure", content = "13:20") // later change to delivery.departure
                 ContentLabel(label = "Arrival", content = "13:41") // later change to delivery.arrival
-                ContentLabel(label = "Description", content = delivery.packageInfo.description)
                 GeneralButton(text = "See live location", onClick = navigateMap)
             }
         })

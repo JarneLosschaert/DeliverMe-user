@@ -6,10 +6,8 @@ import be.howest.jarnelosschaert.deliverme.logic.AppUiState
 import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
 import be.howest.jarnelosschaert.deliverme.logic.data.dummyContacts
 import be.howest.jarnelosschaert.deliverme.logic.data.dummyDeliveries
-import be.howest.jarnelosschaert.deliverme.logic.models.Customer
-import be.howest.jarnelosschaert.deliverme.logic.models.Address
-import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
-import be.howest.jarnelosschaert.deliverme.logic.models.DeliveryState
+import be.howest.jarnelosschaert.deliverme.logic.models.*
+import be.howest.jarnelosschaert.deliverme.logic.services.PackagesService
 import be.howest.jarnelosschaert.deliverme.ui.BottomNavigationScreens
 import be.howest.jarnelosschaert.deliverme.ui.OtherScreens
 
@@ -18,14 +16,45 @@ class AppController(
     private val authController: AuthController
 ) {
     val uiState: AppUiState = AppUiState()
+    val packagesService = PackagesService()
 
     init {
         uiState.activeDeliveries = dummyDeliveries.filter { it.state == DeliveryState.ASSIGNED }
         uiState.pastDeliveries = dummyDeliveries.filter { it.state == DeliveryState.DELIVERED }
         uiState.senderAddress = authController.uiState.customer.homeAddress
-        uiState.contacts = dummyContacts
-        uiState.receiver = dummyContacts[0]
-        uiState.receiverAddress = dummyContacts[0].homeAddress
+        uiState.receiver = authController.uiState.customer
+        uiState.receiverAddress = authController.uiState.customer.homeAddress
+        getPackages()
+    }
+
+    fun getPackages() {
+        packagesService.getPackages(
+            authController.uiState.jwt,
+            handleSuccess = { packages ->
+                println("test")
+                println(packages[0].name)
+            },
+            handleFailure = { message ->
+                println(message)
+            }
+        )
+    }
+
+    fun createPackage() {
+        packagesService.createPackage(
+            authController.uiState.jwt,
+            uiState.receiver.id,
+            uiState.senderAddress,
+            uiState.receiverAddress,
+            uiState.packageSize,
+            uiState.description,
+            handleSuccess = { message ->
+                println(message)
+            },
+            handleFailure = { message ->
+                println(message)
+            }
+        )
     }
 
     fun onDeliveryClicked(delivery : Delivery) {
@@ -66,7 +95,7 @@ class AppController(
 
     fun getContacts(): List<Customer> {
         val queryLowerCase = uiState.contactsQuery.lowercase()
-        return uiState.contacts.filter {
+        return authController.uiState.customer.contacts.filter {
             it.person.name.lowercase().contains(queryLowerCase, true) ||
             it.person.phone.lowercase().contains(queryLowerCase, true) ||
             it.person.email.lowercase().contains(queryLowerCase, true) ||

@@ -12,9 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import be.howest.jarnelosschaert.deliverme.logic.models.PackageSize
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
+import be.howest.jarnelosschaert.deliverme.logic.models.PackageSize
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
 
@@ -33,6 +33,7 @@ fun DeliverScreen(
     onReceiverAddressChange: () -> Unit,
     onPackageSizeChange: (PackageSize) -> Unit,
     onDescriptionChange: (String) -> Unit,
+    createPackage: () -> Unit,
 ) {
     var isLoading by remember { mutableStateOf(false) }
 
@@ -56,6 +57,7 @@ fun DeliverScreen(
             onReceiverAddressChange = onReceiverAddressChange,
             onPackageSizeChange = onPackageSizeChange,
             onDescriptionChange = onDescriptionChange,
+            createPackage = createPackage
         )
     }
 }
@@ -76,6 +78,7 @@ fun DeliverScreenContent(
     onReceiverAddressChange: () -> Unit,
     onPackageSizeChange: (PackageSize) -> Unit,
     onDescriptionChange: (String) -> Unit,
+    createPackage: () -> Unit,
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
@@ -83,7 +86,7 @@ fun DeliverScreenContent(
             SubTitle(text = "Delivery details")
             ChooseAddressLabel(
                 label = "Address (sender)",
-                address = senderAddress.toString,
+                address = showAddress(senderAddress),
                 onAddressChange = onSenderAddressChange
             )
             DropDownContacts(
@@ -94,12 +97,12 @@ fun DeliverScreenContent(
             )
             ChooseAddressLabel(
                 label = "Address (receiver)",
-                address = receiverAddress.toString,
+                address = showAddress(receiverAddress),
                 onAddressChange = onReceiverAddressChange
             )
             DropDownPackageSize(
                 label = "Package size",
-                sizes = PackageSize.values().toList(),
+                sizes = PackageSize.values(),
                 size = packageSize,
                 onSizeSelected = onPackageSizeChange
             )
@@ -114,7 +117,7 @@ fun DeliverScreenContent(
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 10.dp),
                 text = "Search driver",
-                onClick = searchDriver
+                onClick = createPackage
             )
         }
     }
@@ -202,7 +205,7 @@ fun DropDownContacts(
 @Composable
 fun DropDownPackageSize(
     label: String,
-    sizes: List<PackageSize>,
+    sizes: Array<PackageSize>,
     size: PackageSize,
     onSizeSelected: (PackageSize) -> Unit,
 ) {
@@ -223,7 +226,7 @@ fun DropDownPackageSize(
                 Content(
                     modifier = Modifier
                         .weight(1f)
-                        .clickable(onClick = { expanded = true }), text = size.toString()
+                        .clickable(onClick = { expanded = true }), text = size.value
                 )
                 IconButton(
                     onClick = { expanded = true },
@@ -242,7 +245,7 @@ fun DropDownPackageSize(
                     expanded = false
                     onSizeSelected(option)
                 }) {
-                    Text(text = option.toString())
+                    Text(text = option.value)
                 }
             }
         }

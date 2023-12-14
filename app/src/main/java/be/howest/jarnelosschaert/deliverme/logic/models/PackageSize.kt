@@ -2,11 +2,16 @@ package be.howest.jarnelosschaert.deliverme.logic.models
 
 import com.google.gson.annotations.SerializedName
 
-enum class PackageSize {
-    @SerializedName("letter") LETTER,
-    @SerializedName("small") SMALL,
-    @SerializedName("medium") MEDIUM,
-    @SerializedName("large") LARGE;
+enum class PackageSize(val value: String) {
+    @SerializedName("letter")
+    LETTER("letter"),
 
-    override fun toString(): String = name.lowercase()
+    @SerializedName("small")
+    SMALL("small"),
+
+    @SerializedName("medium")
+    MEDIUM("medium"),
+
+    @SerializedName("large")
+    LARGE("large"),
 }

@@ -43,7 +43,7 @@ fun ContactsScreen(
             title = "Add a contact",
             label = "Email",
             confirmButton = "Send",
-            toastText = "Your request has been sent.",
+            toastText = "Contact has been added!",
             onDismiss = { displayPopup = false }
         )
     }
@@ -114,7 +114,7 @@ fun Contact(
 
         Info(text = contact.person.email, isEmail = true)
         Info(text = showPhoneNumber(contact.person.phone), isPhone = true)
-        Info(text = contact.homeAddress.toString)
+        Info(text = showAddress(contact.homeAddress))
     }
     Spacer(modifier = Modifier.height(10.dp))
 }
