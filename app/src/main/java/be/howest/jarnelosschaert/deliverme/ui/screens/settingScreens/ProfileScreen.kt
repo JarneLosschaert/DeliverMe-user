@@ -37,12 +37,12 @@ fun ProfileScreen(
     modifier: Modifier = Modifier,
     customer: Customer,
     onGoBack: () -> Unit,
-    navigateAddress: () -> Unit,
     logout: () -> Unit,
     deleteAccount: () -> Unit,
     changeUserName: (String) -> Unit,
     changeEmail: (String) -> Unit,
     changePhone: (String) -> Unit,
+    changeAddress: () -> Unit
 ) {
     var isTextPopupVisible by remember { mutableStateOf(false) }
     var textPopupContent by remember { mutableStateOf(PopupContent("", "", "", "", {}, {})) }
@@ -77,10 +77,10 @@ fun ProfileScreen(
                         onTextEdit = { textPopupContent = it; isTextPopupVisible = true },
                         onChoiceEdit = { choicePopupContent = it; isChoicePopupVisible = true },
                         onDismiss = { isTextPopupVisible = false; isChoicePopupVisible = false },
-                        navigateAddress = navigateAddress,
                         changeUserName = changeUserName,
                         changeEmail = changeEmail,
-                        changePhone = changePhone
+                        changePhone = changePhone,
+                        changeAddress = changeAddress
                     )
                     AuthButtons(
                         logout = logout,
@@ -149,10 +149,10 @@ fun Profile(
     onTextEdit: (PopupContent) -> Unit,
     onChoiceEdit: (PopupContent) -> Unit,
     onDismiss: () -> Unit,
-    navigateAddress: () -> Unit,
     changeUserName: (String) -> Unit,
     changeEmail: (String) -> Unit,
     changePhone: (String) -> Unit,
+    changeAddress: () -> Unit
 ) {
     EditableContentLabel(label = "Username",
         text = customer.person.name,
@@ -188,7 +188,7 @@ fun Profile(
             title = "Change home address",
             content = "Are you sure you want to change your home address?",
             onDismiss = { onDismiss() },
-            onConfirm = { navigateAddress() }
+            onConfirm =  { changeAddress() }
         ))
 }
 

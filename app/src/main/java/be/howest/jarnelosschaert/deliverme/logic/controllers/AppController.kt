@@ -92,9 +92,17 @@ class AppController(
                 AddressScreenStatus.RECEIVER_ADDRESS -> {
                     uiState.receiverAddress = address
                 }
+                AddressScreenStatus.CUSTOMER_EDIT_ADDRESS -> {
+                    authController.updateCustomer(address = address)
+                }
             }
             goBack()
         }
+    }
+
+    fun changeAddress() {
+        uiState.addressScreenStatus = AddressScreenStatus.CUSTOMER_EDIT_ADDRESS
+        navigateTo(OtherScreens.Address.route)
     }
 
     fun getContacts(): List<Customer> {
@@ -115,19 +123,29 @@ class AppController(
                 Toast.makeText(navController.context, "Added $email", Toast.LENGTH_LONG).show()
             }, handleFailure = { message ->
                 println(message)
-                Toast.makeText(navController.context, "Adding $email failed", Toast.LENGTH_LONG).show()
+                Toast.makeText(navController.context, "Adding $email failed", Toast.LENGTH_LONG)
+                    .show()
             })
     }
 
     fun deleteContact() {
         authService.deleteContact(authController.uiState.jwt, uiState.contact.id,
             handleSuccess = {
-                authController.uiState.customer = authController.uiState.customer.copy(contacts = authController.uiState.customer.contacts.filter { it.id != uiState.contact.id })
+                authController.uiState.customer =
+                    authController.uiState.customer.copy(contacts = authController.uiState.customer.contacts.filter { it.id != uiState.contact.id })
                 goBack()
-                Toast.makeText(navController.context, "Deleted ${uiState.contact.person.name}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    navController.context,
+                    "Deleted ${uiState.contact.person.name}",
+                    Toast.LENGTH_LONG
+                ).show()
             }, handleFailure = { message ->
                 println(message)
-                Toast.makeText(navController.context, "Deleting ${uiState.contact.person.name} failed", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    navController.context,
+                    "Deleting ${uiState.contact.person.name} failed",
+                    Toast.LENGTH_LONG
+                ).show()
             })
     }
 

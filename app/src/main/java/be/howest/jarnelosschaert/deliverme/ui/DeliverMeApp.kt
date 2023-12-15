@@ -18,6 +18,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AppController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
+import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNav
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens.AddressScreen
@@ -78,7 +79,8 @@ private fun AuthScreenNavigationConfigurations(
 
     NavHost(navController, startDestination = BottomNavigationScreens.Home.route) {
         composable(BottomNavigationScreens.Home.route) {
-            HomeScreen(modifier = modifier,
+            HomeScreen(
+                modifier = modifier,
                 activeDeliveries = controller.uiState.activeDeliveries,
                 pastDeliveries = controller.uiState.pastDeliveries,
                 onDeliveryClick = { controller.onDeliveryClicked(it) },
@@ -120,7 +122,8 @@ private fun AuthScreenNavigationConfigurations(
             onNavigate(OtherScreens.Deliver.route)
         }
         composable(OtherScreens.Contacts.route) {
-            ContactsScreen(modifier = modifier,
+            ContactsScreen(
+                modifier = modifier,
                 contacts = controller.getContacts(),
                 query = controller.uiState.contactsQuery,
                 onGoBack = { controller.goBack() },
@@ -131,7 +134,8 @@ private fun AuthScreenNavigationConfigurations(
             onNavigate(OtherScreens.Contacts.route)
         }
         composable(OtherScreens.Contact.route) {
-            ContactScreen(modifier = modifier,
+            ContactScreen(
+                modifier = modifier,
                 contact = controller.uiState.contact,
                 onGoBack = { controller.goBack() },
                 deleteContact = { controller.deleteContact() },
@@ -139,15 +143,16 @@ private fun AuthScreenNavigationConfigurations(
             onNavigate(OtherScreens.Contact.route)
         }
         composable(OtherScreens.Profile.route) {
-            ProfileScreen(modifier = modifier,
+            ProfileScreen(
+                modifier = modifier,
                 customer = authController.uiState.customer,
                 onGoBack = { controller.goBack() },
-                navigateAddress = { controller.navigateTo(OtherScreens.Address.route) },
                 logout = { authController.logout() },
                 deleteAccount = { authController.deleteCustomer() },
                 changeUserName = { authController.updateCustomer(name = it) },
                 changeEmail = { authController.updateCustomer(email = it) },
                 changePhone = { authController.updateCustomer(phone = it) },
+                changeAddress = { controller.changeAddress() },
             )
         }
         composable(OtherScreens.DeliveryDetails.route) {
@@ -159,7 +164,8 @@ private fun AuthScreenNavigationConfigurations(
             onNavigate(OtherScreens.DeliveryDetails.route)
         }
         composable(OtherScreens.Address.route) {
-            AddressScreen(modifier = modifier,
+            AddressScreen(
+                modifier = modifier,
                 subtitle = controller.uiState.addressScreenStatus.subtitle,
                 errors = controller.uiState.addressErrors,
                 onGoBack = { controller.goBack() },
