@@ -13,7 +13,7 @@ import androidx.navigation.compose.rememberNavController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
 import be.howest.jarnelosschaert.deliverme.ui.screens.authScreens.LoginScreen
 import be.howest.jarnelosschaert.deliverme.ui.screens.authScreens.SignUpScreen
-import be.howest.jarnelosschaert.deliverme.ui.screens.settingPages.AddressScreen
+import be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens.AddressScreen
 
 sealed class AuthorizeScreens(val route: String) {
     object Login : AuthorizeScreens("login")

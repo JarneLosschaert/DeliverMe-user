@@ -20,8 +20,8 @@ import be.howest.jarnelosschaert.deliverme.logic.controllers.AppController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNav
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
-import be.howest.jarnelosschaert.deliverme.ui.screens.settingPages.AddressScreen
-import be.howest.jarnelosschaert.deliverme.ui.screens.settingPages.ProfileScreen
+import be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens.AddressScreen
+import be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens.ProfileScreen
 
 sealed class BottomNavigationScreens(val route: String, val icon: ImageVector) {
     object Home : BottomNavigationScreens("home", Icons.Filled.Home)
@@ -144,7 +144,10 @@ private fun AuthScreenNavigationConfigurations(
                 onGoBack = { controller.goBack() },
                 navigateAddress = { controller.navigateTo(OtherScreens.Address.route) },
                 logout = { authController.logout() },
-                deleteAccount = { authController.deleteAccount() }
+                deleteAccount = { authController.deleteCustomer() },
+                changeUserName = { authController.updateCustomer(name = it) },
+                changeEmail = { authController.updateCustomer(email = it) },
+                changePhone = { authController.updateCustomer(phone = it) },
             )
         }
         composable(OtherScreens.DeliveryDetails.route) {

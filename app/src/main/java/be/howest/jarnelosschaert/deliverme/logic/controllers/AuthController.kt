@@ -5,10 +5,10 @@ import androidx.navigation.NavController
 import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.helpers.checkValuesSignUp
 import be.howest.jarnelosschaert.deliverme.logic.AuthUiState
+import be.howest.jarnelosschaert.deliverme.logic.data.defaultAddress
 import be.howest.jarnelosschaert.deliverme.logic.data.defaultCustomer
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
-import be.howest.jarnelosschaert.deliverme.logic.models.Person
 import be.howest.jarnelosschaert.deliverme.logic.models.SignUp
 import be.howest.jarnelosschaert.deliverme.logic.services.AuthService
 import be.howest.jarnelosschaert.deliverme.logic.services.responses.RegistrationLoginResponse
@@ -30,6 +30,42 @@ class AuthController(
             password,
             { handleLoginSignUpSuccess(it) },
             { handleLoginFailure(it) })
+    }
+
+    fun updateCustomer(
+        name: String? = null,
+        email: String? = null,
+        phone: String? = null,
+        address: Address? = null
+    ) {
+        println("updateCustomer")
+        val updatedPerson = uiState.customer.person.copy(
+            name = name ?: uiState.customer.person.name,
+            email = email ?: uiState.customer.person.email,
+            phone = phone ?: uiState.customer.person.phone
+        )
+        val updatedCustomer = uiState.customer.copy(
+            person = updatedPerson,
+            homeAddress = address ?: uiState.customer.homeAddress
+        )
+        authService.updateCustomer(
+            uiState.jwt,
+            updatedCustomer.id,
+            updatedCustomer.person.name,
+            updatedCustomer.person.email,
+            updatedCustomer.person.phone,
+            updatedCustomer.homeAddress.street,
+            updatedCustomer.homeAddress.number,
+            updatedCustomer.homeAddress.zip,
+            updatedCustomer.homeAddress.city,
+            handleSuccess = {
+                uiState.customer = updatedCustomer
+                Toast.makeText(navController.context, "Account updated", Toast.LENGTH_SHORT).show()
+            },
+            handleFailure = {
+                Toast.makeText(navController.context, "Account update failed", Toast.LENGTH_SHORT).show()
+            }
+        )
     }
 
     fun logout() {
@@ -79,8 +115,8 @@ class AuthController(
         }
     }
 
-    fun deleteAccount() {
-        authService.deleteAccount(uiState.jwt, uiState.customer.id,
+    fun deleteCustomer() {
+        authService.deleteCustomer(uiState.jwt, uiState.customer.id,
             handleSuccess = {
                 logout()
                 Toast.makeText(navController.context, "Account deleted", Toast.LENGTH_SHORT).show()

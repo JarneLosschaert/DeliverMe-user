@@ -45,9 +45,8 @@ fun GeneralChoicePopup(
     title: String,
     content: String,
     confirmButton: String,
-    toastText: String,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit = {}
+    onConfirm: (String) -> Unit = {}
 ) {
     val context = LocalContext.current
 
@@ -60,10 +59,8 @@ fun GeneralChoicePopup(
         confirmButton = {
             Button(
                 onClick = {
-                    onConfirm()
+                    onConfirm(content)
                     onDismiss()
-                    if (toastText != "")
-                        Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                 }
             ) {
                 Text(text = confirmButton)
@@ -86,11 +83,9 @@ fun GeneralTextPopup(
     title: String,
     label: String,
     confirmButton: String,
-    toastText: String = "",
     onDismiss: () -> Unit,
     onConfirm: (String) -> Unit = {}
 ) {
-    val context = LocalContext.current
     var text by remember { mutableStateOf("") }
 
     AlertDialog(
@@ -111,8 +106,6 @@ fun GeneralTextPopup(
                 onClick = {
                     onConfirm(text)
                     onDismiss()
-                    if (toastText != "")
-                        Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
                 }
             ) {
                 Text(text = confirmButton)

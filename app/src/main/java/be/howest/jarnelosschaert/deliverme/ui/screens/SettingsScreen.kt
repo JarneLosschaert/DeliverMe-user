@@ -33,7 +33,6 @@ sealed class SettingsPopup(override val setting: String, override val icon: Imag
             title = "Help",
             label = "Do you need help with the app? Let us know!",
             confirmButton = "Send",
-            toastText = "Your message has been sent!",
             onDismiss = { onDismiss() }
         )
     })
@@ -42,7 +41,6 @@ sealed class SettingsPopup(override val setting: String, override val icon: Imag
             title = "Problem",
             label = "Do you have a problem with the app? Let us know!",
             confirmButton = "Send",
-            toastText = "Your message has been sent!",
             onDismiss = { onDismiss() }
         )
     })

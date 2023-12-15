@@ -1,4 +1,4 @@
-package be.howest.jarnelosschaert.deliverme.ui.screens.settingPages
+package be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column

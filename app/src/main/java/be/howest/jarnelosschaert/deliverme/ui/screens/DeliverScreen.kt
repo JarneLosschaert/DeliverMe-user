@@ -86,7 +86,7 @@ fun DeliverScreenContent(
             SubTitle(text = "Delivery details")
             ChooseAddressLabel(
                 label = "Address (sender)",
-                address = showAddress(senderAddress),
+                address = senderAddress,
                 onAddressChange = onSenderAddressChange
             )
             DropDownContacts(
@@ -97,7 +97,7 @@ fun DeliverScreenContent(
             )
             ChooseAddressLabel(
                 label = "Address (receiver)",
-                address = showAddress(receiverAddress),
+                address = receiverAddress,
                 onAddressChange = onReceiverAddressChange
             )
             DropDownPackageSize(
@@ -124,7 +124,7 @@ fun DeliverScreenContent(
 }
 
 @Composable
-fun ChooseAddressLabel(label: String, address: String, onAddressChange: () -> Unit) {
+fun ChooseAddressLabel(label: String, address: Address, onAddressChange: () -> Unit) {
     Label(text = label)
     Box(
         modifier = Modifier.fillMaxWidth(),
@@ -133,14 +133,16 @@ fun ChooseAddressLabel(label: String, address: String, onAddressChange: () -> Un
             modifier = Modifier
                 .fillMaxWidth()
                 .border(1.dp, Color.Black)
-                .padding(start = 10.dp),
+                .padding(start = 10.dp, top = 5.dp, bottom = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Content(
+            Column(
                 modifier = Modifier
-                    .weight(1f),
-                text = address
-            )
+                    .weight(1f)
+            ) {
+                Text(text = "${address.street} ${address.number},")
+                Text(text = "${address.zip} ${address.city}")
+            }
             IconButton(
                 onClick = onAddressChange,
             ) {

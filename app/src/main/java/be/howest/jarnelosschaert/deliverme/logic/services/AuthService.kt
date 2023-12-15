@@ -7,10 +7,11 @@ import be.howest.jarnelosschaert.deliverme.logic.services.other.RetrofitInstance
 import be.howest.jarnelosschaert.deliverme.logic.services.requests.AddContactRequest
 import be.howest.jarnelosschaert.deliverme.logic.services.requests.LoginRequest
 import be.howest.jarnelosschaert.deliverme.logic.services.requests.RegisterRequest
+import be.howest.jarnelosschaert.deliverme.logic.services.requests.UpdateCustomerRequest
 import be.howest.jarnelosschaert.deliverme.logic.services.responses.RegistrationLoginResponse
 import kotlinx.coroutines.launch
 
-class AuthService: ViewModel() {
+class AuthService : ViewModel() {
     private val apiService = RetrofitInstance.apiService
 
     fun signUp(
@@ -63,7 +64,40 @@ class AuthService: ViewModel() {
         }
     }
 
-    fun deleteAccount(
+    fun updateCustomer(
+        jwt: String,
+        id: Int,
+        username: String,
+        email: String,
+        phone: String,
+        street: String,
+        number: String,
+        zip: String,
+        city: String,
+        handleSuccess: (Customer) -> Unit,
+        handleFailure: (String) -> Unit,
+    ) {
+        viewModelScope.launch {
+            val updateCustomerRequest = UpdateCustomerRequest(
+                username,
+                email,
+                phone,
+                street,
+                number,
+                zip,
+                city,
+            )
+            try {
+                val response = apiService.updateCustomer("Bearer $jwt", id, updateCustomerRequest)
+                handleSuccess(response)
+            } catch (e: Exception) {
+                handleFailure("Failed to update customer")
+                println("Error update customer: ${e.message}")
+            }
+        }
+    }
+
+    fun deleteCustomer(
         jwt: String,
         id: Int,
         handleSuccess: () -> Unit,

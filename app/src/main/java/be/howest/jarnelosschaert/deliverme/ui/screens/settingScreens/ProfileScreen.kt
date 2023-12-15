@@ -1,4 +1,4 @@
-package be.howest.jarnelosschaert.deliverme.ui.screens.settingPages
+package be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -28,9 +28,8 @@ data class PopupContent(
     val label: String = "",
     val content: String = "",
     val confirmButton: String = "Change",
-    val toastText: String = "",
     val onDismiss: () -> Unit,
-    val onConfirm: () -> Unit
+    val onConfirm: (String) -> Unit
 )
 
 @Composable
@@ -40,28 +39,29 @@ fun ProfileScreen(
     onGoBack: () -> Unit,
     navigateAddress: () -> Unit,
     logout: () -> Unit,
-    deleteAccount: () -> Unit
+    deleteAccount: () -> Unit,
+    changeUserName: (String) -> Unit,
+    changeEmail: (String) -> Unit,
+    changePhone: (String) -> Unit,
 ) {
     var isTextPopupVisible by remember { mutableStateOf(false) }
-    var textPopupContent by remember { mutableStateOf(PopupContent("", "", "", "", "", {}, {})) }
+    var textPopupContent by remember { mutableStateOf(PopupContent("", "", "", "", {}, {})) }
     if (isTextPopupVisible) {
         GeneralTextPopup(
             title = textPopupContent.title,
             label = textPopupContent.label,
             confirmButton = textPopupContent.confirmButton,
-            toastText = textPopupContent.toastText,
             onDismiss = textPopupContent.onDismiss,
-            onConfirm = { isTextPopupVisible = false }
+            onConfirm = textPopupContent.onConfirm
         )
     }
     var isChoicePopupVisible by remember { mutableStateOf(false) }
-    var choicePopupContent by remember { mutableStateOf(PopupContent("", "", "", "", "", {}, {})) }
+    var choicePopupContent by remember { mutableStateOf(PopupContent("", "", "", "", {}, {})) }
     if (isChoicePopupVisible) {
         GeneralChoicePopup(
             title = choicePopupContent.title,
             content = choicePopupContent.content,
             confirmButton = choicePopupContent.confirmButton,
-            toastText = choicePopupContent.toastText,
             onDismiss = choicePopupContent.onDismiss,
             onConfirm = choicePopupContent.onConfirm
         )
@@ -78,8 +78,11 @@ fun ProfileScreen(
                         onChoiceEdit = { choicePopupContent = it; isChoicePopupVisible = true },
                         onDismiss = { isTextPopupVisible = false; isChoicePopupVisible = false },
                         navigateAddress = navigateAddress,
+                        changeUserName = changeUserName,
+                        changeEmail = changeEmail,
+                        changePhone = changePhone
                     )
-                    ProfileButtons(
+                    AuthButtons(
                         logout = logout,
                         deleteAccount = deleteAccount,
                         onEdit = { choicePopupContent = it; isChoicePopupVisible = true },
@@ -93,7 +96,7 @@ fun ProfileScreen(
 }
 
 @Composable
-fun ProfileButtons(
+fun AuthButtons(
     logout: () -> Unit,
     deleteAccount: () -> Unit,
     onEdit: (PopupContent) -> Unit,
@@ -146,7 +149,10 @@ fun Profile(
     onTextEdit: (PopupContent) -> Unit,
     onChoiceEdit: (PopupContent) -> Unit,
     onDismiss: () -> Unit,
-    navigateAddress: () -> Unit
+    navigateAddress: () -> Unit,
+    changeUserName: (String) -> Unit,
+    changeEmail: (String) -> Unit,
+    changePhone: (String) -> Unit,
 ) {
     EditableContentLabel(label = "Username",
         text = customer.person.name,
@@ -154,9 +160,8 @@ fun Profile(
         popupContent = PopupContent(
             title = "Change username",
             label = "New username",
-            toastText = "Username changed",
             onDismiss = { onDismiss() },
-            onConfirm = {}
+            onConfirm = { changeUserName(it) }
         ))
     EditableContentLabel(label = "Email",
         text = customer.person.email,
@@ -164,9 +169,8 @@ fun Profile(
         popupContent = PopupContent(
             title = "Change email",
             label = "New email",
-            toastText = "Email changed",
             onDismiss = { onDismiss() },
-            onConfirm = {}
+            onConfirm = { changeEmail(it) }
         ))
     EditableContentLabel(label = "Phone number",
         text = showPhoneNumber(customer.person.phone),
@@ -174,9 +178,8 @@ fun Profile(
         popupContent = PopupContent(
             title = "Change phone number",
             label = "New phone number",
-            toastText = "Phone number changed",
             onDismiss = { onDismiss() },
-            onConfirm = {}
+            onConfirm = { changePhone(it) }
         ))
     EditableContentLabel(label = "Home address",
         text = showAddress(customer.homeAddress),
@@ -184,7 +187,6 @@ fun Profile(
         popupContent = PopupContent(
             title = "Change home address",
             content = "Are you sure you want to change your home address?",
-            toastText = "Changing home address",
             onDismiss = { onDismiss() },
             onConfirm = { navigateAddress() }
         ))
