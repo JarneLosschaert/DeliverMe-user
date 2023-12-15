@@ -12,6 +12,12 @@ interface ApiService {
     @POST("/customers/auth")
     suspend fun loginUser(@Body loginRequest: LoginRequest): RegistrationLoginResponse
 
+    @PUT("/customers/auth")
+    suspend fun changePassword(
+        @Header("Authorization") authToken: String,
+        @Body updatePasswordRequest: UpdatePasswordRequest,
+    )
+
     @PUT("/customers/{id}")
     suspend fun updateCustomer(
         @Header("Authorization") authToken: String,

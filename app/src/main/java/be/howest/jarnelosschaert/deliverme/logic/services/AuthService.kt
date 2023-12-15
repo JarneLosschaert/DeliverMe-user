@@ -4,10 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.services.other.RetrofitInstance
-import be.howest.jarnelosschaert.deliverme.logic.services.requests.AddContactRequest
-import be.howest.jarnelosschaert.deliverme.logic.services.requests.LoginRequest
-import be.howest.jarnelosschaert.deliverme.logic.services.requests.RegisterRequest
-import be.howest.jarnelosschaert.deliverme.logic.services.requests.UpdateCustomerRequest
+import be.howest.jarnelosschaert.deliverme.logic.services.requests.*
 import be.howest.jarnelosschaert.deliverme.logic.services.responses.RegistrationLoginResponse
 import kotlinx.coroutines.launch
 
@@ -128,6 +125,24 @@ class AuthService : ViewModel() {
             } catch (e: Exception) {
                 handleFailure("Failed to add contact")
                 println("Error add contact: ${e.message}")
+            }
+        }
+    }
+
+    fun changePassword(
+        jwt: String,
+        password: String,
+        handleSuccess: () -> Unit,
+        handleFailure: (String) -> Unit
+    ) {
+        viewModelScope.launch {
+            val updatePasswordRequest = UpdatePasswordRequest(password)
+            try {
+                apiService.changePassword("Bearer $jwt", updatePasswordRequest)
+                handleSuccess()
+            } catch (e: Exception) {
+                handleFailure("Failed to change password")
+                println("Error change password: ${e.message}")
             }
         }
     }

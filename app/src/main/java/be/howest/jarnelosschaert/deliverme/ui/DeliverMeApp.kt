@@ -153,6 +153,7 @@ private fun AuthScreenNavigationConfigurations(
                 changeEmail = { authController.updateCustomer(email = it) },
                 changePhone = { authController.updateCustomer(phone = it) },
                 changeAddress = { controller.changeAddress() },
+                changePassword = { authController.changePassword(it) },
             )
         }
         composable(OtherScreens.DeliveryDetails.route) {

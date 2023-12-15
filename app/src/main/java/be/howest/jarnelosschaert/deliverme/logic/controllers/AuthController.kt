@@ -68,6 +68,19 @@ class AuthController(
         )
     }
 
+    fun changePassword(password: String) {
+        authService.changePassword(
+            uiState.jwt,
+            password,
+            handleSuccess = {
+                Toast.makeText(navController.context, "Password changed", Toast.LENGTH_SHORT).show()
+            },
+            handleFailure = {
+                Toast.makeText(navController.context, "Password change failed", Toast.LENGTH_SHORT).show()
+            }
+        )
+    }
+
     fun logout() {
         _isLoggedIn = false
         navController.navigate(AuthorizeScreens.Login.route)

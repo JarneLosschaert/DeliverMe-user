@@ -42,7 +42,8 @@ fun ProfileScreen(
     changeUserName: (String) -> Unit,
     changeEmail: (String) -> Unit,
     changePhone: (String) -> Unit,
-    changeAddress: () -> Unit
+    changeAddress: () -> Unit,
+    changePassword: (String) -> Unit
 ) {
     var isTextPopupVisible by remember { mutableStateOf(false) }
     var textPopupContent by remember { mutableStateOf(PopupContent("", "", "", "", {}, {})) }
@@ -85,8 +86,10 @@ fun ProfileScreen(
                     AuthButtons(
                         logout = logout,
                         deleteAccount = deleteAccount,
+                        changePassword = changePassword,
                         onEdit = { choicePopupContent = it; isChoicePopupVisible = true },
-                        onDismiss = { isChoicePopupVisible = false }
+                        onEditPassword = { textPopupContent = it; isTextPopupVisible = true },
+                        onDismiss = { isChoicePopupVisible = false; isTextPopupVisible = false }
                     )
                 }
             })
@@ -99,14 +102,25 @@ fun ProfileScreen(
 fun AuthButtons(
     logout: () -> Unit,
     deleteAccount: () -> Unit,
+    changePassword: (String) -> Unit,
     onEdit: (PopupContent) -> Unit,
+    onEditPassword: (PopupContent) -> Unit,
     onDismiss: () -> Unit,
 ) {
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
         Spacer(modifier = Modifier.height(10.dp))
-        GeneralButton(text = "Change password", onClick = {})
+        GeneralButton(text = "Change password", onClick = {
+            onEditPassword(
+                PopupContent(
+                    title = "Change password",
+                    label = "New password",
+                    onDismiss = { onDismiss() },
+                    onConfirm = { changePassword(it) }
+                )
+            )
+        })
         GeneralButton(text = "Change profile picture", onClick = {})
         GeneralButton(
             text = "Log out",
