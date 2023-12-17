@@ -1,7 +1,9 @@
 package be.howest.jarnelosschaert.deliverme.logic.services.other
 
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
+import be.howest.jarnelosschaert.deliverme.logic.models.Package
 import be.howest.jarnelosschaert.deliverme.logic.services.requests.*
+import be.howest.jarnelosschaert.deliverme.logic.services.responses.PayResponse
 import be.howest.jarnelosschaert.deliverme.logic.services.responses.RegistrationLoginResponse
 import retrofit2.http.*
 
@@ -51,4 +53,10 @@ interface ApiService {
         @Header("Authorization") authToken: String,
         @Body packageRequest: CreatePackageRequest
     ): Package
+
+    @GET("/packages/{id}/pay")
+    suspend fun getPaymentIntent(
+        @Header("Authorization") authToken: String,
+        @Path("id") packageId: Int,
+    ): PayResponse
 }

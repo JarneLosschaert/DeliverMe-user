@@ -116,7 +116,7 @@ fun DeliverScreenContent(
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 10.dp),
-                text = "Search driver",
+                text = "Pay delivery",
                 onClick = createPackage
             )
         }

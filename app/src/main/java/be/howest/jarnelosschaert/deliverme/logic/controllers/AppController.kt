@@ -1,6 +1,9 @@
 package be.howest.jarnelosschaert.deliverme.logic.controllers
 
+import android.app.Activity
+import android.content.RestrictionsManager
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.navigation.NavController
 import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.logic.AppUiState
@@ -31,19 +34,6 @@ class AppController(
         uiState.receiverAddress = authController.uiState.customer.homeAddress
     }
 
-    fun getPackages() {
-        packagesService.getPackages(
-            authController.uiState.jwt,
-            handleSuccess = { packages ->
-                println("test")
-                println(packages[0].name)
-            },
-            handleFailure = { message ->
-                println(message)
-            }
-        )
-    }
-
     fun createPackage() {
         packagesService.createPackage(
             authController.uiState.jwt,
@@ -52,13 +42,43 @@ class AppController(
             uiState.receiverAddress,
             uiState.packageSize,
             uiState.description,
-            handleSuccess = { message ->
-                println(message)
+            handleSuccess = { newPackage ->
+                uiState.appPackage = newPackage
+                getPayInfo()
             },
             handleFailure = { message ->
                 println(message)
             }
         )
+    }
+
+    private fun getPayInfo() {
+        packagesService.getPaymentIntent(
+            authController.uiState.jwt,
+            uiState.appPackage.id,
+            handleSuccess = { payResponse ->
+                uiState.payResponse = payResponse
+                navigateTo(OtherScreens.Pay.route)
+            },
+            handleFailure = { message ->
+                println(message)
+            }
+        )
+    }
+
+    fun onPay(activityResult: ActivityResult) {
+        when (activityResult.resultCode) {
+            Activity.RESULT_OK -> {
+                Toast.makeText(navController.context, "Payment successful", Toast.LENGTH_SHORT).show()
+                navigateTo(BottomNavigationScreens.Home.route)
+            }
+            Activity.RESULT_CANCELED -> {
+                Toast.makeText(navController.context, "Payment canceled", Toast.LENGTH_SHORT).show()
+            }
+            RestrictionsManager.RESULT_ERROR -> {
+                Toast.makeText(navController.context, "Payment error", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     fun onDeliveryClicked(delivery: Delivery) {

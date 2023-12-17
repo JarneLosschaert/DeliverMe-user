@@ -27,6 +27,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name="be.howest.jarnelosschaert.deliverme.helpers.StripePaymentSheetActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />

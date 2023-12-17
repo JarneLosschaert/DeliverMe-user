@@ -18,11 +18,18 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AppController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
-import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNav
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens.AddressScreen
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens.ProfileScreen
+import com.stripe.android.paymentsheet.PaymentSheetResult
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import be.howest.jarnelosschaert.deliverme.logic.data.defaultPayResponse
+import com.stripe.android.PaymentConfiguration
 
 sealed class BottomNavigationScreens(val route: String, val icon: ImageVector) {
     object Home : BottomNavigationScreens("home", Icons.Filled.Home)
@@ -32,6 +39,7 @@ sealed class BottomNavigationScreens(val route: String, val icon: ImageVector) {
 
 sealed class OtherScreens(val route: String) {
     object Deliver : OtherScreens("deliver")
+    object Pay : OtherScreens("pay")
     object Contacts : OtherScreens("contacts")
     object Contact : OtherScreens("contact")
     object Profile : OtherScreens("profile")
@@ -120,6 +128,17 @@ private fun AuthScreenNavigationConfigurations(
                 createPackage = { controller.createPackage() },
             )
             onNavigate(OtherScreens.Deliver.route)
+        }
+        composable(OtherScreens.Pay.route) {
+            PayScreen(
+                modifier = modifier,
+                appPackage = controller.uiState.appPackage,
+                context = LocalContext.current,
+                payResponse = controller.uiState.payResponse,
+                onGoBack = { controller.goBack() },
+                onPay = { controller.onPay(it) },
+            )
+            onNavigate(OtherScreens.Pay.route)
         }
         composable(OtherScreens.Contacts.route) {
             ContactsScreen(
