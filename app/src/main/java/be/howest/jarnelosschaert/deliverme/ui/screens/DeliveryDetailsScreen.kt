@@ -6,10 +6,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
+import be.howest.jarnelosschaert.deliverme.logic.models.DeliveryState
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.ContentLabel
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.dateFormatter
 import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.timeFormatter
 
 @Composable
 fun DeliveryDetailsScreen(
@@ -27,17 +30,39 @@ fun DeliveryDetailsScreen(
                     label = "Address (sender)",
                     content = showAddress(delivery.packageInfo.sender.homeAddress)
                 )
-                ContentLabel(label = "Receiver", content = delivery.packageInfo.receiver.person.name)
+                ContentLabel(
+                    label = "Receiver",
+                    content = delivery.packageInfo.receiver.person.name
+                )
                 ContentLabel(
                     label = "Address (receiver)",
                     content = showAddress(delivery.packageInfo.receiver.homeAddress)
                 )
                 ContentLabel(label = "Description", content = delivery.packageInfo.description)
-                ContentLabel(label = "Package size", content = delivery.packageInfo.packageSize.value)
-                ContentLabel(label = "Date", content = "12/10/2022") // later change to delivery.date
-                ContentLabel(label = "Departure", content = "13:20") // later change to delivery.departure
-                ContentLabel(label = "Arrival", content = "13:41") // later change to delivery.arrival
-                GeneralButton(text = "See live location", onClick = navigateMap)
+                ContentLabel(
+                    label = "Package size",
+                    content = delivery.packageInfo.packageSize.value
+                )
+                ContentLabel(label = "Fee", content = "€ ${delivery.packageInfo.fee}")
+                if (delivery.dateTimeDeparted != null) {
+                    ContentLabel(
+                        label = "Date",
+                        content = delivery.dateTimeDeparted.format(dateFormatter)
+                    )
+                    ContentLabel(
+                        label = "Departure",
+                        content = delivery.dateTimeDeparted.format(timeFormatter)
+                    )
+                }
+                if (delivery.dateTimeArrived != null) {
+                    ContentLabel(
+                        label = "Arrival",
+                        content = delivery.dateTimeArrived.format(timeFormatter)
+                    )
+                }
+                if (delivery.state == DeliveryState.TRANSIT) {
+                    GeneralButton(text = "See live location", onClick = navigateMap)
+                }
             }
         })
     }

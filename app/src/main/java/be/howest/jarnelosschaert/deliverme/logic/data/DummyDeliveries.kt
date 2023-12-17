@@ -4,12 +4,13 @@ import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.logic.models.DeliveryState
 import be.howest.jarnelosschaert.deliverme.logic.models.Package
 import be.howest.jarnelosschaert.deliverme.logic.models.PackageSize
+import java.time.LocalDateTime
 
 val dummyDeliveries: List<Delivery> = dummyContacts.take(10).mapIndexed { index, contact ->
     Delivery(
         id = index + 1,
-        dateTimeArrived = "13:00",
-        dateTimeDeparted = "14:00",
+        dateTimeArrived = LocalDateTime.now(),
+        dateTimeDeparted = LocalDateTime.now(),
         state = DeliveryState.values()[index % DeliveryState.values().size],
         packageInfo = Package(
             id = index + 1,
