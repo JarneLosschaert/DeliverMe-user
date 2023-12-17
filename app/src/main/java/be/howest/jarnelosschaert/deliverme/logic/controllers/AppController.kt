@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.navigation.NavController
 import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
+import be.howest.jarnelosschaert.deliverme.helpers.checkPackage
 import be.howest.jarnelosschaert.deliverme.logic.AppUiState
 import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
 import be.howest.jarnelosschaert.deliverme.logic.data.dummyDeliveries
@@ -35,21 +36,26 @@ class AppController(
     }
 
     fun createPackage() {
-        packagesService.createPackage(
-            authController.uiState.jwt,
-            uiState.receiver.id,
-            uiState.senderAddress,
-            uiState.receiverAddress,
-            uiState.packageSize,
-            uiState.description,
-            handleSuccess = { newPackage ->
-                uiState.appPackage = newPackage
-                getPayInfo()
-            },
-            handleFailure = { message ->
-                println(message)
-            }
-        )
+        clearErrors()
+        uiState.packageErrors = checkPackage(uiState.description)
+        if (uiState.packageErrors.isEmpty()) {
+            packagesService.createPackage(
+                authController.uiState.jwt,
+                uiState.receiver.id,
+                uiState.senderAddress,
+                uiState.receiverAddress,
+                uiState.packageSize,
+                uiState.description,
+                handleSuccess = { newPackage ->
+                    uiState.appPackage = newPackage
+                    getPayInfo()
+                },
+                handleFailure = { message ->
+                    Toast.makeText(navController.context, message, Toast.LENGTH_SHORT).show()
+                }
+            )
+            clearErrors()
+        }
     }
 
     private fun getPayInfo() {
@@ -102,9 +108,9 @@ class AppController(
     }
 
     fun onConfirmAddress(address: Address) {
-        val errors = checkAddress(address)
-        uiState.addressErrors = errors
-        if (errors.isEmpty()) {
+        clearErrors()
+        uiState.addressErrors = checkAddress(address)
+        if (uiState.addressErrors.isEmpty()) {
             when (uiState.addressScreenStatus) {
                 AddressScreenStatus.SENDER_ADDRESS -> {
                     uiState.senderAddress = address
@@ -117,6 +123,7 @@ class AppController(
                 }
             }
             goBack()
+            clearErrors()
         }
     }
 
@@ -186,4 +193,8 @@ class AppController(
         navController.navigate(route)
     }
 
+    private fun clearErrors() {
+        uiState.packageErrors = emptyList()
+        uiState.addressErrors = emptyList()
+    }
 }

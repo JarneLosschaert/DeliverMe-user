@@ -113,6 +113,7 @@ private fun AuthScreenNavigationConfigurations(
         composable(OtherScreens.Deliver.route) {
             DeliverScreen(
                 modifier = modifier,
+                packageErrors = controller.uiState.packageErrors,
                 contacts = authController.uiState.customer.contacts,
                 senderAddress = controller.uiState.senderAddress,
                 receiver = controller.uiState.receiver,

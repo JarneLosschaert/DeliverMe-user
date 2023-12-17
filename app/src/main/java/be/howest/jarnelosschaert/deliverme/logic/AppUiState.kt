@@ -17,6 +17,7 @@ class AppUiState : ViewModel() {
     var delivery by mutableStateOf(defaultDelivery)
     var appPackage by mutableStateOf(defaultPackage)
     var payResponse by mutableStateOf(defaultPayResponse)
+    var packageErrors by mutableStateOf(emptyList<String>())
 
     var senderAddress by mutableStateOf(defaultAddress)
     var receiver by mutableStateOf(defaultCustomer)

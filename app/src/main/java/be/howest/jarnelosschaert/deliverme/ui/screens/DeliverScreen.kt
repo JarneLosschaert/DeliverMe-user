@@ -12,66 +12,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
+import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.PackageSize
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
-import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
 
 @Composable
 fun DeliverScreen(
     modifier: Modifier = Modifier,
+    packageErrors: List<String>,
     contacts: List<Customer>,
     senderAddress: Address,
     receiver: Customer,
     receiverAddress: Address,
     packageSize: PackageSize,
     description: String,
-    onGoBack: () -> Unit,
-    onSenderAddressChange: () -> Unit,
-    onReceiverChange: (Customer) -> Unit,
-    onReceiverAddressChange: () -> Unit,
-    onPackageSizeChange: (PackageSize) -> Unit,
-    onDescriptionChange: (String) -> Unit,
-    createPackage: () -> Unit,
-) {
-    var isLoading by remember { mutableStateOf(false) }
-
-    if (isLoading) {
-        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Loader(Text = "Searching driver", withCancel = true, onCancel = { isLoading = false })
-        }
-    } else {
-        DeliverScreenContent(
-            modifier = modifier,
-            contacts = contacts,
-            senderAddress = senderAddress,
-            receiver = receiver,
-            receiverAddress = receiverAddress,
-            packageSize = packageSize,
-            description = description,
-            searchDriver = { isLoading = true },
-            onGoBack = onGoBack,
-            onSenderAddressChange = onSenderAddressChange,
-            onReceiverChange = onReceiverChange,
-            onReceiverAddressChange = onReceiverAddressChange,
-            onPackageSizeChange = onPackageSizeChange,
-            onDescriptionChange = onDescriptionChange,
-            createPackage = createPackage
-        )
-    }
-}
-
-@Composable
-fun DeliverScreenContent(
-    modifier: Modifier = Modifier,
-    contacts: List<Customer>,
-    senderAddress: Address,
-    receiver: Customer,
-    receiverAddress: Address,
-    packageSize: PackageSize,
-    description: String,
-    searchDriver: () -> Unit,
     onGoBack: () -> Unit,
     onSenderAddressChange: () -> Unit,
     onReceiverChange: (Customer) -> Unit,
@@ -111,12 +66,13 @@ fun DeliverScreenContent(
                 value = description,
                 onValueChange = onDescriptionChange
             )
+            Errors(errors = packageErrors)
             GeneralButton(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .fillMaxWidth()
                     .padding(start = 10.dp, end = 10.dp),
-                text = "Pay delivery",
+                text = "Make delivery",
                 onClick = createPackage
             )
         }

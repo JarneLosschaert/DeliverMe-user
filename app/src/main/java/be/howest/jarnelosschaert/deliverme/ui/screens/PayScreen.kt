@@ -45,7 +45,7 @@ fun PayScreen(
                 )
                 ContentLabel(label = "Package size", content = appPackage.packageSize.value)
                 ContentLabel(label = "Description", content = appPackage.description)
-                ContentLabel(label = "Fee", content = appPackage.fee.toString())
+                ContentLabel(label = "Fee", content = "€ ${appPackage.fee}")
                 PayButton(context = context, payResponse = payResponse, onPay = onPay)
             }
         })

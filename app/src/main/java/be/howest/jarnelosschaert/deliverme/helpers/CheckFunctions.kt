@@ -98,3 +98,11 @@ private fun isValidCity(city: String): Boolean {
     val cityRegex = "^[A-Za-z]+(?:[\\s-][A-Za-z]+)*\$"
     return city.matches(cityRegex.toRegex())
 }
+
+fun checkPackage(description: String): List<String> {
+    val errors = mutableListOf<String>()
+    if (description.isBlank()) {
+        errors.add("Description is required.")
+    }
+    return errors
+}
