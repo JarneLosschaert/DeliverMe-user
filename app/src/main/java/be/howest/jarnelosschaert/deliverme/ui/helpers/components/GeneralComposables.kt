@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import be.howest.jarnelosschaert.deliverme.logic.models.Address
 
 @Composable
 fun Title(text: String = "DeliverMe", onGoBack: () -> Unit = {}, withGoBack: Boolean = false) {
@@ -102,7 +103,6 @@ fun DateDetails(text: String) {
         fontStyle = FontStyle.Italic
     )
 }
-
 @Composable
 fun ContentLabel(label: String, content: String) {
     Label(text = label)

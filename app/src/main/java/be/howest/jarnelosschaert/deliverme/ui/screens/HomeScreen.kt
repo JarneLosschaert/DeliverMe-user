@@ -24,8 +24,10 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier,
-    activeDeliveries: List<Delivery>,
-    pastDeliveries: List<Delivery>,
+    paidDeliveries: List<Delivery>,
+    assignedDeliveries: List<Delivery>,
+    transitDeliveries: List<Delivery>,
+    deliveredDeliveries: List<Delivery>,
     onDeliveryClick: (Delivery) -> Unit,
     navigateDeliver: () -> Unit,
     navigateContacts: () -> Unit,
@@ -36,19 +38,43 @@ fun HomeScreen(
             HomeButtons(navigateDeliver = navigateDeliver, navigateContacts = navigateContacts)
             LazyColumn(content = {
                 item {
-                    SubTitle(text = "Active Deliveries")
-                    for (delivery in activeDeliveries) {
-                        Delivery(
-                            delivery = delivery,
-                            onDeliveryClick = onDeliveryClick
-                        )
+                    if (paidDeliveries.isNotEmpty()) {
+                        SubTitle(text = "Searching for a driver...")
+                        for (delivery in paidDeliveries) {
+                            Delivery(
+                                delivery = delivery,
+                                onDeliveryClick = onDeliveryClick
+                            )
+                        }
+                    }
+                    if (assignedDeliveries.isNotEmpty()) {
+                        SubTitle(text = "Assigned deliveries")
+                        for (delivery in assignedDeliveries) {
+                            Delivery(
+                                delivery = delivery,
+                                onDeliveryClick = onDeliveryClick
+                            )
+                        }
+                    }
+                    if (transitDeliveries.isNotEmpty()) {
+                        SubTitle(text = "Deliveries in transit")
+                        for (delivery in transitDeliveries) {
+                            Delivery(
+                                delivery = delivery,
+                                onDeliveryClick = onDeliveryClick
+                            )
+                        }
                     }
                     SubTitle(text = "History")
-                    for (delivery in pastDeliveries) {
-                        Delivery(
-                            delivery = delivery,
-                            onDeliveryClick = onDeliveryClick
-                        )
+                    if (deliveredDeliveries.isNotEmpty()) {
+                        for (delivery in deliveredDeliveries) {
+                            Delivery(
+                                delivery = delivery,
+                                onDeliveryClick = onDeliveryClick
+                            )
+                        }
+                    } else {
+                        Content(text = "No deliveries yet")
                     }
                 }
             })

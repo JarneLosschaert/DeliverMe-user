@@ -3,7 +3,7 @@ package be.howest.jarnelosschaert.deliverme.ui.helpers.functions
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
 
 fun showAddress(address: Address): String {
-    return "${address.street} ${address.number}, ${address.zip} ${address.city}"
+    return "${address.street} ${address.number},\n${address.zip} ${address.city}"
 }
 
 fun showPhoneNumber(phoneNumber: String): String {

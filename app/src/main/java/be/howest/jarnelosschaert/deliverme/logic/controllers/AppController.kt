@@ -9,7 +9,6 @@ import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.helpers.checkPackage
 import be.howest.jarnelosschaert.deliverme.logic.AppUiState
 import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
-import be.howest.jarnelosschaert.deliverme.logic.data.dummyDeliveries
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
@@ -28,8 +27,18 @@ class AppController(
     private val packagesService = PackagesService()
 
     init {
-        uiState.activeDeliveries = dummyDeliveries.filter { it.state == DeliveryState.ASSIGNED }
-        uiState.pastDeliveries = dummyDeliveries.filter { it.state == DeliveryState.DELIVERED }
+        packagesService.getDeliveries(
+            authController.uiState.jwt,
+            handleSuccess = { deliveries ->
+                uiState.paidDeliveries = deliveries.filter { it.state == DeliveryState.PAID }
+                uiState.assignedDeliveries = deliveries.filter { it.state == DeliveryState.ASSIGNED }
+                uiState.transitDeliveries = deliveries.filter { it.state == DeliveryState.TRANSIT }
+                uiState.deliveredDeliveries = deliveries.filter { it.state == DeliveryState.DELIVERED }
+            },
+            handleFailure = { message ->
+                Toast.makeText(navController.context, message, Toast.LENGTH_SHORT).show()
+            }
+        )
         uiState.senderAddress = authController.uiState.customer.homeAddress
         uiState.receiver = authController.uiState.customer
         uiState.receiverAddress = authController.uiState.customer.homeAddress
@@ -75,7 +84,8 @@ class AppController(
     fun onPay(activityResult: ActivityResult) {
         when (activityResult.resultCode) {
             Activity.RESULT_OK -> {
-                Toast.makeText(navController.context, "Payment successful", Toast.LENGTH_SHORT).show()
+                Toast.makeText(navController.context, "Payment successful", Toast.LENGTH_SHORT)
+                    .show()
                 navigateTo(BottomNavigationScreens.Home.route)
             }
             Activity.RESULT_CANCELED -> {

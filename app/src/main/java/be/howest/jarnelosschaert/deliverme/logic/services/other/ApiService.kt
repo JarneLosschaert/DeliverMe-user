@@ -1,6 +1,7 @@
 package be.howest.jarnelosschaert.deliverme.logic.services.other
 
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
+import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.logic.models.Package
 import be.howest.jarnelosschaert.deliverme.logic.services.requests.*
 import be.howest.jarnelosschaert.deliverme.logic.services.responses.PayResponse
@@ -38,6 +39,9 @@ interface ApiService {
         @Header("Authorization") authToken: String,
         @Body addContactRequest: AddContactRequest
     ): Customer
+
+    @GET("/deliveries")
+    suspend fun getDeliveries(@Header("Authorization") authToken: String): List<Delivery>
 
     @DELETE("/customers/contacts/{id}")
     suspend fun deleteContact(

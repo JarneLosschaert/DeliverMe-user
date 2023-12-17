@@ -16,6 +16,7 @@ import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.PackageSize
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
 
 @Composable
 fun DeliverScreen(
@@ -92,13 +93,7 @@ fun ChooseAddressLabel(label: String, address: Address, onAddressChange: () -> U
                 .padding(start = 10.dp, top = 5.dp, bottom = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-            ) {
-                Text(text = "${address.street} ${address.number},")
-                Text(text = "${address.zip} ${address.city}")
-            }
+            Content(text = showAddress(address))
             IconButton(
                 onClick = onAddressChange,
             ) {

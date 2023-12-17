@@ -22,14 +22,11 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNa
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens.AddressScreen
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens.ProfileScreen
-import com.stripe.android.paymentsheet.PaymentSheetResult
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
-import be.howest.jarnelosschaert.deliverme.logic.data.defaultPayResponse
-import com.stripe.android.PaymentConfiguration
 
 sealed class BottomNavigationScreens(val route: String, val icon: ImageVector) {
     object Home : BottomNavigationScreens("home", Icons.Filled.Home)
@@ -89,8 +86,10 @@ private fun AuthScreenNavigationConfigurations(
         composable(BottomNavigationScreens.Home.route) {
             HomeScreen(
                 modifier = modifier,
-                activeDeliveries = controller.uiState.activeDeliveries,
-                pastDeliveries = controller.uiState.pastDeliveries,
+                paidDeliveries = controller.uiState.paidDeliveries,
+                assignedDeliveries = controller.uiState.assignedDeliveries,
+                transitDeliveries = controller.uiState.transitDeliveries,
+                deliveredDeliveries = controller.uiState.deliveredDeliveries,
                 onDeliveryClick = { controller.onDeliveryClicked(it) },
                 navigateDeliver = { controller.navigateTo(OtherScreens.Deliver.route) },
                 navigateContacts = { controller.navigateTo(OtherScreens.Contacts.route) },

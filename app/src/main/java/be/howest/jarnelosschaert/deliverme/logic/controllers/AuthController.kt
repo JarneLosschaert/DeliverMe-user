@@ -5,11 +5,9 @@ import androidx.navigation.NavController
 import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.helpers.checkValuesSignUp
 import be.howest.jarnelosschaert.deliverme.logic.AuthUiState
-import be.howest.jarnelosschaert.deliverme.logic.data.defaultAddress
 import be.howest.jarnelosschaert.deliverme.logic.data.defaultCustomer
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
-import be.howest.jarnelosschaert.deliverme.logic.models.Customer
-import be.howest.jarnelosschaert.deliverme.logic.models.SignUp
+import be.howest.jarnelosschaert.deliverme.logic.data.SignUp
 import be.howest.jarnelosschaert.deliverme.logic.services.AuthService
 import be.howest.jarnelosschaert.deliverme.logic.services.responses.RegistrationLoginResponse
 import be.howest.jarnelosschaert.deliverme.ui.AuthorizeScreens

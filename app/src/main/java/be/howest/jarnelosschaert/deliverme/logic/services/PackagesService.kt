@@ -3,6 +3,7 @@ package be.howest.jarnelosschaert.deliverme.logic.services
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
+import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.logic.models.Package
 import be.howest.jarnelosschaert.deliverme.logic.models.PackageSize
 import be.howest.jarnelosschaert.deliverme.logic.services.other.RetrofitInstance
@@ -12,25 +13,6 @@ import kotlinx.coroutines.launch
 
 class PackagesService: ViewModel() {
     private val apiService = RetrofitInstance.apiService
-
-    /*
-    fun getPackages(
-        jwt: String,
-        handleSuccess: (List<Package>) -> Unit,
-        handleFailure: (String) -> Unit,
-    ) {
-        viewModelScope.launch {
-            try {
-                val response = apiService.getPackages("Bearer $jwt")
-                handleSuccess(response)
-            } catch (e: Exception) {
-                handleFailure("Failed to get packages")
-                println("Error get packages: ${e.message}")
-            }
-        }
-    }
-
-     */
 
     fun createPackage(
         jwt: String,
@@ -73,6 +55,22 @@ class PackagesService: ViewModel() {
             } catch (e: Exception) {
                 handleFailure("Failed to get payment intent")
                 println("Error get payment intent: ${e.message}")
+            }
+        }
+    }
+
+    fun getDeliveries(
+        jwt: String,
+        handleSuccess: (List<Delivery>) -> Unit,
+        handleFailure: (String) -> Unit,
+    ) {
+        viewModelScope.launch {
+            try {
+                val response = apiService.getDeliveries("Bearer $jwt")
+                handleSuccess(response)
+            } catch (e: Exception) {
+                handleFailure("Failed to get deliveries")
+                println("Error get deliveries: ${e.message}")
             }
         }
     }

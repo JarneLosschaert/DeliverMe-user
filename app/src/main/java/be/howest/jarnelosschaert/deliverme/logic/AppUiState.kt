@@ -6,13 +6,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import be.howest.jarnelosschaert.deliverme.logic.data.*
 import be.howest.jarnelosschaert.deliverme.logic.models.PackageSize
-import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
-import com.stripe.android.paymentsheet.PaymentSheet
 
 class AppUiState : ViewModel() {
-    var activeDeliveries by mutableStateOf(emptyList<Delivery>())
-    var pastDeliveries by mutableStateOf(emptyList<Delivery>())
+    var paidDeliveries by mutableStateOf(emptyList<Delivery>())
+    var assignedDeliveries by mutableStateOf(emptyList<Delivery>())
+    var transitDeliveries by mutableStateOf(emptyList<Delivery>())
+    var deliveredDeliveries by mutableStateOf(emptyList<Delivery>())
 
     var delivery by mutableStateOf(defaultDelivery)
     var appPackage by mutableStateOf(defaultPackage)
