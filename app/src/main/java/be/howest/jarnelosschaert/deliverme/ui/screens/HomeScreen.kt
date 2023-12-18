@@ -48,7 +48,11 @@ fun HomeScreen(
                 state = rememberSwipeRefreshState(isRefreshing = refreshing),
                 onRefresh = onRefreshDeliveries,
             ) {
-                LazyColumn(content = {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(),
+                    content = {
                     item {
                         if (paidDeliveries.isNotEmpty()) {
                             SubTitle(text = "Searching for a driver...")
@@ -90,7 +94,11 @@ fun HomeScreen(
                                 )
                             }
                         } else {
-                            Content(text = "No deliveries yet")
+                            if (paidDeliveries.isEmpty() && assignedDeliveries.isEmpty() && transitDeliveries.isEmpty()) {
+                                Content(text = "No deliveries yet")
+                            } else {
+                                Content(text = "No deliveries in history")
+                            }
                         }
                     }
                 })

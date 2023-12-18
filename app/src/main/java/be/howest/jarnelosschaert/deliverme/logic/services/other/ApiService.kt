@@ -49,9 +49,6 @@ interface ApiService {
         @Path("id") contactId: Int,
     )
 
-    @GET("/packages")
-    suspend fun getPackages(@Header("Authorization") authToken: String): List<Package>
-
     @POST("/packages")
     suspend fun createPackage(
         @Header("Authorization") authToken: String,
