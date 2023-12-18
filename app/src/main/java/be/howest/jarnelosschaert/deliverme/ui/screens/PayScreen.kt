@@ -32,7 +32,7 @@ fun PayScreen(
     Box(modifier = modifier) {
         LazyColumn(content = {
             item {
-                Title(text = "Pay", onGoBack = onGoBack, withGoBack = true)
+                Title(text = "Delivery", onGoBack = onGoBack, withGoBack = true)
                 ContentLabel(label = "Sender", content = appPackage.sender.person.name)
                 ContentLabel(
                     label = "Sender address",

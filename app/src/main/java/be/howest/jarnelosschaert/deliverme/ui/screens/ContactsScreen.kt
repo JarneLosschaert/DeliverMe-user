@@ -82,7 +82,6 @@ fun SearchBar(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .width(280.dp)
-                .padding(0.dp)
         ) {
             GeneralTextField(
                 text = query,
