@@ -13,6 +13,7 @@ class AppUiState : ViewModel() {
     var assignedDeliveries by mutableStateOf(emptyList<Delivery>())
     var transitDeliveries by mutableStateOf(emptyList<Delivery>())
     var deliveredDeliveries by mutableStateOf(emptyList<Delivery>())
+    var refreshing by mutableStateOf(false)
 
     var delivery by mutableStateOf(defaultDelivery)
     var appPackage by mutableStateOf(defaultPackage)

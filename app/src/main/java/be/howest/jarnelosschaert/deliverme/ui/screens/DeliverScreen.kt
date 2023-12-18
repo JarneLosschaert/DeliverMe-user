@@ -93,7 +93,7 @@ fun ChooseAddressLabel(label: String, address: Address, onAddressChange: () -> U
                 .padding(start = 10.dp, top = 5.dp, bottom = 5.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Content(text = showAddress(address))
+            Content(text = showAddress(address), modifier = Modifier.weight(1f))
             IconButton(
                 onClick = onAddressChange,
             ) {

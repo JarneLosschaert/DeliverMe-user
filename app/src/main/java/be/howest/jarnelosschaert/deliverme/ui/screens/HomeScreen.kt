@@ -8,7 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -18,8 +18,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import be.howest.jarnelosschaert.deliverme.R
+import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.dateFormatter
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showCustomer
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
 @Composable
 fun HomeScreen(
@@ -27,7 +32,10 @@ fun HomeScreen(
     paidDeliveries: List<Delivery>,
     assignedDeliveries: List<Delivery>,
     transitDeliveries: List<Delivery>,
+    refreshing: Boolean,
+    loggedInCustomer: Customer,
     deliveredDeliveries: List<Delivery>,
+    onRefreshDeliveries: () -> Unit,
     onDeliveryClick: (Delivery) -> Unit,
     navigateDeliver: () -> Unit,
     navigateContacts: () -> Unit,
@@ -36,48 +44,57 @@ fun HomeScreen(
         Column {
             Title()
             HomeButtons(navigateDeliver = navigateDeliver, navigateContacts = navigateContacts)
-            LazyColumn(content = {
-                item {
-                    if (paidDeliveries.isNotEmpty()) {
-                        SubTitle(text = "Searching for a driver...")
-                        for (delivery in paidDeliveries) {
-                            Delivery(
-                                delivery = delivery,
-                                onDeliveryClick = onDeliveryClick
-                            )
+            SwipeRefresh(
+                state = rememberSwipeRefreshState(isRefreshing = refreshing),
+                onRefresh = onRefreshDeliveries,
+            ) {
+                LazyColumn(content = {
+                    item {
+                        if (paidDeliveries.isNotEmpty()) {
+                            SubTitle(text = "Searching for a driver...")
+                            for (delivery in paidDeliveries) {
+                                Delivery(
+                                    delivery = delivery,
+                                    onDeliveryClick = onDeliveryClick,
+                                    loggedInCustomer = loggedInCustomer
+                                )
+                            }
+                        }
+                        if (assignedDeliveries.isNotEmpty()) {
+                            SubTitle(text = "Assigned deliveries")
+                            for (delivery in assignedDeliveries) {
+                                Delivery(
+                                    delivery = delivery,
+                                    onDeliveryClick = onDeliveryClick,
+                                    loggedInCustomer = loggedInCustomer
+                                )
+                            }
+                        }
+                        if (transitDeliveries.isNotEmpty()) {
+                            SubTitle(text = "Deliveries in transit")
+                            for (delivery in transitDeliveries) {
+                                Delivery(
+                                    delivery = delivery,
+                                    onDeliveryClick = onDeliveryClick,
+                                    loggedInCustomer = loggedInCustomer
+                                )
+                            }
+                        }
+                        SubTitle(text = "History")
+                        if (deliveredDeliveries.isNotEmpty()) {
+                            for (delivery in deliveredDeliveries) {
+                                Delivery(
+                                    delivery = delivery,
+                                    onDeliveryClick = onDeliveryClick,
+                                    loggedInCustomer = loggedInCustomer
+                                )
+                            }
+                        } else {
+                            Content(text = "No deliveries yet")
                         }
                     }
-                    if (assignedDeliveries.isNotEmpty()) {
-                        SubTitle(text = "Assigned deliveries")
-                        for (delivery in assignedDeliveries) {
-                            Delivery(
-                                delivery = delivery,
-                                onDeliveryClick = onDeliveryClick
-                            )
-                        }
-                    }
-                    if (transitDeliveries.isNotEmpty()) {
-                        SubTitle(text = "Deliveries in transit")
-                        for (delivery in transitDeliveries) {
-                            Delivery(
-                                delivery = delivery,
-                                onDeliveryClick = onDeliveryClick
-                            )
-                        }
-                    }
-                    SubTitle(text = "History")
-                    if (deliveredDeliveries.isNotEmpty()) {
-                        for (delivery in deliveredDeliveries) {
-                            Delivery(
-                                delivery = delivery,
-                                onDeliveryClick = onDeliveryClick
-                            )
-                        }
-                    } else {
-                        Content(text = "No deliveries yet")
-                    }
-                }
-            })
+                })
+            }
         }
     }
 }
@@ -140,6 +157,7 @@ fun Delivery(
     modifier: Modifier = Modifier,
     delivery: Delivery,
     onDeliveryClick: (Delivery) -> Unit,
+    loggedInCustomer: Customer
 ) {
     Box(
         modifier = modifier
@@ -156,10 +174,10 @@ fun Delivery(
         ) {
             Column {
                 Label(text = "Sender")
-                Content(text = delivery.packageInfo.sender.person.name)
+                Content(text = showCustomer(delivery.packageInfo.sender, loggedInCustomer))
                 Spacer(modifier = Modifier.height(10.dp))
                 Label(text = "Receiver")
-                Content(text = delivery.packageInfo.receiver.person.name)
+                Content(text = showCustomer(delivery.packageInfo.receiver, loggedInCustomer))
             }
             Column(
                 modifier = Modifier.fillMaxHeight(),
@@ -167,7 +185,9 @@ fun Delivery(
                 horizontalAlignment = Alignment.End
             ) {
                 GeneralButton(text = "Details", onClick = { onDeliveryClick(delivery) })
-                DateDetails(text = "12/10/2022")
+                if (delivery.dateTimeDeparted != null) {
+                    DateDetails(text = delivery.dateTimeDeparted.format(dateFormatter))
+                }
             }
         }
     }

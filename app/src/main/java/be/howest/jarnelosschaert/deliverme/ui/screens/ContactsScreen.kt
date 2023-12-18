@@ -62,6 +62,9 @@ fun ContactsScreen(
                     for (contact in contacts) {
                         Contact(contact = contact, onContactClick = onContactClick)
                     }
+                    if (contacts.isEmpty()) {
+                        Content(text = "No contacts yet")
+                    }
                 }
             })
         }

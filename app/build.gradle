@@ -88,4 +88,7 @@ dependencies {
 
     // Stripe
     implementation 'com.stripe:stripe-android:20.17.0'
+
+    // Swipe refresh
+    implementation 'com.google.accompanist:accompanist-swiperefresh:0.24.13-rc'
 }

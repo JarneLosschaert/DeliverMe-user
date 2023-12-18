@@ -9,6 +9,7 @@ import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.helpers.checkPackage
 import be.howest.jarnelosschaert.deliverme.logic.AppUiState
 import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
+import be.howest.jarnelosschaert.deliverme.logic.data.defaultContact
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
@@ -27,21 +28,40 @@ class AppController(
     private val packagesService = PackagesService()
 
     init {
+        loadDeliveries()
+        uiState.senderAddress = authController.uiState.customer.homeAddress
+        if (authController.uiState.customer.contacts.isNotEmpty()) {
+            uiState.receiver = authController.uiState.customer.contacts[0]
+            uiState.receiverAddress = authController.uiState.customer.contacts[0].homeAddress
+        } else {
+            uiState.receiver = defaultContact
+            uiState.receiverAddress = defaultContact.homeAddress
+        }
+    }
+
+    fun loadDeliveries(refreshing: Boolean = false) {
+        if (refreshing) uiState.refreshing = true
         packagesService.getDeliveries(
             authController.uiState.jwt,
             handleSuccess = { deliveries ->
                 uiState.paidDeliveries = deliveries.filter { it.state == DeliveryState.PAID }
-                uiState.assignedDeliveries = deliveries.filter { it.state == DeliveryState.ASSIGNED }
+                uiState.assignedDeliveries =
+                    deliveries.filter { it.state == DeliveryState.ASSIGNED }
                 uiState.transitDeliveries = deliveries.filter { it.state == DeliveryState.TRANSIT }
-                uiState.deliveredDeliveries = deliveries.filter { it.state == DeliveryState.DELIVERED }
+                uiState.deliveredDeliveries =
+                    deliveries.filter { it.state == DeliveryState.DELIVERED }
+                uiState.refreshing = false
+                if (refreshing) Toast.makeText(
+                    navController.context,
+                    "Deliveries up to date",
+                    Toast.LENGTH_SHORT
+                ).show()
             },
             handleFailure = { message ->
                 Toast.makeText(navController.context, message, Toast.LENGTH_SHORT).show()
+                uiState.refreshing = false
             }
         )
-        uiState.senderAddress = authController.uiState.customer.homeAddress
-        uiState.receiver = authController.uiState.customer
-        uiState.receiverAddress = authController.uiState.customer.homeAddress
     }
 
     fun createPackage() {
