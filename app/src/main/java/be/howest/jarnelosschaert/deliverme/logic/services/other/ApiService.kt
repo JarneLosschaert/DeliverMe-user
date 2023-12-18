@@ -40,14 +40,14 @@ interface ApiService {
         @Body addContactRequest: AddContactRequest
     ): Customer
 
-    @GET("/deliveries")
-    suspend fun getDeliveries(@Header("Authorization") authToken: String): List<Delivery>
-
     @DELETE("/customers/contacts/{id}")
     suspend fun deleteContact(
         @Header("Authorization") authToken: String,
         @Path("id") contactId: Int,
     )
+
+    @GET("/deliveries")
+    suspend fun getDeliveries(@Header("Authorization") authToken: String): List<Delivery>
 
     @POST("/packages")
     suspend fun createPackage(

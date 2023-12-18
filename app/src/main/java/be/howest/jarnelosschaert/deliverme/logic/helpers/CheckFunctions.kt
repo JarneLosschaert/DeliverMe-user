@@ -1,4 +1,4 @@
-package be.howest.jarnelosschaert.deliverme.helpers
+package be.howest.jarnelosschaert.deliverme.logic.helpers
 
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
 

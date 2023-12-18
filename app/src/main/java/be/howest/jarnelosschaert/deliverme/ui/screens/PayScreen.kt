@@ -12,7 +12,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import be.howest.jarnelosschaert.deliverme.helpers.StripePaymentSheetActivity
+import be.howest.jarnelosschaert.deliverme.logic.helpers.StripePaymentSheetActivity
 import be.howest.jarnelosschaert.deliverme.logic.models.Package
 import be.howest.jarnelosschaert.deliverme.logic.services.responses.PayResponse
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.ContentLabel

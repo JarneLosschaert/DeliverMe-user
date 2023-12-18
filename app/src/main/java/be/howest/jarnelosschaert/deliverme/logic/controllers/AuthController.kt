@@ -2,8 +2,8 @@ package be.howest.jarnelosschaert.deliverme.logic.controllers
 
 import android.widget.Toast
 import androidx.navigation.NavController
-import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
-import be.howest.jarnelosschaert.deliverme.helpers.checkValuesSignUp
+import be.howest.jarnelosschaert.deliverme.logic.helpers.checkAddress
+import be.howest.jarnelosschaert.deliverme.logic.helpers.checkValuesSignUp
 import be.howest.jarnelosschaert.deliverme.logic.AuthUiState
 import be.howest.jarnelosschaert.deliverme.logic.data.defaultCustomer
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
@@ -36,7 +36,6 @@ class AuthController(
         phone: String? = null,
         address: Address? = null
     ) {
-        println("updateCustomer")
         val updatedPerson = uiState.customer.person.copy(
             name = name ?: uiState.customer.person.name,
             email = email ?: uiState.customer.person.email,

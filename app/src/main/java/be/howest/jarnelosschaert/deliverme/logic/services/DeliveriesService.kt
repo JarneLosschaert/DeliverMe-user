@@ -11,7 +11,7 @@ import be.howest.jarnelosschaert.deliverme.logic.services.requests.CreatePackage
 import be.howest.jarnelosschaert.deliverme.logic.services.responses.PayResponse
 import kotlinx.coroutines.launch
 
-class PackagesService: ViewModel() {
+class DeliveriesService: ViewModel() {
     private val apiService = RetrofitInstance.apiService
 
     fun createPackage(

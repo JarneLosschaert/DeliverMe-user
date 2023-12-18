@@ -5,8 +5,8 @@ import android.content.RestrictionsManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.navigation.NavController
-import be.howest.jarnelosschaert.deliverme.helpers.checkAddress
-import be.howest.jarnelosschaert.deliverme.helpers.checkPackage
+import be.howest.jarnelosschaert.deliverme.logic.helpers.checkAddress
+import be.howest.jarnelosschaert.deliverme.logic.helpers.checkPackage
 import be.howest.jarnelosschaert.deliverme.logic.AppUiState
 import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
 import be.howest.jarnelosschaert.deliverme.logic.data.defaultContact
@@ -15,7 +15,7 @@ import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.logic.models.DeliveryState
 import be.howest.jarnelosschaert.deliverme.logic.services.AuthService
-import be.howest.jarnelosschaert.deliverme.logic.services.PackagesService
+import be.howest.jarnelosschaert.deliverme.logic.services.DeliveriesService
 import be.howest.jarnelosschaert.deliverme.ui.BottomNavigationScreens
 import be.howest.jarnelosschaert.deliverme.ui.OtherScreens
 
@@ -25,7 +25,7 @@ class AppController(
 ) {
     val uiState: AppUiState = AppUiState()
     private val authService = AuthService()
-    private val packagesService = PackagesService()
+    private val deliveriesService = DeliveriesService()
 
     init {
         loadDeliveries()
@@ -41,7 +41,7 @@ class AppController(
 
     fun loadDeliveries(refreshing: Boolean = false) {
         if (refreshing) uiState.refreshing = true
-        packagesService.getDeliveries(
+        deliveriesService.getDeliveries(
             authController.uiState.jwt,
             handleSuccess = { deliveries ->
                 uiState.paidDeliveries = deliveries.filter { it.state == DeliveryState.PAID }
@@ -68,7 +68,7 @@ class AppController(
         clearErrors()
         uiState.packageErrors = checkPackage(uiState.description)
         if (uiState.packageErrors.isEmpty()) {
-            packagesService.createPackage(
+            deliveriesService.createPackage(
                 authController.uiState.jwt,
                 uiState.receiver.id,
                 uiState.senderAddress,
@@ -88,7 +88,7 @@ class AppController(
     }
 
     private fun getPayInfo() {
-        packagesService.getPaymentIntent(
+        deliveriesService.getPaymentIntent(
             authController.uiState.jwt,
             uiState.appPackage.id,
             handleSuccess = { payResponse ->

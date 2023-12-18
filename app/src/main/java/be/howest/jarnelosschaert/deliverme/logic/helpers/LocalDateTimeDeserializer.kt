@@ -1,4 +1,4 @@
-package be.howest.jarnelosschaert.deliverme.helpers
+package be.howest.jarnelosschaert.deliverme.logic.helpers
 
 import com.google.gson.TypeAdapter
 import com.google.gson.stream.JsonReader
