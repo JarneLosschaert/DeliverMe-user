@@ -10,9 +10,7 @@ import be.howest.jarnelosschaert.deliverme.logic.models.DeliveryState
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.ContentLabel
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
-import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.dateFormatter
-import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
-import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.timeFormatter
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.*
 
 @Composable
 fun DeliveryDetailsScreen(
@@ -45,20 +43,20 @@ fun DeliveryDetailsScreen(
                     content = delivery.packageInfo.packageSize.value
                 )
                 ContentLabel(label = "Fee", content = "€ ${delivery.packageInfo.fee}")
-                if (delivery.dateTimeDeparted != null) {
+                if (delivery.dateTimeDeparted != "") {
                     ContentLabel(
                         label = "Date",
-                        content = delivery.dateTimeDeparted.format(dateFormatter)
+                        content = showDate(delivery.dateTimeDeparted)
                     )
                     ContentLabel(
                         label = "Departure",
-                        content = delivery.dateTimeDeparted.format(timeFormatter)
+                        content = showTime(delivery.dateTimeDeparted)
                     )
                 }
-                if (delivery.dateTimeArrived != null) {
+                if (delivery.dateTimeArrived != "") {
                     ContentLabel(
                         label = "Arrival",
-                        content = delivery.dateTimeArrived.format(timeFormatter)
+                        content = showTime(delivery.dateTimeArrived)
                     )
                 }
                 if (delivery.state == DeliveryState.TRANSIT) {

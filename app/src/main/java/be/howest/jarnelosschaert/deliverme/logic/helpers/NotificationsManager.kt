@@ -11,7 +11,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import be.howest.jarnelosschaert.deliverme.R
 
-class NotificationManager(private val context: Context) {
+class NotificationsManager(private val context: Context) {
 
     companion object {
         private const val CHANNEL_ID = "DeliverMe"

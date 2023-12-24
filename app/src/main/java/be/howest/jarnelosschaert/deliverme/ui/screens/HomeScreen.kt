@@ -8,7 +8,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -21,8 +21,8 @@ import be.howest.jarnelosschaert.deliverme.R
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
-import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.dateFormatter
 import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showCustomer
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showDate
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -53,55 +53,55 @@ fun HomeScreen(
                         .fillMaxWidth()
                         .fillMaxHeight(),
                     content = {
-                    item {
-                        if (paidDeliveries.isNotEmpty()) {
-                            SubTitle(text = "Searching for a driver...")
-                            for (delivery in paidDeliveries) {
-                                Delivery(
-                                    delivery = delivery,
-                                    onDeliveryClick = onDeliveryClick,
-                                    loggedInCustomer = loggedInCustomer
-                                )
+                        item {
+                            if (paidDeliveries.isNotEmpty()) {
+                                SubTitle(text = "Searching for a driver...")
+                                for (delivery in paidDeliveries) {
+                                    Delivery(
+                                        delivery = delivery,
+                                        onDeliveryClick = onDeliveryClick,
+                                        loggedInCustomer = loggedInCustomer
+                                    )
+                                }
                             }
-                        }
-                        if (assignedDeliveries.isNotEmpty()) {
-                            SubTitle(text = "Assigned deliveries")
-                            for (delivery in assignedDeliveries) {
-                                Delivery(
-                                    delivery = delivery,
-                                    onDeliveryClick = onDeliveryClick,
-                                    loggedInCustomer = loggedInCustomer
-                                )
+                            if (assignedDeliveries.isNotEmpty()) {
+                                SubTitle(text = "Assigned deliveries")
+                                for (delivery in assignedDeliveries) {
+                                    Delivery(
+                                        delivery = delivery,
+                                        onDeliveryClick = onDeliveryClick,
+                                        loggedInCustomer = loggedInCustomer
+                                    )
+                                }
                             }
-                        }
-                        if (transitDeliveries.isNotEmpty()) {
-                            SubTitle(text = "Deliveries in transit")
-                            for (delivery in transitDeliveries) {
-                                Delivery(
-                                    delivery = delivery,
-                                    onDeliveryClick = onDeliveryClick,
-                                    loggedInCustomer = loggedInCustomer
-                                )
+                            if (transitDeliveries.isNotEmpty()) {
+                                SubTitle(text = "Deliveries in transit")
+                                for (delivery in transitDeliveries) {
+                                    Delivery(
+                                        delivery = delivery,
+                                        onDeliveryClick = onDeliveryClick,
+                                        loggedInCustomer = loggedInCustomer
+                                    )
+                                }
                             }
-                        }
-                        SubTitle(text = "History")
-                        if (deliveredDeliveries.isNotEmpty()) {
-                            for (delivery in deliveredDeliveries) {
-                                Delivery(
-                                    delivery = delivery,
-                                    onDeliveryClick = onDeliveryClick,
-                                    loggedInCustomer = loggedInCustomer
-                                )
-                            }
-                        } else {
-                            if (paidDeliveries.isEmpty() && assignedDeliveries.isEmpty() && transitDeliveries.isEmpty()) {
-                                Content(text = "No deliveries yet")
+                            SubTitle(text = "History")
+                            if (deliveredDeliveries.isNotEmpty()) {
+                                for (delivery in deliveredDeliveries) {
+                                    Delivery(
+                                        delivery = delivery,
+                                        onDeliveryClick = onDeliveryClick,
+                                        loggedInCustomer = loggedInCustomer
+                                    )
+                                }
                             } else {
-                                Content(text = "No deliveries in history")
+                                if (paidDeliveries.isEmpty() && assignedDeliveries.isEmpty() && transitDeliveries.isEmpty()) {
+                                    Content(text = "No deliveries yet")
+                                } else {
+                                    Content(text = "No deliveries in history")
+                                }
                             }
                         }
-                    }
-                })
+                    })
             }
         }
     }
@@ -193,8 +193,8 @@ fun Delivery(
                 horizontalAlignment = Alignment.End
             ) {
                 GeneralButton(text = "Details", onClick = { onDeliveryClick(delivery) })
-                if (delivery.dateTimeDeparted != null) {
-                    DateDetails(text = delivery.dateTimeDeparted.format(dateFormatter))
+                if (delivery.dateTimeDeparted != "") {
+                    DateDetails(text = showDate(delivery.dateTimeDeparted))
                 }
             }
         }

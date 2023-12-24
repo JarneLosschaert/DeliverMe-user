@@ -2,6 +2,7 @@ package be.howest.jarnelosschaert.deliverme.ui.helpers.functions
 
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 fun showAddress(address: Address): String {
@@ -23,5 +24,14 @@ fun showCustomer(customer: Customer, me: Customer): String {
     }
 }
 
-val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
-val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX")
+fun showDate(dateTime: String): String {
+    val localDateTime = LocalDateTime.parse(dateTime, formatter)
+    val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+    return localDateTime.format(dateFormatter)
+}
+fun showTime(dateTime: String): String {
+    val localDateTime = LocalDateTime.parse(dateTime, formatter)
+    val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
+    return localDateTime.format(timeFormatter)
+}

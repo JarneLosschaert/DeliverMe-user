@@ -1,11 +1,8 @@
 import android.content.Context
 import androidx.compose.runtime.*
-import be.howest.jarnelosschaert.deliverme.logic.helpers.NotificationManager
-import be.howest.jarnelosschaert.deliverme.logic.models.Address
+import be.howest.jarnelosschaert.deliverme.logic.helpers.NotificationsManager
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.logic.models.DeliveryState
-import be.howest.jarnelosschaert.deliverme.logic.models.Person
-import com.google.gson.annotations.SerializedName
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
@@ -24,7 +21,7 @@ fun Notifier(
 ) {
     val coroutineScope = rememberCoroutineScope()
     var webSocket by remember { mutableStateOf<WebSocket?>(null) }
-    val notificationManager = NotificationManager(context)
+    val notificationsManager = NotificationsManager(context)
 
     var title by remember { mutableStateOf("") }
     var message by remember { mutableStateOf("") }
@@ -49,7 +46,7 @@ fun Notifier(
                     message = "Your delivery has been updated!"
                 }
             }
-            notificationManager.showNotification(title, message)
+            notificationsManager.showNotification(title, message)
         }
         onDispose {
             webSocket?.cancel()
@@ -124,11 +121,4 @@ data class DeliveryUpdate(
 @Serializable
 data class UpdatePayload(
     val delivery: Delivery
-)
-
-data class Customer(
-    @SerializedName("id") val id: Int,
-    @SerializedName("homeAddress") val homeAddress: Address,
-    @SerializedName("person") val person: Person,
-    @SerializedName("contacts") val contacts: List<Customer>,
 )
