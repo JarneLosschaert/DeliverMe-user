@@ -24,7 +24,6 @@ fun LoginScreen(
     Box(modifier = modifier.fillMaxWidth(),
         contentAlignment = Alignment.Center
     ) {
-        println("sizes: ${PackageSize.values()[0].value}")
         LazyColumn(
             content = {
                 item {

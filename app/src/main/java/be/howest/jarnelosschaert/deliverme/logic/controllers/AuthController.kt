@@ -19,10 +19,9 @@ class AuthController(
     val uiState = AuthUiState()
 
     private var _signUp: SignUp = SignUp("", "", "", "", "")
-    private var _isLoggedIn: Boolean = false
 
     fun login(email: String, password: String) {
-        cleanErrors()
+        clearErrors()
         authService.login(
             email,
             password,
@@ -79,7 +78,6 @@ class AuthController(
     }
 
     fun logout() {
-        _isLoggedIn = false
         navController.navigate(AuthorizeScreens.Login.route)
         uiState.jwt = ""
         uiState.customer = defaultCustomer
@@ -87,7 +85,7 @@ class AuthController(
     }
 
     fun checkSignUp(signUp: SignUp) {
-        cleanErrors()
+        clearErrors()
         val errors = checkValuesSignUp(
             signUp.username,
             signUp.email,
@@ -104,10 +102,10 @@ class AuthController(
     }
 
     fun signUp(address: Address) {
+        clearErrors()
         val errors = checkAddress(address)
         uiState.addressErrors = errors
         if (errors.isEmpty()) {
-            cleanErrors()
             authService.signUp(
                 _signUp.username,
                 _signUp.email,
@@ -120,8 +118,6 @@ class AuthController(
                 { handleLoginSignUpSuccess(it) },
                 { handleSignUpFailure(it) }
             )
-            _isLoggedIn = true
-            navController.navigate(AuthorizeScreens.App.route)
         }
     }
 
@@ -137,17 +133,11 @@ class AuthController(
         )
     }
 
-    fun isLoggedIn(): Boolean {
-        return _isLoggedIn
-    }
-
     private fun handleLoginSignUpSuccess(response: RegistrationLoginResponse) {
-        println("Login success: $response")
         uiState.jwt = response.jwt
         uiState.customer = response.customer
-        _isLoggedIn = true
         navController.navigate(AuthorizeScreens.App.route)
-        cleanErrors()
+        clearErrors()
     }
 
     private fun handleLoginFailure(error: String) {
@@ -158,7 +148,7 @@ class AuthController(
         uiState.signUpErrors = listOf(error)
     }
 
-    private fun cleanErrors() {
+    private fun clearErrors() {
         uiState.loginErrors = emptyList()
         uiState.signUpErrors = emptyList()
     }

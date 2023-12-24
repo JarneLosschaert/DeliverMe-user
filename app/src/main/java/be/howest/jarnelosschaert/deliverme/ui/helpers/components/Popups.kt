@@ -48,8 +48,6 @@ fun GeneralChoicePopup(
     onDismiss: () -> Unit,
     onConfirm: (String) -> Unit = {}
 ) {
-    val context = LocalContext.current
-
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(text = title) },

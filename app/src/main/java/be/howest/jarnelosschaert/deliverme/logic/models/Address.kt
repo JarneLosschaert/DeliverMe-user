@@ -1,7 +1,9 @@
 package be.howest.jarnelosschaert.deliverme.logic.models
 
 import com.google.gson.annotations.SerializedName
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Address(
     @SerializedName("id") val id: Int,
     @SerializedName("street") val street: String,

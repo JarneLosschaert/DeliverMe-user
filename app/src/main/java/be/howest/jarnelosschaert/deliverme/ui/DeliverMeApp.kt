@@ -1,5 +1,6 @@
 package be.howest.jarnelosschaert.deliverme.ui
 
+import Notifier
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
@@ -55,6 +56,8 @@ fun DeliverMeApp(authController: AuthController) {
     )
 
     var pageClicked by remember { mutableStateOf(BottomNavigationScreens.Home.route) }
+
+    Notifier(context = navController.context, email = authController.uiState.customer.person.email)
 
     Scaffold(
         bottomBar = {

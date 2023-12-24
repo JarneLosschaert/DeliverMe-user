@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.RestrictionsManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
+import androidx.compose.runtime.*
 import androidx.navigation.NavController
 import be.howest.jarnelosschaert.deliverme.logic.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.logic.helpers.checkPackage
@@ -18,6 +19,7 @@ import be.howest.jarnelosschaert.deliverme.logic.services.AuthService
 import be.howest.jarnelosschaert.deliverme.logic.services.DeliveriesService
 import be.howest.jarnelosschaert.deliverme.ui.BottomNavigationScreens
 import be.howest.jarnelosschaert.deliverme.ui.OtherScreens
+import okhttp3.WebSocket
 
 class AppController(
     private val navController: NavController,
@@ -39,6 +41,7 @@ class AppController(
         }
     }
 
+
     fun loadDeliveries(refreshing: Boolean = false) {
         if (refreshing) uiState.refreshing = true
         deliveriesService.getDeliveries(
@@ -58,7 +61,7 @@ class AppController(
                 ).show()
             },
             handleFailure = { message ->
-                Toast.makeText(navController.context, message, Toast.LENGTH_SHORT).show()
+                println(message)
                 uiState.refreshing = false
             }
         )
@@ -96,7 +99,7 @@ class AppController(
                 navigateTo(OtherScreens.Pay.route)
             },
             handleFailure = { message ->
-                println(message)
+                Toast.makeText(navController.context, message, Toast.LENGTH_SHORT).show()
             }
         )
     }

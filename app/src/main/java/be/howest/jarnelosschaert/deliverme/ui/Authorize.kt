@@ -27,11 +27,7 @@ fun Authorize() {
     val navController = rememberNavController()
     val controller = AuthController(navController = navController)
 
-    if (controller.isLoggedIn()) {
-        navController.navigate(AuthorizeScreens.App.route)
-    } else {
-        AuthorizeNavigation(controller = controller, navController = navController)
-    }
+    AuthorizeNavigation(controller = controller, navController = navController)
 }
 
 @Composable
