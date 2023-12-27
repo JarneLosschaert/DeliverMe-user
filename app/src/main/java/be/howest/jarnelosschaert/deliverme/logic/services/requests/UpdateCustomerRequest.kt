@@ -7,7 +7,7 @@ data class UpdateCustomerRequest(
     @SerializedName("Email") val email: String,
     @SerializedName("Phone") val phone: String,
     @SerializedName("Street") val street: String,
+    @SerializedName("Number") val number: String,
     @SerializedName("Zip") val zip: String,
     @SerializedName("City") val city: String,
-    @SerializedName("Number") val number: String
 )

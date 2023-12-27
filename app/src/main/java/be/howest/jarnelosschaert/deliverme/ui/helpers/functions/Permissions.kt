@@ -9,21 +9,21 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 
 @Composable
-fun HandleLocationPermissions(onPermissionGranted: (Boolean) -> Unit) {
+fun HandleLocationPermissions(onPermission: (Boolean) -> Unit) {
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
-            onPermissionGranted(true)
+            onPermission(true)
         } else {
-            onPermissionGranted(false)
+            onPermission(false)
         }
     }
 
-    if (ContextCompat.checkSelfPermission(context, android.Manifest.permission.ACCESS_FINE_LOCATION)
+    if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
         == android.content.pm.PackageManager.PERMISSION_GRANTED) {
-        onPermissionGranted(true)
+        onPermission(true)
     } else {
         LaunchedEffect(true) {
             launcher.launch(Manifest.permission.ACCESS_FINE_LOCATION)

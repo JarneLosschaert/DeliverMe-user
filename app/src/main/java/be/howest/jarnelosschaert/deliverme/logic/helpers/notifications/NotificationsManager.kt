@@ -1,14 +1,18 @@
-package be.howest.jarnelosschaert.deliverme.logic.helpers
+package be.howest.jarnelosschaert.deliverme.logic.helpers.notifications
 
 import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.TaskStackBuilder
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import be.howest.jarnelosschaert.deliverme.MainActivity
 import be.howest.jarnelosschaert.deliverme.R
 
 class NotificationsManager(private val context: Context) {
@@ -39,13 +43,22 @@ class NotificationsManager(private val context: Context) {
     }
 
     fun showNotification(title: String, content: String) {
+        val intent = Intent(context, MainActivity::class.java)
+        val stackBuilder = TaskStackBuilder.create(context)
+        stackBuilder.addNextIntentWithParentStack(intent)
+        val pendingIntent = stackBuilder.getPendingIntent(
+            0,
+            PendingIntent.FLAG_IMMUTABLE
+        )
 
         val notificationBuilder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.delivery)
-            .setLargeIcon(BitmapFactory.decodeResource(context.resources,R.drawable.delivery))
+            .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.drawable.delivery))
             .setContentTitle(title)
             .setContentText(content)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
 
         with(NotificationManagerCompat.from(context)) {
             if (ActivityCompat.checkSelfPermission(
@@ -57,6 +70,5 @@ class NotificationsManager(private val context: Context) {
             }
             notify(NOTIFICATION_ID, notificationBuilder.build())
         }
-
     }
 }

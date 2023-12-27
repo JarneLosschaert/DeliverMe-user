@@ -1,6 +1,6 @@
 package be.howest.jarnelosschaert.deliverme.ui
 
-import Notifier
+import be.howest.jarnelosschaert.deliverme.logic.helpers.notifications.Notifier
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*

@@ -1,11 +1,13 @@
+package be.howest.jarnelosschaert.deliverme.logic.helpers.notifications
+
 import android.content.Context
 import androidx.compose.runtime.*
-import be.howest.jarnelosschaert.deliverme.logic.helpers.NotificationsManager
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.logic.models.DeliveryState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -28,6 +30,7 @@ fun Notifier(
 
     DisposableEffect(context) {
         webSocket = createWebSocket(coroutineScope, email) {
+            println("Received message: ${it?.payload?.delivery?.state}")
             when (it?.payload?.delivery?.state) {
                 DeliveryState.DELIVERED -> {
                     title = "Delivery delivered"
@@ -67,7 +70,7 @@ fun createWebSocket(
         .build()
 
     val request = Request.Builder()
-        .url("ws://192.168.1.20:5000/ws")
+        .url("ws://192.168.0.191:5000/ws")
         .build()
 
     val webSocketListener = object : WebSocketListener() {
@@ -87,9 +90,9 @@ fun createWebSocket(
         override fun onMessage(webSocket: WebSocket, text: String) {
             coroutineScope.launch {
                 val deliveryUpdate = try {
-                    Json.decodeFromString(DeliveryUpdate.serializer(), text)
+                    Json.decodeFromString<DeliveryUpdate>(text)
                 } catch (e: Exception) {
-                    println("Error: ${e.message}")
+                    println("Error decoding: ${e.message}")
                     null
                 }
                 onMessageReceived(deliveryUpdate)
@@ -111,14 +114,3 @@ fun createWebSocket(
 fun sendMessage(webSocket: WebSocket?, message: String) {
     webSocket?.send(message)
 }
-
-@Serializable
-data class DeliveryUpdate(
-    val type: String,
-    val payload: UpdatePayload
-)
-
-@Serializable
-data class UpdatePayload(
-    val delivery: Delivery
-)

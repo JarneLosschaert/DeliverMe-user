@@ -18,7 +18,7 @@ fun MapScreen(
     onGoBack: () -> Unit,
 ) {
     var granted by remember { mutableStateOf(false) }
-    HandleLocationPermissions(onPermissionGranted = {
+    HandleLocationPermissions(onPermission = {
         granted = it
     })
     Map(isMyLocationEnabled = granted, onGoBack = onGoBack)
