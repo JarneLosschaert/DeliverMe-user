@@ -15,7 +15,7 @@ class AppUiState : ViewModel() {
     var deliveredDeliveries by mutableStateOf(emptyList<Delivery>())
     var refreshing by mutableStateOf(false)
 
-    var delivery by mutableStateOf(defaultDelivery)
+    var selectedDelivery by mutableStateOf(defaultDelivery)
     var appPackage by mutableStateOf(defaultPackage)
     var payResponse by mutableStateOf(defaultPayResponse)
     var packageErrors by mutableStateOf(emptyList<String>())

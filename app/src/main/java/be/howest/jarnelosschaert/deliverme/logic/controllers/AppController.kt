@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.RestrictionsManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
-import androidx.compose.runtime.*
 import androidx.navigation.NavController
 import be.howest.jarnelosschaert.deliverme.logic.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.logic.helpers.checkPackage
@@ -19,7 +18,6 @@ import be.howest.jarnelosschaert.deliverme.logic.services.AuthService
 import be.howest.jarnelosschaert.deliverme.logic.services.DeliveriesService
 import be.howest.jarnelosschaert.deliverme.ui.BottomNavigationScreens
 import be.howest.jarnelosschaert.deliverme.ui.OtherScreens
-import okhttp3.WebSocket
 
 class AppController(
     private val navController: NavController,
@@ -60,8 +58,7 @@ class AppController(
                     Toast.LENGTH_SHORT
                 ).show()
             },
-            handleFailure = { message ->
-                println(message)
+            handleFailure = {
                 uiState.refreshing = false
             }
         )
@@ -121,7 +118,7 @@ class AppController(
     }
 
     fun onDeliveryClicked(delivery: Delivery) {
-        uiState.delivery = delivery
+        uiState.selectedDelivery = delivery
         navigateTo(OtherScreens.DeliveryDetails.route)
     }
 
@@ -180,10 +177,9 @@ class AppController(
         authService.addContact(authController.uiState.jwt, email,
             handleSuccess = { customer ->
                 authController.uiState.customer = customer
-                Toast.makeText(navController.context, "Added $email", Toast.LENGTH_LONG).show()
-            }, handleFailure = { message ->
-                println(message)
-                Toast.makeText(navController.context, "Adding $email failed", Toast.LENGTH_LONG)
+                Toast.makeText(navController.context, "Added ${customer.person.name}", Toast.LENGTH_LONG).show()
+            }, handleFailure = {
+                Toast.makeText(navController.context, "Adding contact failed", Toast.LENGTH_LONG)
                     .show()
             })
     }

@@ -127,6 +127,5 @@ fun SettingItem(
                 color = MaterialTheme.colors.primary
             )
         }
-
     }
 }

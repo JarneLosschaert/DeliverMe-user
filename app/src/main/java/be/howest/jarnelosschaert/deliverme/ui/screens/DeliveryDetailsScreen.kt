@@ -59,7 +59,7 @@ fun DeliveryDetailsScreen(
                         content = showTime(delivery.dateTimeArrived)
                     )
                 }
-                if (delivery.state == DeliveryState.TRANSIT) {
+                if (delivery.state != DeliveryState.DELIVERED) {
                     GeneralButton(text = "See live location", onClick = navigateMap)
                 }
             }

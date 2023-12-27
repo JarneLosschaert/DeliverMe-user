@@ -6,14 +6,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class PackageSize(val value: String) {
     @SerializedName("letter")
-    LETTER("letter"),
+    LETTER("Letter"),
 
     @SerializedName("small")
-    SMALL("small"),
+    SMALL("Small"),
 
     @SerializedName("medium")
-    MEDIUM("medium"),
+    MEDIUM("Medium"),
 
     @SerializedName("large")
-    LARGE("large"),
+    LARGE("Large"),
 }

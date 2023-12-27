@@ -183,7 +183,7 @@ private fun AuthScreenNavigationConfigurations(
         }
         composable(OtherScreens.DeliveryDetails.route) {
             DeliveryDetailsScreen(modifier = modifier,
-                delivery = controller.uiState.delivery,
+                delivery = controller.uiState.selectedDelivery,
                 onGoBack = { controller.goBack() },
                 navigateMap = { controller.navigateTo(OtherScreens.Map.route) }
             )
@@ -200,6 +200,8 @@ private fun AuthScreenNavigationConfigurations(
         }
         composable(OtherScreens.Map.route) {
             MapScreen(
+                senderAddress = controller.uiState.selectedDelivery.packageInfo.senderAddress,
+                receiverAddress = controller.uiState.selectedDelivery.packageInfo.receiverAddress,
                 onGoBack = { controller.goBack() }
             )
             onNavigate(OtherScreens.Map.route)

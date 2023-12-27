@@ -64,6 +64,8 @@ fun AddressScreen(
                                     number = number.value,
                                     zip = zip.value,
                                     city = city.value,
+                                    lat = 0.0,
+                                    lon = 0.0
                                 )
                             )
                         }

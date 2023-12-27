@@ -38,44 +38,48 @@ fun DeliverScreen(
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
-            Title(onGoBack = onGoBack, withGoBack = true)
-            SubTitle(text = "Delivery details")
-            ChooseAddressLabel(
-                label = "Address (sender)",
-                address = senderAddress,
-                onAddressChange = onSenderAddressChange
-            )
-            DropDownContacts(
-                label = "Receiver",
-                contacts = contacts,
-                receiver = receiver,
-                onContactSelected = onReceiverChange
-            )
-            ChooseAddressLabel(
-                label = "Address (receiver)",
-                address = receiverAddress,
-                onAddressChange = onReceiverAddressChange
-            )
-            DropDownPackageSize(
-                label = "Package size",
-                sizes = PackageSize.values(),
-                size = packageSize,
-                onSizeSelected = onPackageSizeChange
-            )
-            TextFieldLabel(
-                label = "Description",
-                value = description,
-                onValueChange = onDescriptionChange
-            )
-            Errors(errors = packageErrors)
-            GeneralButton(
-                modifier = Modifier
-                    .align(Alignment.CenterHorizontally)
-                    .fillMaxWidth()
-                    .padding(start = 10.dp, end = 10.dp),
-                text = "Make delivery",
-                onClick = createPackage
-            )
+            if (contacts.isEmpty()) {
+                Content(text = "You have no contacts yet, please add one first")
+            } else {
+                Title(onGoBack = onGoBack, withGoBack = true)
+                SubTitle(text = "Delivery details")
+                ChooseAddressLabel(
+                    label = "Address (sender)",
+                    address = senderAddress,
+                    onAddressChange = onSenderAddressChange
+                )
+                DropDownContacts(
+                    label = "Receiver",
+                    contacts = contacts,
+                    receiver = receiver,
+                    onContactSelected = onReceiverChange
+                )
+                ChooseAddressLabel(
+                    label = "Address (receiver)",
+                    address = receiverAddress,
+                    onAddressChange = onReceiverAddressChange
+                )
+                DropDownPackageSize(
+                    label = "Package size",
+                    sizes = PackageSize.values(),
+                    size = packageSize,
+                    onSizeSelected = onPackageSizeChange
+                )
+                TextFieldLabel(
+                    label = "Description",
+                    value = description,
+                    onValueChange = onDescriptionChange
+                )
+                Errors(errors = packageErrors)
+                GeneralButton(
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally)
+                        .fillMaxWidth()
+                        .padding(start = 10.dp, end = 10.dp),
+                    text = "Make delivery",
+                    onClick = createPackage
+                )
+            }
         }
     }
 }

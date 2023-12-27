@@ -55,7 +55,7 @@ fun HomeScreen(
                     content = {
                         item {
                             if (paidDeliveries.isNotEmpty()) {
-                                SubTitle(text = "Searching for a driver...")
+                                SubTitle(text = "Searching for a driver")
                                 for (delivery in paidDeliveries) {
                                     Delivery(
                                         delivery = delivery,
