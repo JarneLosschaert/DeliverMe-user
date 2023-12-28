@@ -4,12 +4,8 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Address(
+data class Driver(
     val id: Int,
-    val street: String,
-    val number: String,
-    val zip: String,
-    val city: String,
-    val lat: Double,
-    val lon: Double,
+    val walletAddress: String,
+    val person: Person,
 )

@@ -6,9 +6,10 @@ import java.time.LocalDateTime
 
 @Serializable
 data class Delivery(
-    @SerializedName("id") val id: Int,
-    @SerializedName("dateTimeDeparted") val dateTimeDeparted: String,
-    @SerializedName("dateTimeArrived") val dateTimeArrived: String,
-    @SerializedName("state") val state: DeliveryState,
-    @SerializedName("package") val packageInfo: Package
+    val id: Int,
+    val dateTimeDeparted: String,
+    val dateTimeArrived: String,
+    val state: DeliveryState,
+    val `package`: Package,
+    val driver: Driver
 )

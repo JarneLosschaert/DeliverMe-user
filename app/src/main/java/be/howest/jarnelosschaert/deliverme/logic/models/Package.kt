@@ -5,12 +5,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Package(
-    @SerializedName("id") val id: Int,
-    @SerializedName("sender") val sender: Customer,
-    @SerializedName("receiver") val receiver: Customer,
-    @SerializedName("senderAddress") val senderAddress: Address,
-    @SerializedName("receiverAddress") val receiverAddress: Address,
-    @SerializedName("packageSize") val packageSize: PackageSize,
-    @SerializedName("description") val description: String,
-    @SerializedName("fee") val fee: Double
+    val id: Int,
+    val sender: Customer,
+    val receiver: Customer,
+     val senderAddress: Address,
+    val receiverAddress: Address,
+    val packageSize: PackageSize,
+    val description: String,
+    val fee: Double
 )

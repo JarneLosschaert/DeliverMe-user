@@ -45,12 +45,14 @@ class AppController(
         deliveriesService.getDeliveries(
             authController.uiState.jwt,
             handleSuccess = { deliveries ->
-                uiState.paidDeliveries = deliveries.filter { it.state == DeliveryState.PAID }
+                uiState.paidDeliveries =
+                    deliveries.filter { it.state == DeliveryState.paid }
                 uiState.assignedDeliveries =
-                    deliveries.filter { it.state == DeliveryState.ASSIGNED }
-                uiState.transitDeliveries = deliveries.filter { it.state == DeliveryState.TRANSIT }
+                    deliveries.filter { it.state == DeliveryState.assigned }
+                uiState.transitDeliveries =
+                    deliveries.filter { it.state == DeliveryState.transit }
                 uiState.deliveredDeliveries =
-                    deliveries.filter { it.state == DeliveryState.DELIVERED }
+                    deliveries.filter { it.state == DeliveryState.delivered }
                 uiState.refreshing = false
                 if (refreshing) Toast.makeText(
                     navController.context,
@@ -141,8 +143,8 @@ class AppController(
         val deliveries =
             uiState.paidDeliveries + uiState.assignedDeliveries + uiState.transitDeliveries + uiState.deliveredDeliveries
         return deliveries.filter {
-            it.packageInfo.sender.id == uiState.selectedContact.id ||
-                    it.packageInfo.receiver.id == uiState.selectedContact.id
+            it.`package`.sender.id == uiState.selectedContact.id ||
+                    it.`package`.receiver.id == uiState.selectedContact.id
         }
     }
 

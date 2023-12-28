@@ -201,8 +201,8 @@ private fun AuthScreenNavigationConfigurations(
         }
         composable(OtherScreens.Map.route) {
             MapScreen(
-                senderAddress = controller.uiState.selectedDelivery.packageInfo.senderAddress,
-                receiverAddress = controller.uiState.selectedDelivery.packageInfo.receiverAddress,
+                senderAddress = controller.uiState.selectedDelivery.`package`.senderAddress,
+                receiverAddress = controller.uiState.selectedDelivery.`package`.receiverAddress,
                 onGoBack = { controller.goBack() }
             )
             onNavigate(OtherScreens.Map.route)

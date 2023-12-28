@@ -4,6 +4,6 @@ import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PayloadUpdate(
+data class Payload(
     val delivery: Delivery
 )

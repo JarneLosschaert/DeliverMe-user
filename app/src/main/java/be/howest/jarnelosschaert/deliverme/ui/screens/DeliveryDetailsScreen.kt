@@ -23,26 +23,26 @@ fun DeliveryDetailsScreen(
         LazyColumn(content = {
             item {
                 Title(text = "Delivery details", onGoBack = onGoBack, withGoBack = true)
-                ContentLabel(label = "Sender", content = delivery.packageInfo.sender.person.name)
+                ContentLabel(label = "Sender", content = delivery.`package`.sender.person.name)
                 ContentLabel(
                     label = "Address (sender)",
-                    content = showAddress(delivery.packageInfo.sender.homeAddress)
+                    content = showAddress(delivery.`package`.sender.homeAddress)
                 )
                 ContentLabel(
                     label = "Receiver",
-                    content = delivery.packageInfo.receiver.person.name
+                    content = delivery.`package`.receiver.person.name
                 )
                 ContentLabel(
                     label = "Address (receiver)",
-                    content = showAddress(delivery.packageInfo.receiver.homeAddress)
+                    content = showAddress(delivery.`package`.receiver.homeAddress)
                 )
-                ContentLabel(label = "State", content = delivery.state.value)
-                ContentLabel(label = "Description", content = delivery.packageInfo.description)
+                ContentLabel(label = "State", content = delivery.state.toString()) // value
+                ContentLabel(label = "Description", content = delivery.`package`.description)
                 ContentLabel(
                     label = "Package size",
-                    content = delivery.packageInfo.packageSize.value
+                    content = delivery.`package`.packageSize.value
                 )
-                ContentLabel(label = "Fee", content = "€ ${delivery.packageInfo.fee}")
+                ContentLabel(label = "Fee", content = "€ ${delivery.`package`.fee}")
                 if (delivery.dateTimeDeparted != "") {
                     ContentLabel(
                         label = "Date",
@@ -59,7 +59,7 @@ fun DeliveryDetailsScreen(
                         content = showTime(delivery.dateTimeArrived)
                     )
                 }
-                if (delivery.state != DeliveryState.DELIVERED) {
+                if (delivery.state != DeliveryState.delivered) {
                     GeneralButton(text = "See live location", onClick = navigateMap)
                 }
             }

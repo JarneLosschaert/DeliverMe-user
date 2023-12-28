@@ -23,7 +23,7 @@ class AppUiState : ViewModel() {
     var senderAddress by mutableStateOf(defaultAddress)
     var receiver by mutableStateOf(defaultCustomer)
     var receiverAddress by mutableStateOf(defaultAddress)
-    var packageSize by mutableStateOf(PackageSize.SMALL)
+    var packageSize by mutableStateOf(PackageSize.small)
     var description by mutableStateOf("")
 
     var contactsQuery by mutableStateOf("")

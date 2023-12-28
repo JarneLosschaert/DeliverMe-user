@@ -2,19 +2,15 @@ package be.howest.jarnelosschaert.deliverme.logic.helpers.notifications
 
 import android.content.Context
 import androidx.compose.runtime.*
-import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.logic.models.DeliveryState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okhttp3.logging.HttpLoggingInterceptor
-
 
 @Composable
 fun Notifier(
@@ -30,17 +26,16 @@ fun Notifier(
 
     DisposableEffect(context) {
         webSocket = createWebSocket(coroutineScope, email) {
-            println("Received message: ${it?.payload?.delivery?.state}")
             when (it?.payload?.delivery?.state) {
-                DeliveryState.DELIVERED -> {
+                DeliveryState.delivered -> {
                     title = "Delivery delivered"
                     message = "Your delivery has been delivered!"
                 }
-                DeliveryState.TRANSIT -> {
+                DeliveryState.transit -> {
                     title = "Delivery on its way"
                     message = "Your delivery is on its way!"
                 }
-                DeliveryState.ASSIGNED -> {
+                DeliveryState.assigned -> {
                     title = "Delivery assigned"
                     message = "Your delivery has been assigned!"
                 }
@@ -60,7 +55,7 @@ fun Notifier(
 fun createWebSocket(
     coroutineScope: CoroutineScope,
     email: String,
-    onMessageReceived: (DeliveryUpdate?) -> Unit
+    onMessageReceived: (UpdateEvent?) -> Unit
 ): WebSocket {
 
     val okHttpClient = OkHttpClient.Builder()
@@ -89,13 +84,15 @@ fun createWebSocket(
 
         override fun onMessage(webSocket: WebSocket, text: String) {
             coroutineScope.launch {
-                val deliveryUpdate = try {
-                    Json.decodeFromString<DeliveryUpdate>(text)
+                println(text)
+                val updateEvent = try {
+                    val json = Json { ignoreUnknownKeys = true }
+                    json.decodeFromString(UpdateEvent.serializer(), text)
                 } catch (e: Exception) {
                     println("Error decoding: ${e.message}")
                     null
                 }
-                onMessageReceived(deliveryUpdate)
+                onMessageReceived(updateEvent)
             }
         }
 

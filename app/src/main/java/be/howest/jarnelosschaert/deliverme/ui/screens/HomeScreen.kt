@@ -200,10 +200,10 @@ fun Delivery(
         ) {
             Column {
                 Label(text = "Sender")
-                Content(text = showCustomer(delivery.packageInfo.sender, loggedInCustomer))
+                Content(text = showCustomer(delivery.`package`.sender, loggedInCustomer))
                 Spacer(modifier = Modifier.height(10.dp))
                 Label(text = "Receiver")
-                Content(text = showCustomer(delivery.packageInfo.receiver, loggedInCustomer))
+                Content(text = showCustomer(delivery.`package`.receiver, loggedInCustomer))
             }
             Column(
                 modifier = Modifier.fillMaxHeight(),
