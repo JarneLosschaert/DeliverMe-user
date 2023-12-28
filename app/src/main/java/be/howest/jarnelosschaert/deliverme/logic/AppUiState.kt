@@ -28,7 +28,7 @@ class AppUiState : ViewModel() {
 
     var contactsQuery by mutableStateOf("")
 
-    var contact by mutableStateOf(defaultCustomer)
+    var selectedContact by mutableStateOf(defaultCustomer)
 
     var addressScreenStatus by mutableStateOf(AddressScreenStatus.SENDER_ADDRESS)
     var addressErrors by mutableStateOf(emptyList<String>())

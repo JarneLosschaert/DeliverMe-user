@@ -5,11 +5,11 @@ import android.content.RestrictionsManager
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.navigation.NavController
-import be.howest.jarnelosschaert.deliverme.logic.helpers.checkAddress
-import be.howest.jarnelosschaert.deliverme.logic.helpers.checkPackage
 import be.howest.jarnelosschaert.deliverme.logic.AppUiState
 import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
 import be.howest.jarnelosschaert.deliverme.logic.data.defaultContact
+import be.howest.jarnelosschaert.deliverme.logic.helpers.checkAddress
+import be.howest.jarnelosschaert.deliverme.logic.helpers.checkPackage
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
@@ -137,6 +137,15 @@ class AppController(
         uiState.receiverAddress = customer.homeAddress
     }
 
+    fun getContactDeliveries(): List<Delivery> {
+        val deliveries =
+            uiState.paidDeliveries + uiState.assignedDeliveries + uiState.transitDeliveries + uiState.deliveredDeliveries
+        return deliveries.filter {
+            it.packageInfo.sender.id == uiState.selectedContact.id ||
+                    it.packageInfo.receiver.id == uiState.selectedContact.id
+        }
+    }
+
     fun onConfirmAddress(address: Address) {
         clearErrors()
         uiState.addressErrors = checkAddress(address)
@@ -177,7 +186,11 @@ class AppController(
         authService.addContact(authController.uiState.jwt, email,
             handleSuccess = { customer ->
                 authController.uiState.customer = customer
-                Toast.makeText(navController.context, "Added ${customer.person.name}", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    navController.context,
+                    "Added ${customer.person.name}",
+                    Toast.LENGTH_LONG
+                ).show()
             }, handleFailure = {
                 Toast.makeText(navController.context, "Adding contact failed", Toast.LENGTH_LONG)
                     .show()
@@ -185,28 +198,28 @@ class AppController(
     }
 
     fun deleteContact() {
-        authService.deleteContact(authController.uiState.jwt, uiState.contact.id,
+        authService.deleteContact(authController.uiState.jwt, uiState.selectedContact.id,
             handleSuccess = {
                 authController.uiState.customer =
-                    authController.uiState.customer.copy(contacts = authController.uiState.customer.contacts.filter { it.id != uiState.contact.id })
+                    authController.uiState.customer.copy(contacts = authController.uiState.customer.contacts.filter { it.id != uiState.selectedContact.id })
                 goBack()
                 Toast.makeText(
                     navController.context,
-                    "Deleted ${uiState.contact.person.name}",
+                    "Deleted ${uiState.selectedContact.person.name}",
                     Toast.LENGTH_LONG
                 ).show()
             }, handleFailure = { message ->
                 println(message)
                 Toast.makeText(
                     navController.context,
-                    "Deleting ${uiState.contact.person.name} failed",
+                    "Deleting ${uiState.selectedContact.person.name} failed",
                     Toast.LENGTH_LONG
                 ).show()
             })
     }
 
     fun onContactClick(customer: Customer) {
-        uiState.contact = customer
+        uiState.selectedContact = customer
         navigateTo(OtherScreens.Contact.route)
     }
 

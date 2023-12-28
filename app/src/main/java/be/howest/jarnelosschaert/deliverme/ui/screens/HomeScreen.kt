@@ -32,9 +32,9 @@ fun HomeScreen(
     paidDeliveries: List<Delivery>,
     assignedDeliveries: List<Delivery>,
     transitDeliveries: List<Delivery>,
+    deliveredDeliveries: List<Delivery>,
     refreshing: Boolean,
     loggedInCustomer: Customer,
-    deliveredDeliveries: List<Delivery>,
     onRefreshDeliveries: () -> Unit,
     onDeliveryClick: (Delivery) -> Unit,
     navigateDeliver: () -> Unit,
@@ -50,59 +50,77 @@ fun HomeScreen(
             ) {
                 LazyColumn(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight(),
+                        .fillMaxSize(),
                     content = {
                         item {
-                            if (paidDeliveries.isNotEmpty()) {
-                                SubTitle(text = "Searching for a driver")
-                                for (delivery in paidDeliveries) {
-                                    Delivery(
-                                        delivery = delivery,
-                                        onDeliveryClick = onDeliveryClick,
-                                        loggedInCustomer = loggedInCustomer
-                                    )
-                                }
-                            }
-                            if (assignedDeliveries.isNotEmpty()) {
-                                SubTitle(text = "Assigned deliveries")
-                                for (delivery in assignedDeliveries) {
-                                    Delivery(
-                                        delivery = delivery,
-                                        onDeliveryClick = onDeliveryClick,
-                                        loggedInCustomer = loggedInCustomer
-                                    )
-                                }
-                            }
-                            if (transitDeliveries.isNotEmpty()) {
-                                SubTitle(text = "Deliveries in transit")
-                                for (delivery in transitDeliveries) {
-                                    Delivery(
-                                        delivery = delivery,
-                                        onDeliveryClick = onDeliveryClick,
-                                        loggedInCustomer = loggedInCustomer
-                                    )
-                                }
-                            }
-                            SubTitle(text = "History")
-                            if (deliveredDeliveries.isNotEmpty()) {
-                                for (delivery in deliveredDeliveries) {
-                                    Delivery(
-                                        delivery = delivery,
-                                        onDeliveryClick = onDeliveryClick,
-                                        loggedInCustomer = loggedInCustomer
-                                    )
-                                }
-                            } else {
-                                if (paidDeliveries.isEmpty() && assignedDeliveries.isEmpty() && transitDeliveries.isEmpty()) {
-                                    Content(text = "No deliveries yet")
-                                } else {
-                                    Content(text = "No deliveries in history")
-                                }
-                            }
+                            Deliveries(
+                                paidDeliveries = paidDeliveries,
+                                assignedDeliveries = assignedDeliveries,
+                                transitDeliveries = transitDeliveries,
+                                deliveredDeliveries = deliveredDeliveries,
+                                loggedInCustomer = loggedInCustomer,
+                                onDeliveryClick = onDeliveryClick,
+                            )
                         }
                     })
             }
+        }
+    }
+}
+
+@Composable
+fun Deliveries(
+    paidDeliveries: List<Delivery>,
+    assignedDeliveries: List<Delivery>,
+    transitDeliveries: List<Delivery>,
+    deliveredDeliveries: List<Delivery>,
+    loggedInCustomer: Customer,
+    onDeliveryClick: (Delivery) -> Unit,
+) {
+    if (paidDeliveries.isNotEmpty()) {
+        SubTitle(text = "Searching for a driver")
+        for (delivery in paidDeliveries) {
+            Delivery(
+                delivery = delivery,
+                onDeliveryClick = onDeliveryClick,
+                loggedInCustomer = loggedInCustomer
+            )
+        }
+    }
+    if (assignedDeliveries.isNotEmpty()) {
+        SubTitle(text = "Assigned deliveries")
+        for (delivery in assignedDeliveries) {
+            Delivery(
+                delivery = delivery,
+                onDeliveryClick = onDeliveryClick,
+                loggedInCustomer = loggedInCustomer
+            )
+        }
+    }
+    if (transitDeliveries.isNotEmpty()) {
+        SubTitle(text = "Deliveries in transit")
+        for (delivery in transitDeliveries) {
+            Delivery(
+                delivery = delivery,
+                onDeliveryClick = onDeliveryClick,
+                loggedInCustomer = loggedInCustomer
+            )
+        }
+    }
+    SubTitle(text = "History")
+    if (deliveredDeliveries.isNotEmpty()) {
+        for (delivery in deliveredDeliveries) {
+            Delivery(
+                delivery = delivery,
+                onDeliveryClick = onDeliveryClick,
+                loggedInCustomer = loggedInCustomer
+            )
+        }
+    } else {
+        if (paidDeliveries.isEmpty() && assignedDeliveries.isEmpty() && transitDeliveries.isEmpty()) {
+            Content(text = "No deliveries yet")
+        } else {
+            Content(text = "No deliveries in history")
         }
     }
 }

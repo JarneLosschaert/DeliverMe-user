@@ -7,9 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.ContentLabel
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.GeneralButton
-import be.howest.jarnelosschaert.deliverme.ui.helpers.components.Title
+import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
+import be.howest.jarnelosschaert.deliverme.ui.helpers.components.*
 import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showAddress
 import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showPhoneNumber
 
@@ -17,7 +16,9 @@ import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.showPhoneNumber
 fun ContactScreen(
     modifier: Modifier = Modifier,
     contact: Customer,
-    //deliveries: List<String>,
+    deliveries: List<Delivery>,
+    loggedInCustomer: Customer,
+    onDeliveryClick: (Delivery) -> Unit,
     onGoBack: () -> Unit,
     deleteContact: () -> Unit
 ) {
@@ -26,6 +27,7 @@ fun ContactScreen(
             Title(text = "Contact", onGoBack = onGoBack, withGoBack = true)
             LazyColumn(content = {
                 item {
+                    SubTitle(text = "Contact details")
                     ContentLabel(label = "Username", content = contact.person.name)
                     ContentLabel(
                         label = "Phone number",
@@ -37,6 +39,17 @@ fun ContactScreen(
                         text = "Delete contact",
                         onClick = deleteContact
                     )
+                    SubTitle(text = "History with ${contact.person.name}")
+                    for (delivery in deliveries) {
+                        Delivery(
+                            delivery = delivery,
+                            onDeliveryClick = onDeliveryClick,
+                            loggedInCustomer = loggedInCustomer
+                        )
+                    }
+                    if (deliveries.isEmpty()) {
+                        Content(text = "No history with ${contact.person.name} yet")
+                    }
                 }
             })
         }

@@ -1,16 +1,18 @@
 package be.howest.jarnelosschaert.deliverme.ui
 
-import be.howest.jarnelosschaert.deliverme.logic.helpers.notifications.Notifier
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -19,15 +21,11 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AppController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
+import be.howest.jarnelosschaert.deliverme.logic.helpers.notifications.Notifier
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNav
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens.AddressScreen
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens.ProfileScreen
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 
 sealed class BottomNavigationScreens(val route: String, val icon: ImageVector) {
     object Home : BottomNavigationScreens("home", Icons.Filled.Home)
@@ -161,7 +159,10 @@ private fun AuthScreenNavigationConfigurations(
         composable(OtherScreens.Contact.route) {
             ContactScreen(
                 modifier = modifier,
-                contact = controller.uiState.contact,
+                contact = controller.uiState.selectedContact,
+                deliveries = controller.getContactDeliveries(),
+                loggedInCustomer = authController.uiState.customer,
+                onDeliveryClick = { controller.onDeliveryClicked(it) },
                 onGoBack = { controller.goBack() },
                 deleteContact = { controller.deleteContact() },
             )
