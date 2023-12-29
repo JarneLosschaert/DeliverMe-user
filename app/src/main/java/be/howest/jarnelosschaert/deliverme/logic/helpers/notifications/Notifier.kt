@@ -1,8 +1,11 @@
 package be.howest.jarnelosschaert.deliverme.logic.helpers.notifications
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.runtime.*
+import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import be.howest.jarnelosschaert.deliverme.logic.models.DeliveryState
+import com.google.android.gms.maps.model.LatLng
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
@@ -16,6 +19,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 fun Notifier(
     context: Context,
     email: String,
+    onLocationReceived: (Delivery, LatLng) -> Unit
 ) {
     val coroutineScope = rememberCoroutineScope()
     var webSocket by remember { mutableStateOf<WebSocket?>(null) }
@@ -26,25 +30,31 @@ fun Notifier(
 
     DisposableEffect(context) {
         webSocket = createWebSocket(coroutineScope, email) {
-            when (it?.payload?.delivery?.state) {
-                DeliveryState.delivered -> {
-                    title = "Delivery delivered"
-                    message = "Your delivery has been delivered!"
+            if (it?.type == "update") {
+                when (it.payload.delivery.state) {
+                    DeliveryState.delivered -> {
+                        title = "Delivery delivered"
+                        message = "Your delivery has been delivered!"
+                    }
+                    DeliveryState.transit -> {
+                        title = "Delivery on its way"
+                        message = "Your delivery is on its way!"
+                    }
+                    DeliveryState.assigned -> {
+                        title = "Delivery assigned"
+                        message = "Your delivery has been assigned!"
+                    }
+                    else -> {
+                        title = "Delivery update"
+                        message = "Your delivery has been updated!"
+                    }
                 }
-                DeliveryState.transit -> {
-                    title = "Delivery on its way"
-                    message = "Your delivery is on its way!"
-                }
-                DeliveryState.assigned -> {
-                    title = "Delivery assigned"
-                    message = "Your delivery has been assigned!"
-                }
-                else -> {
-                    title = "Delivery update"
-                    message = "Your delivery has been updated!"
-                }
+                notificationsManager.showNotification(title, message)
+            } else if (it?.type == "location") {
+                Log.d("location", "location update received")
+                val location = LatLng(it.payload.lat, it.payload.lon)
+                onLocationReceived(it.payload.delivery, location)
             }
-            notificationsManager.showNotification(title, message)
         }
         onDispose {
             webSocket?.cancel()
@@ -65,7 +75,7 @@ fun createWebSocket(
         .build()
 
     val request = Request.Builder()
-        .url("ws://192.168.0.191:5000/ws")
+        .url("ws://192.168.1.20:5000/ws")
         .build()
 
     val webSocketListener = object : WebSocketListener() {
@@ -106,8 +116,4 @@ fun createWebSocket(
     }
 
     return okHttpClient.newWebSocket(request, webSocketListener)
-}
-
-fun sendMessage(webSocket: WebSocket?, message: String) {
-    webSocket?.send(message)
 }

@@ -21,6 +21,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AppController
 import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
+import be.howest.jarnelosschaert.deliverme.logic.helpers.notifications.Location
 import be.howest.jarnelosschaert.deliverme.logic.helpers.notifications.Notifier
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNav
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
@@ -47,6 +48,7 @@ sealed class OtherScreens(val route: String) {
 @Composable
 fun DeliverMeApp(authController: AuthController) {
     val navController = rememberNavController()
+    val controller = AppController(navController = navController, authController = authController)
     val bottomNavigationItems = listOf(
         BottomNavigationScreens.Home,
         BottomNavigationScreens.Notifications,
@@ -55,7 +57,15 @@ fun DeliverMeApp(authController: AuthController) {
 
     var pageClicked by remember { mutableStateOf(BottomNavigationScreens.Home.route) }
 
-    Notifier(context = navController.context, email = authController.uiState.customer.person.email)
+    Notifier(
+        context = navController.context,
+        email = authController.uiState.customer.person.email,
+        onLocationReceived = { delivery, location ->
+            controller.onDriverLocationUpdate(
+                delivery, Location(location.latitude, location.longitude)
+            )
+        }
+    )
 
     Scaffold(
         bottomBar = {
@@ -68,6 +78,7 @@ fun DeliverMeApp(authController: AuthController) {
                     .padding(start = 15.dp, end = 8.dp),
                 navController = navController,
                 authController = authController,
+                controller = controller,
                 onNavigate = { pageClicked = it }
             )
         }
@@ -79,10 +90,9 @@ private fun AuthScreenNavigationConfigurations(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     authController: AuthController,
+    controller: AppController,
     onNavigate: (String) -> Unit
 ) {
-    val controller = AppController(navController = navController, authController = authController)
-
     NavHost(navController, startDestination = BottomNavigationScreens.Home.route) {
         composable(BottomNavigationScreens.Home.route) {
             HomeScreen(
@@ -203,6 +213,7 @@ private fun AuthScreenNavigationConfigurations(
             MapScreen(
                 senderAddress = controller.uiState.selectedDelivery.`package`.senderAddress,
                 receiverAddress = controller.uiState.selectedDelivery.`package`.receiverAddress,
+                locationDriver = controller.driversLocationManager.getDriverLocation(controller.uiState.selectedDelivery.id),
                 onGoBack = { controller.goBack() }
             )
             onNavigate(OtherScreens.Map.route)

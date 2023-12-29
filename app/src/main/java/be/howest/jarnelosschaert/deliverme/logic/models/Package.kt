@@ -12,5 +12,7 @@ data class Package(
     val receiverAddress: Address,
     val packageSize: PackageSize,
     val description: String,
-    val fee: Double
+    val fee: Double,
+    val distance: Double,
+    val driverFee: Double,
 )

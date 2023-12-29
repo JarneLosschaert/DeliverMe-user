@@ -36,7 +36,7 @@ fun DeliveryDetailsScreen(
                     label = "Address (receiver)",
                     content = showAddress(delivery.`package`.receiver.homeAddress)
                 )
-                ContentLabel(label = "State", content = delivery.state.toString()) // value
+                ContentLabel(label = "State", content = delivery.state.value)
                 ContentLabel(label = "Description", content = delivery.`package`.description)
                 ContentLabel(
                     label = "Package size",

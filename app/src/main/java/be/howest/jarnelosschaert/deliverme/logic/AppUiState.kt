@@ -1,12 +1,14 @@
 package be.howest.jarnelosschaert.deliverme.logic
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import be.howest.jarnelosschaert.deliverme.logic.data.*
 import be.howest.jarnelosschaert.deliverme.logic.models.PackageSize
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
+import com.google.android.gms.maps.model.LatLng
 
 class AppUiState : ViewModel() {
     var paidDeliveries by mutableStateOf(emptyList<Delivery>())
@@ -32,4 +34,13 @@ class AppUiState : ViewModel() {
 
     var addressScreenStatus by mutableStateOf(AddressScreenStatus.SENDER_ADDRESS)
     var addressErrors by mutableStateOf(emptyList<String>())
+
+    var locationDrivers: LatLng? by mutableStateOf(null)
+
+    /*
+    fun addLocationDriver(delivery: Delivery, location: LatLng) {
+        locationDrivers = locationDrivers + Pair(delivery.id, location)
+    }
+
+     */
 }

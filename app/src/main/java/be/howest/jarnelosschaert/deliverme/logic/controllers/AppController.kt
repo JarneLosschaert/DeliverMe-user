@@ -8,8 +8,10 @@ import androidx.navigation.NavController
 import be.howest.jarnelosschaert.deliverme.logic.AppUiState
 import be.howest.jarnelosschaert.deliverme.logic.data.AddressScreenStatus
 import be.howest.jarnelosschaert.deliverme.logic.data.defaultContact
+import be.howest.jarnelosschaert.deliverme.logic.helpers.DriversLocationManager
 import be.howest.jarnelosschaert.deliverme.logic.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.logic.helpers.checkPackage
+import be.howest.jarnelosschaert.deliverme.logic.helpers.notifications.Location
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
@@ -18,6 +20,7 @@ import be.howest.jarnelosschaert.deliverme.logic.services.AuthService
 import be.howest.jarnelosschaert.deliverme.logic.services.DeliveriesService
 import be.howest.jarnelosschaert.deliverme.ui.BottomNavigationScreens
 import be.howest.jarnelosschaert.deliverme.ui.OtherScreens
+import com.google.android.gms.maps.model.LatLng
 
 class AppController(
     private val navController: NavController,
@@ -26,6 +29,7 @@ class AppController(
     val uiState: AppUiState = AppUiState()
     private val authService = AuthService()
     private val deliveriesService = DeliveriesService()
+    val driversLocationManager = DriversLocationManager(navController.context)
 
     init {
         loadDeliveries()
@@ -59,6 +63,7 @@ class AppController(
                     "Deliveries up to date",
                     Toast.LENGTH_SHORT
                 ).show()
+                driversLocationManager.removeDriverLocations(uiState.deliveredDeliveries)
             },
             handleFailure = {
                 uiState.refreshing = false
@@ -118,7 +123,9 @@ class AppController(
             }
         }
     }
-
+    fun onDriverLocationUpdate(delivery: Delivery, location: Location) {
+        driversLocationManager.addDriverLocation(delivery.id, Location(location.latitude, location.longitude))
+    }
     fun onDeliveryClicked(delivery: Delivery) {
         uiState.selectedDelivery = delivery
         navigateTo(OtherScreens.DeliveryDetails.route)
