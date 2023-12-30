@@ -14,7 +14,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import be.howest.jarnelosschaert.deliverme.MainActivity
 import be.howest.jarnelosschaert.deliverme.R
-import be.howest.jarnelosschaert.deliverme.logic.helpers.DriversLocationManager
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
@@ -23,6 +22,7 @@ import kotlinx.serialization.json.Json
 
 class NotificationsManager(private val context: Context) {
     private val preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+
     companion object {
         private const val CHANNEL_ID = "DeliverMe"
         private const val CHANNEL_NAME = "DeliverMe"
@@ -80,6 +80,7 @@ class NotificationsManager(private val context: Context) {
             notify(NOTIFICATION_ID, notificationBuilder.build())
         }
     }
+
     private fun saveNotifications(notifications: List<Notification>) {
         val jsonString = Json.encodeToString(NotificationsWrapper(notifications))
         preferences.edit().putString(KEY_NOTIFICATIONS, jsonString).apply()
@@ -95,10 +96,19 @@ class NotificationsManager(private val context: Context) {
         }
     }
 
-    fun addNotification(notification: Notification) {
+    private fun addNotification(notification: Notification) {
         val currentNotifications = getNotifications().toMutableList()
         currentNotifications.add(notification)
         saveNotifications(currentNotifications)
+    }
+
+    fun isLastMessageSame(message: String): Boolean {
+        val currentNotifications = getNotifications()
+        return if (currentNotifications.isNotEmpty()) {
+            currentNotifications.last().message == message
+        } else {
+            false
+        }
     }
 
     @Serializable

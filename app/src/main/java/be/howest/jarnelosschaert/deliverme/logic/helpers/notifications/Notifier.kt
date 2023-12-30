@@ -14,6 +14,7 @@ import okhttp3.Request
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okhttp3.logging.HttpLoggingInterceptor
+import java.lang.Math.toRadians
 
 @Composable
 fun Notifier(
@@ -54,12 +55,48 @@ fun Notifier(
                 Log.d("location", "location update received")
                 val location = LatLng(it.payload.lat, it.payload.lon)
                 onLocationReceived(it.payload.delivery, location)
+                if (areLocationsNearby(
+                        it.payload.lat,
+                        it.payload.lon,
+                        it.payload.delivery.`package`.receiverAddress.lat,
+                        it.payload.delivery.`package`.receiverAddress.lon
+                    ) && !notificationsManager.isLastMessageSame("Your delivery is almost there!")
+                ) {
+                    notificationsManager.showNotification(
+                        "Delivery close",
+                        "Your delivery is almost there!",
+                        it.payload.delivery
+                    )
+                }
             }
         }
         onDispose {
             webSocket?.cancel()
         }
     }
+}
+
+fun areLocationsNearby(
+    lat1: Double,
+    lon1: Double,
+    lat2: Double,
+    lon2: Double,
+    threshold: Double = 1.0
+): Boolean {
+    val radius = 6371.0
+
+    val dLat = toRadians(lat2 - lat1)
+    val dLon = toRadians(lon2 - lon1)
+
+    val a = kotlin.math.sin(dLat / 2) * kotlin.math.sin(dLat / 2) +
+            kotlin.math.cos(toRadians(lat1)) * kotlin.math.cos(toRadians(lat2)) *
+            kotlin.math.sin(dLon / 2) * kotlin.math.sin(dLon / 2)
+
+    val c = 2 * kotlin.math.atan2(kotlin.math.sqrt(a), kotlin.math.sqrt(1 - a))
+
+    val distance = radius * c
+
+    return distance <= threshold
 }
 
 fun createWebSocket(
