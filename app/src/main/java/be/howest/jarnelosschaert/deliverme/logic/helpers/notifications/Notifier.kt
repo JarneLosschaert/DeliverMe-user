@@ -49,7 +49,7 @@ fun Notifier(
                         message = "Your delivery has been updated!"
                     }
                 }
-                notificationsManager.showNotification(title, message)
+                notificationsManager.showNotification(title, message, it.payload.delivery)
             } else if (it?.type == "location") {
                 Log.d("location", "location update received")
                 val location = LatLng(it.payload.lat, it.payload.lon)

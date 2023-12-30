@@ -12,6 +12,7 @@ import be.howest.jarnelosschaert.deliverme.logic.helpers.DriversLocationManager
 import be.howest.jarnelosschaert.deliverme.logic.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.logic.helpers.checkPackage
 import be.howest.jarnelosschaert.deliverme.logic.helpers.notifications.Location
+import be.howest.jarnelosschaert.deliverme.logic.helpers.notifications.NotificationsManager
 import be.howest.jarnelosschaert.deliverme.logic.models.Address
 import be.howest.jarnelosschaert.deliverme.logic.models.Customer
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
@@ -30,6 +31,7 @@ class AppController(
     private val authService = AuthService()
     private val deliveriesService = DeliveriesService()
     val driversLocationManager = DriversLocationManager(navController.context)
+    val notificationsManager = NotificationsManager(navController.context)
 
     init {
         loadDeliveries()
@@ -144,6 +146,11 @@ class AppController(
     fun onReceiverChange(customer: Customer) {
         uiState.receiver = customer
         uiState.receiverAddress = customer.homeAddress
+    }
+
+    fun onNotificationTap(delivery: Delivery) {
+        uiState.selectedDelivery = delivery
+        navigateTo(OtherScreens.DeliveryDetails.route)
     }
 
     fun getContactDeliveries(): List<Delivery> {

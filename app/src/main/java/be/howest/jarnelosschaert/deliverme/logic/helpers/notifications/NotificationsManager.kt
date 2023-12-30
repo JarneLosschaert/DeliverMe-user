@@ -14,14 +14,22 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import be.howest.jarnelosschaert.deliverme.MainActivity
 import be.howest.jarnelosschaert.deliverme.R
+import be.howest.jarnelosschaert.deliverme.logic.helpers.DriversLocationManager
+import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class NotificationsManager(private val context: Context) {
-
+    private val preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
     companion object {
         private const val CHANNEL_ID = "DeliverMe"
         private const val CHANNEL_NAME = "DeliverMe"
         private const val CHANNEL_DESCRIPTION = "Default Notifications DeliverMe"
         private const val NOTIFICATION_ID = 1
+        private const val PREFS_NAME = "NotificationsPrefs"
+        private const val KEY_NOTIFICATIONS = "notifications"
     }
 
     init {
@@ -42,7 +50,8 @@ class NotificationsManager(private val context: Context) {
         notificationManager.createNotificationChannel(channel)
     }
 
-    fun showNotification(title: String, content: String) {
+    fun showNotification(title: String, content: String, delivery: Delivery) {
+        addNotification(Notification(content, delivery))
         val intent = Intent(context, MainActivity::class.java)
         val stackBuilder = TaskStackBuilder.create(context)
         stackBuilder.addNextIntentWithParentStack(intent)
@@ -71,4 +80,27 @@ class NotificationsManager(private val context: Context) {
             notify(NOTIFICATION_ID, notificationBuilder.build())
         }
     }
+    private fun saveNotifications(notifications: List<Notification>) {
+        val jsonString = Json.encodeToString(NotificationsWrapper(notifications))
+        preferences.edit().putString(KEY_NOTIFICATIONS, jsonString).apply()
+    }
+
+    fun getNotifications(): List<Notification> {
+        val jsonString = preferences.getString(KEY_NOTIFICATIONS, null)
+        return if (jsonString != null) {
+            val wrapper = Json.decodeFromString<NotificationsWrapper>(jsonString)
+            wrapper.notifications
+        } else {
+            emptyList()
+        }
+    }
+
+    fun addNotification(notification: Notification) {
+        val currentNotifications = getNotifications().toMutableList()
+        currentNotifications.add(notification)
+        saveNotifications(currentNotifications)
+    }
+
+    @Serializable
+    private data class NotificationsWrapper(val notifications: List<Notification>)
 }

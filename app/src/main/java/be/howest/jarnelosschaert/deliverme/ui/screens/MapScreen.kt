@@ -69,14 +69,14 @@ fun Map(
         Column {
             Box(modifier = Modifier.padding(horizontal = 15.dp)) {
                 Title(text = "Map", onGoBack = onGoBack, withGoBack = true)
-                if (locationDriver == null) {
-                    Content(
-                        text = "Waiting for the location of the driver...",
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        color = MaterialTheme.colors.primary,
-                    )
-                    Spacer(modifier = Modifier.height(10.dp))
-                }
+            }
+            if (locationDriver == null) {
+                Content(
+                    text = "Waiting for the location of the driver...",
+                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                    color = MaterialTheme.colors.primary,
+                )
+                Spacer(modifier = Modifier.height(10.dp))
             }
             Box(
                 modifier = Modifier

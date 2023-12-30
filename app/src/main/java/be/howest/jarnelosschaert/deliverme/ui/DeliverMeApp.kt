@@ -111,8 +111,10 @@ private fun AuthScreenNavigationConfigurations(
             onNavigate(BottomNavigationScreens.Home.route)
         }
         composable(BottomNavigationScreens.Notifications.route) {
-            NotificationsScreen(modifier = modifier,
-                showPackageDetails = { controller.navigateTo(OtherScreens.DeliveryDetails.route) }
+            NotificationsScreen(
+                modifier = modifier,
+                notifications = controller.notificationsManager.getNotifications(),
+                showPackageDetails = { controller.onNotificationTap(it) },
             )
             onNavigate(BottomNavigationScreens.Notifications.route)
         }

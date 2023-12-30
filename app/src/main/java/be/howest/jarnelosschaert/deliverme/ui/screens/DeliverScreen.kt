@@ -38,11 +38,12 @@ fun DeliverScreen(
 ) {
     Box(modifier = modifier.fillMaxWidth()) {
         Column {
+
+            Title(onGoBack = onGoBack, withGoBack = true)
+            SubTitle(text = "Delivery details")
             if (contacts.isEmpty()) {
                 Content(text = "You have no contacts yet, please add one first")
             } else {
-                Title(onGoBack = onGoBack, withGoBack = true)
-                SubTitle(text = "Delivery details")
                 ChooseAddressLabel(
                     label = "Address (sender)",
                     address = senderAddress,

@@ -3,13 +3,12 @@ package be.howest.jarnelosschaert.deliverme.logic.helpers
 import android.content.Context
 import be.howest.jarnelosschaert.deliverme.logic.helpers.notifications.Location
 import be.howest.jarnelosschaert.deliverme.logic.models.Delivery
-import com.google.android.gms.maps.model.LatLng
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
-class DriversLocationManager(private val context: Context) {
+class DriversLocationManager(context: Context) {
 
     private val preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
@@ -18,12 +17,12 @@ class DriversLocationManager(private val context: Context) {
         private const val KEY_DRIVERS_LOCATION = "driversLocation"
     }
 
-    fun saveDriversLocation(driversLocation: Map<Int, Location>) {
+    private fun saveDriversLocation(driversLocation: Map<Int, Location>) {
         val jsonString = Json.encodeToString(DriversLocationWrapper(driversLocation))
         preferences.edit().putString(KEY_DRIVERS_LOCATION, jsonString).apply()
     }
 
-    fun getDriversLocation(): Map<Int, Location> {
+    private fun getDriversLocation(): Map<Int, Location> {
         val jsonString = preferences.getString(KEY_DRIVERS_LOCATION, null)
         return if (jsonString != null) {
             val wrapper = Json.decodeFromString<DriversLocationWrapper>(jsonString)
