@@ -33,3 +33,26 @@ fun HandleLocationPermissions(onPermission: (Boolean) -> Unit) {
         }
     }
 }
+
+@Composable
+fun HandleNotificationPermissions() {
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            println("Permission granted")
+        } else {
+            println("Permission denied")
+        }
+    }
+    if (ContextCompat.checkSelfPermission(
+            context,
+            Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
+    ) {
+        // permission granted
+    } else {
+        launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+    }
+}

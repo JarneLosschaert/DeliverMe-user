@@ -4,8 +4,15 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.ui.platform.LocalContext
 import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
+import be.howest.jarnelosschaert.deliverme.MainActivity
 import be.howest.jarnelosschaert.deliverme.logic.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.logic.helpers.checkValuesSignUp
 import be.howest.jarnelosschaert.deliverme.logic.AuthUiState
@@ -142,17 +149,7 @@ class AuthController(
         uiState.customer = response.customer
         navController.navigate(AuthorizeScreens.App.route)
         clearErrors()
-        handleNotificationsPermissions(navController.context)
     }
-
-    private fun handleNotificationsPermissions(context: Context) {
-        if (ActivityCompat.checkSelfPermission(
-                context,
-                Manifest.permission.POST_NOTIFICATIONS
-            ) != PackageManager.PERMISSION_GRANTED
-        ) { return }
-    }
-
     private fun handleLoginFailure(error: String) {
         uiState.loginErrors = listOf(error)
     }

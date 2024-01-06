@@ -24,6 +24,7 @@ import be.howest.jarnelosschaert.deliverme.logic.controllers.AuthController
 import be.howest.jarnelosschaert.deliverme.logic.helpers.notifications.Location
 import be.howest.jarnelosschaert.deliverme.logic.helpers.notifications.Notifier
 import be.howest.jarnelosschaert.deliverme.ui.helpers.components.roundedBottomNav
+import be.howest.jarnelosschaert.deliverme.ui.helpers.functions.HandleNotificationPermissions
 import be.howest.jarnelosschaert.deliverme.ui.screens.*
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens.AddressScreen
 import be.howest.jarnelosschaert.deliverme.ui.screens.settingScreens.ProfileScreen
@@ -57,6 +58,7 @@ fun DeliverMeApp(authController: AuthController) {
 
     var pageClicked by remember { mutableStateOf(BottomNavigationScreens.Home.route) }
 
+    HandleNotificationPermissions()
     Notifier(
         context = navController.context,
         email = authController.uiState.customer.person.email,
