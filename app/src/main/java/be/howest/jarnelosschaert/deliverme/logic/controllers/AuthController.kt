@@ -1,6 +1,10 @@
 package be.howest.jarnelosschaert.deliverme.logic.controllers
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.navigation.NavController
 import be.howest.jarnelosschaert.deliverme.logic.helpers.checkAddress
 import be.howest.jarnelosschaert.deliverme.logic.helpers.checkValuesSignUp
@@ -138,6 +142,15 @@ class AuthController(
         uiState.customer = response.customer
         navController.navigate(AuthorizeScreens.App.route)
         clearErrors()
+        handleNotificationsPermissions(navController.context)
+    }
+
+    private fun handleNotificationsPermissions(context: Context) {
+        if (ActivityCompat.checkSelfPermission(
+                context,
+                Manifest.permission.POST_NOTIFICATIONS
+            ) != PackageManager.PERMISSION_GRANTED
+        ) { return }
     }
 
     private fun handleLoginFailure(error: String) {
