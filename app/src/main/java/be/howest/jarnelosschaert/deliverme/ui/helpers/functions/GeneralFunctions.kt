@@ -26,11 +26,13 @@ fun showCustomer(customer: Customer, me: Customer): String {
 
 val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ssX")
 fun showDate(dateTime: String): String {
+    if (dateTime == "") return ""
     val localDateTime = LocalDateTime.parse(dateTime, formatter)
     val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
     return localDateTime.format(dateFormatter)
 }
 fun showTime(dateTime: String): String {
+    if (dateTime == "") return ""
     val localDateTime = LocalDateTime.parse(dateTime, formatter)
     val timeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("HH:mm")
     return localDateTime.format(timeFormatter)

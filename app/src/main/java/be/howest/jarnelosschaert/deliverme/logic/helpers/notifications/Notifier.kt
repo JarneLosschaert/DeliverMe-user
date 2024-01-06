@@ -112,7 +112,7 @@ fun createWebSocket(
         .build()
 
     val request = Request.Builder()
-        .url("ws://192.168.1.20:5000/ws")
+        .url("ws:notifier.deliverme.site/ws")
         .build()
 
     val webSocketListener = object : WebSocketListener() {
