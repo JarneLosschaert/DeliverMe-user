@@ -58,7 +58,6 @@ fun DeliverMeApp(authController: AuthController) {
 
     var pageClicked by remember { mutableStateOf(BottomNavigationScreens.Home.route) }
 
-    HandleNotificationPermissions()
     Notifier(
         context = navController.context,
         email = authController.uiState.customer.person.email,
@@ -68,6 +67,7 @@ fun DeliverMeApp(authController: AuthController) {
             )
         }
     )
+    HandleNotificationPermissions()
 
     Scaffold(
         bottomBar = {

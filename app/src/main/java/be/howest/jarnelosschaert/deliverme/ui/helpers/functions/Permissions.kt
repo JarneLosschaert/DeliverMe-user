@@ -41,7 +41,7 @@ fun HandleLocationPermissions(onPermission: (Boolean) -> Unit) {
 fun HandleNotificationPermissions() {
     val context = LocalContext.current
     val launcher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
+        contract = ActivityResultContracts.RequestPermission()
     ) { isGranted ->
         if (isGranted) {
             println("Permission granted")
@@ -56,6 +56,8 @@ fun HandleNotificationPermissions() {
     ) {
         // permission granted
     } else {
-        launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        LaunchedEffect(true) {
+            launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
     }
 }
