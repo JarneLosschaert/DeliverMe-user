@@ -28,7 +28,7 @@ val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:
 fun showDate(dateTime: String): String {
     if (dateTime == "") return ""
     val localDateTime = LocalDateTime.parse(dateTime, formatter)
-    val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+    val dateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     return localDateTime.format(dateFormatter)
 }
 fun showTime(dateTime: String): String {
