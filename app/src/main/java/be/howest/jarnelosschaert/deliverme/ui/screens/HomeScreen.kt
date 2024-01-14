@@ -109,7 +109,7 @@ fun Deliveries(
     }
     SubTitle(text = "History")
     if (deliveredDeliveries.isNotEmpty()) {
-        for (delivery in deliveredDeliveries) {
+        for (delivery in deliveredDeliveries.reversed()) {
             Delivery(
                 delivery = delivery,
                 onDeliveryClick = onDeliveryClick,
